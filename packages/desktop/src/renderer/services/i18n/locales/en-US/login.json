@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Trace - Sign In",
+  "brand": "Trace",
+  "subtitle": "Welcome back, Drew. Sign in to your private workspace",
+  "username": "Username",
+  "usernamePlaceholder": "Drew",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "rememberMe": "Remember me",
+  "submit": "Sign In",
+  "submitting": "Signing in...",
+  "success": "Login successful! Redirecting...",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "languageToggle": "Change language",
+  "footerPrimary": "Drew's AI workspace",
+  "footerSecondary": "Private & Ready",
+  "errors": {
+    "empty": "Please enter username and password",
+    "invalidCredentials": "Invalid username or password",
+    "tooManyAttempts": "Too many attempts, please try again later",
+    "networkError": "Connection failed, please try again",
+    "serverError": "Server error, please try again later",
+    "unknown": "Sign-in failed, please try again"
+  }
+}

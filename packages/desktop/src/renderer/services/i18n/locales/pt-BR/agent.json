@@ -1,0 +1,67 @@
+{
+  "health": {
+    "detectedError": "Erro detectado com o agente atual ({{agent}})",
+    "autoSwitching": ". O sistema tentará alternar automaticamente.",
+    "evaluating": "Avaliando a latência da rede e a disponibilidade do modelo...",
+    "checking": "Verificando o endpoint de {{agent}}...",
+    "foundBest": "Melhor alternativa encontrada",
+    "recommendSwitch": "Recomendado",
+    "available": "Disponível",
+    "lowLatency": "Baixa Latência",
+    "mediumLatency": "Média Latência",
+    "highLatency": "Alta Latência",
+    "bestMatch": "Melhor Combinação",
+    "noAvailable": "Nenhum agente disponível no ambiente atual",
+    "checkConfig": "Por favor, verifique a configuração ou tente novamente mais tarde"
+  },
+  "setup": {
+    "connectionError": "Erro de Conexão",
+    "notConfigured": "{{agent}} não está configurado",
+    "authRequired": "Autenticação ou chave de API é necessária para usar este agente.",
+    "findingAlternatives": "Buscando alternativas disponíveis...",
+    "checkingAgent": "Verificando {{agent}}...",
+    "alternativesFound": "{{count}} alternativas disponíveis encontradas",
+    "autoSwitching": "Alternando automaticamente para o melhor agente disponível...",
+    "configError": "Erro de configuração. Por favor, verifique suas configurações ou selecione uma alternativa:",
+    "noAlternatives": "Nenhum agente disponível encontrado",
+    "configureFirst": "Por favor, configure um agente nas Configurações primeiro.",
+    "switching": "Alternando agente..."
+  },
+  "model": {
+    "switchSuccess": "Modelo alterado com sucesso",
+    "switchFailed": "Falha ao alternar o modelo"
+  },
+  "config": {
+    "setting": "Aplicando configuração...",
+    "commandAck": "Comando enviado, mas o estado ainda não foi confirmado. Atualize ou tente novamente mais tarde.",
+    "timeout": "A confirmação da configuração expirou. O estado anterior continua sendo exibido.",
+    "busy": "Outra configuração está sendo aplicada. Tente novamente mais tarde.",
+    "failed": "Falha ao aplicar a configuração. O estado anterior continua sendo exibido."
+  },
+  "thoughtLevel": {
+    "label": "Nível de raciocínio",
+    "switchSuccess": "Nível de raciocínio alterado",
+    "switchFailed": "Falha ao alterar o nível de raciocínio"
+  },
+  "channelConflict": {
+    "title": "{{platform}} Channel Conflict Detected",
+    "handledByOpenClaw": "OpenClaw is handling {{platform}} messages, not Trace.",
+    "credentialsAlsoConfigured": "Your {{platform}} bot credentials are also configured in OpenClaw. This means:",
+    "switchingAgentsNoEffect": "Switching agents in Trace will have no effect",
+    "messagesProcessedByOpenClaw": "Messages are processed by OpenClaw's agent",
+    "messagesStillWork": "Messages still work via OpenClaw",
+    "useTraceChannels": "To use Trace Channels and switch agents:",
+    "optionDisable": "Option 1: Disable OpenClaw {{platform}} (Recommended)",
+    "edit": "Edit",
+    "set": "Set",
+    "restart": "Then restart OpenClaw and Trace.",
+    "optionDifferentBot": "Option 2: Use a different bot",
+    "createDifferentBot": "Create a new {{platform}} bot with different credentials for Trace.",
+    "optionKeepUsingOpenClaw": "Option 3: Keep using OpenClaw",
+    "disableChannel": "Disable {{platform}} in Trace Channels and continue using OpenClaw's integration.",
+    "disableButton": "Help me disable OpenClaw {{platform}}",
+    "ignoreButton": "Ignore (I know what I'm doing)",
+    "compact": "OpenClaw {{platform}} conflict detected - agent switching won't work.",
+    "learnMore": "Learn more"
+  }
+}

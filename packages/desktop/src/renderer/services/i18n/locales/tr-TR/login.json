@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Trace - Giriş Yap",
+  "brand": "Trace",
+  "subtitle": "Tekrar hoş geldin Drew. Özel çalışma alanına giriş yap",
+  "username": "Kullanıcı Adı",
+  "usernamePlaceholder": "Drew",
+  "password": "Şifre",
+  "passwordPlaceholder": "Şifrenizi girin",
+  "rememberMe": "Beni hatırla",
+  "submit": "Giriş Yap",
+  "submitting": "Giriş yapılıyor...",
+  "success": "Giriş başarılı! Yönlendiriliyor...",
+  "showPassword": "Şifreyi göster",
+  "hidePassword": "Şifreyi gizle",
+  "languageToggle": "Dili değiştir",
+  "footerPrimary": "Drew'in AI çalışma alanı",
+  "footerSecondary": "Özel ve Hazır",
+  "errors": {
+    "empty": "Lütfen kullanıcı adı ve şifre girin",
+    "invalidCredentials": "Geçersiz kullanıcı adı veya şifre",
+    "tooManyAttempts": "Çok fazla deneme, lütfen daha sonra tekrar deneyin",
+    "networkError": "Bağlantı başarısız, lütfen tekrar deneyin",
+    "serverError": "Sunucu hatası, lütfen daha sonra tekrar deneyin",
+    "unknown": "Giriş başarısız, lütfen tekrar deneyin"
+  }
+}

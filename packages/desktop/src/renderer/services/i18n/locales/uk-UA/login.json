@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Trace — Вхід",
+  "brand": "Trace",
+  "subtitle": "З поверненням, Drew. Увійдіть у свій приватний робочий простір",
+  "username": "Ім'я користувача",
+  "usernamePlaceholder": "Drew",
+  "password": "Пароль",
+  "passwordPlaceholder": "Введіть пароль",
+  "rememberMe": "Запам'ятати мене",
+  "submit": "Увійти",
+  "submitting": "Вхід...",
+  "success": "Вхід успішний! Перенаправлення...",
+  "showPassword": "Показати пароль",
+  "hidePassword": "Приховати пароль",
+  "languageToggle": "Змінити мову",
+  "footerPrimary": "AI-робочий простір Drew",
+  "footerSecondary": "Приватно й готово",
+  "errors": {
+    "empty": "Будь ласка, введіть ім'я користувача та пароль",
+    "invalidCredentials": "Невірне ім'я користувача або пароль",
+    "tooManyAttempts": "Занадто багато спроб, будь ласка, спробуйте пізніше",
+    "networkError": "Помилка з'єднання, будь ласка, спробуйте ще раз",
+    "serverError": "Помилка сервера, будь ласка, спробуйте пізніше",
+    "unknown": "Помилка входу, будь ласка, спробуйте ще раз"
+  }
+}

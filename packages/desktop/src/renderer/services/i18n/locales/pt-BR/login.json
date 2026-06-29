@@ -1,0 +1,26 @@
+{
+  "pageTitle": "Trace - Entrar",
+  "brand": "Trace",
+  "subtitle": "Bem-vindo de volta, Drew. Entre no seu workspace privado",
+  "username": "Nome de usuário",
+  "usernamePlaceholder": "Drew",
+  "password": "Senha",
+  "passwordPlaceholder": "Digite sua senha",
+  "rememberMe": "Lembrar-me",
+  "submit": "Entrar",
+  "submitting": "Entrando...",
+  "success": "Login bem-sucedido! Redirecionando...",
+  "showPassword": "Mostrar senha",
+  "hidePassword": "Ocultar senha",
+  "languageToggle": "Mudar idioma",
+  "footerPrimary": "Workspace de IA do Drew",
+  "footerSecondary": "Privado e Pronto",
+  "errors": {
+    "empty": "Por favor, insira nome de usuário e senha",
+    "invalidCredentials": "Nome de usuário ou senha inválidos",
+    "tooManyAttempts": "Muitas tentativas, por favor tente novamente mais tarde",
+    "networkError": "Falha na conexão, por favor tente novamente",
+    "serverError": "Erro no servidor, por favor tente novamente mais tarde",
+    "unknown": "O login falhou, por favor tente novamente"
+  }
+}
