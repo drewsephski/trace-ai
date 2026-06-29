@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.26](https://github.com/drewsephski/trace-ai/compare/v2.1.25...v2.1.26) (2026-06-29)
+
+### Desktop
+
+#### CI
+
+- **release:** require Developer ID signing and notarization for public macOS builds
+
+---
+
 ## [2.1.25](https://github.com/iOfficeAI/AionUi/compare/v2.1.24...v2.1.25) (2026-06-26)
 
 ### Desktop
