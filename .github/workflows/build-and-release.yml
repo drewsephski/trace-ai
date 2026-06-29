@@ -73,6 +73,7 @@ jobs:
     if: needs.code-quality.result == 'success'
     with:
       skip_code_quality: true
+      require_macos_distribution_signing: true
       ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
       matrix: >-
         {"include":[

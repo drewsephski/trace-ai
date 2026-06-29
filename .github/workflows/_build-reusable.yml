@@ -27,6 +27,10 @@ on:
         description: 'Optional AionCore Manual Build workflow run id to bundle instead of the pinned release'
         type: string
         default: ''
+      require_macos_distribution_signing:
+        description: 'Fail macOS builds unless Developer ID signing and notarization secrets are configured'
+        type: boolean
+        default: false
 
 env:
   BUN_INSTALL_REGISTRY: 'https://registry.npmjs.org/'
@@ -257,6 +261,34 @@ jobs:
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
 
+      - name: Validate macOS distribution signing secrets
+        if: startsWith(matrix.platform, 'macos') && inputs.require_macos_distribution_signing
+        shell: bash
+        run: |
+          set -euo pipefail
+          missing=0
+
+          for name in BUILD_CERTIFICATE_BASE64 P12_PASSWORD APPLE_ID APPLE_ID_PASSWORD TEAM_ID IDENTITY; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error title=macOS distribution signing secret missing::$name is required for public macOS releases"
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -ne 0 ]; then
+            echo "::error title=macOS distribution signing is not configured::Release builds require Developer ID signing and notarization secrets before publishing DMG or ZIP artifacts."
+            exit 1
+          fi
+
+          echo "macOS distribution signing and notarization secrets are configured."
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+          IDENTITY: ${{ secrets.IDENTITY }}
+
       # macOS code signing certificate installation
       - name: Setup macOS code signing (macOS only)
         if: startsWith(matrix.platform, 'macos')
@@ -287,6 +319,10 @@ jobs:
           else
             echo "No certificate provided - building unsigned application"
             echo "To enable code signing, add BUILD_CERTIFICATE_BASE64 and P12_PASSWORD secrets"
+            if [ "${{ inputs.require_macos_distribution_signing }}" = "true" ]; then
+              echo "::error title=macOS signing certificate missing::Public release builds cannot publish unsigned macOS artifacts."
+              exit 1
+            fi
           fi
 
       - name: Install Linux dependencies
@@ -498,7 +534,12 @@ jobs:
               echo "Users may see Gatekeeper warnings when opening the app for the first time." >> $GITHUB_STEP_SUMMARY
               echo "" >> $GITHUB_STEP_SUMMARY
               echo "To fix: Right-click the app → Open → Open" >> $GITHUB_STEP_SUMMARY
-              exit 0  # Allow CI to continue
+              if [ "${{ inputs.require_macos_distribution_signing }}" = "true" ]; then
+                echo "::error title=Notarization failed::Public release builds must be notarized before publishing macOS artifacts."
+                exit 1
+              fi
+
+              exit 0  # Allow CI to continue for ad-hoc builds
             fi
           fi
 
