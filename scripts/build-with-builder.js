@@ -173,6 +173,27 @@ function dmgExists(outDir) {
   }
 }
 
+function shellQuote(value) {
+  return `'${String(value).replace(/'/g, "'\\''")}'`;
+}
+
+function assertMacAppReadyForDistribution(appDir) {
+  const appName = fs.readdirSync(appDir).find((f) => f.endsWith('.app'));
+  if (!appName) {
+    throw new Error(`No .app found in ${appDir}`);
+  }
+
+  const appPath = path.join(appDir, appName);
+  const quotedAppPath = shellQuote(appPath);
+
+  execSync(`codesign --verify --deep --strict --verbose=2 ${quotedAppPath}`, {
+    stdio: 'inherit',
+  });
+  execSync(`spctl -a -vv --type exec ${quotedAppPath}`, {
+    stdio: 'inherit',
+  });
+}
+
 function tryRemoveDir(targetDir) {
   if (!fs.existsSync(targetDir)) return true;
   try {
@@ -244,6 +265,12 @@ function buildWithDmgRetry(cmd, targetArch) {
 
     // .app exists but no .dmg → DMG creation failed
     console.log('\n🔄 Build failed during DMG creation (.app exists, .dmg missing)');
+
+    if (process.env.REQUIRE_MACOS_DISTRIBUTION_SIGNING === 'true') {
+      console.log('   Verifying signed and notarized .app before DMG retry...');
+      assertMacAppReadyForDistribution(appDir);
+    }
+
     console.log('   Retrying macOS distributable creation with --prepackaged...');
 
     for (let attempt = 1; attempt <= DMG_RETRY_MAX; attempt++) {

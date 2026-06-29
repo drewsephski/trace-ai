@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.27](https://github.com/drewsephski/trace-ai/compare/v2.1.26...v2.1.27) (2026-06-29)
+
+### Desktop
+
+#### CI
+
+- **release:** verify signed and notarized macOS apps before retrying DMG packaging
+
+---
+
 ## [2.1.26](https://github.com/drewsephski/trace-ai/compare/v2.1.25...v2.1.26) (2026-06-29)
 
 ### Desktop
