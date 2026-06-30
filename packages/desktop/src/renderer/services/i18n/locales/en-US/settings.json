@@ -377,7 +377,7 @@
   "darkMode": "Dark",
   "agent": "Agent",
   "tools": "Tools",
-  "capabilities": "Capabilities",
+  "capabilities": "Skills",
   "capabilitiesTab": {
     "skills": "Skills",
     "tools": "Tools"

@@ -50,7 +50,7 @@ export function getBuiltinSettingsNavItems(isDesktop: boolean, t: TranslateFn): 
     },
     capabilities: {
       id: 'capabilities',
-      label: t('settings.capabilities', { defaultValue: 'Capabilities' }),
+      label: t('settings.capabilities', { defaultValue: 'Skills' }),
       icon: <Lightning theme='outline' size='16' />,
       path: 'capabilities',
     },

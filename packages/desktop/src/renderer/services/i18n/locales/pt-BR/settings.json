@@ -377,7 +377,7 @@
   "darkMode": "Escuro",
   "agent": "Agente",
   "tools": "Ferramentas",
-  "capabilities": "Recursos",
+  "capabilities": "Skills",
   "capabilitiesTab": {
     "skills": "Habilidades",
     "tools": "Ferramentas"

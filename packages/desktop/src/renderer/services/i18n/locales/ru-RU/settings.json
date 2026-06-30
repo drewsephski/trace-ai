@@ -1149,7 +1149,7 @@
     "skills": "Навыки",
     "tools": "Инструменты"
   },
-  "capabilities": "Возможности",
+  "capabilities": "Навыки",
   "mcpEditNameLocked": "Во время редактирования имя MCP менять нельзя. Сохраните имя сервера верхнего уровня как «{{name}}».",
   "mcpCheckedAtLabel": "Проверено в:",
   "mcpCheckResultLabel": "Ручная проверка:",

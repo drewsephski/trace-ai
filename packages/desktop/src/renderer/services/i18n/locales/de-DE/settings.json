@@ -369,7 +369,7 @@
   "darkMode": "Dunkel",
   "agent": "Agent",
   "tools": "Tools",
-  "capabilities": "Fähigkeiten",
+  "capabilities": "Skills",
   "capabilitiesTab": {
     "skills": "Skills",
     "tools": "MCP & Sprache"
