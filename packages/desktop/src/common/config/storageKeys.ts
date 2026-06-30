@@ -25,6 +25,9 @@ export const STORAGE_KEYS = {
 
   /** Language preference / 语言偏好 */
   LANGUAGE: 'aionui_language',
+
+  /** Last provider-backed chat model selected by the user / 用户上次选择的聊天模型提供商 */
+  LAST_CHAT_PROVIDER_MODEL: 'aionui_last_chat_provider_model',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

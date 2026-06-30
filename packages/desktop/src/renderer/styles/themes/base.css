@@ -3,6 +3,9 @@
 :root {
   --app-min-width: 360px;
   --titlebar-height: 36px;
+  --aion-motion-collapse-duration: 220ms;
+  --aion-motion-fast-duration: 160ms;
+  --aion-motion-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-shell {
@@ -23,6 +26,30 @@ body,
 
 .bg-animate {
   animation: bg-animate 1s alternate infinite;
+}
+
+.aion-motion-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    grid-template-rows var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard),
+    opacity var(--aion-motion-fast-duration) ease,
+    transform var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard),
+    margin var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard);
+}
+
+.aion-motion-collapse[data-collapsed='true'] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-2px);
+  pointer-events: none;
+}
+
+.aion-motion-collapse__inner {
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Mobile base: prevent text size adjustment */
@@ -63,6 +90,17 @@ body,
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes aion-popup-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -127,4 +165,20 @@ body,
 
 [data-theme='dark'] *:hover::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --aion-motion-collapse-duration: 1ms;
+    --aion-motion-fast-duration: 1ms;
+  }
+
+  .aion-motion-collapse,
+  .arco-trigger-popup .arco-dropdown,
+  .arco-trigger-popup .arco-select-popup,
+  .arco-trigger-popup .arco-popover,
+  .arco-trigger-popup .arco-picker-container {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
 }

@@ -7,7 +7,12 @@
 import type { IProvider, TProviderWithModel } from '@/common/config/storage';
 import { useGoogleAuthModels } from '@/renderer/hooks/agent/useGoogleAuthModels';
 import { useProvidersQuery } from '@/renderer/hooks/agent/useModelProviderList';
-import { hasAvailableModels } from '../utils/modelUtils';
+import {
+  readLastProviderModelPreference,
+  resolveProviderModelPreference,
+  writeLastProviderModelPreference,
+} from '@/renderer/pages/conversation/utils/providerModelPreference';
+import { getAvailableModels, hasAvailableModels } from '../utils/modelUtils';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 /**
@@ -65,9 +70,12 @@ export const useGuidModelSelection = (agentKey: ProviderAgentKey = 'aionrs'): Gu
   const selectedModelKeyRef = useRef<string | null>(null);
 
   const setCurrentModel = useCallback(
-    async (model_info: TProviderWithModel, _options?: { persistPreference?: boolean }) => {
+    async (model_info: TProviderWithModel, options?: { persistPreference?: boolean }) => {
       selectedModelKeyRef.current = buildModelKey(model_info.id, model_info.use_model);
       _setCurrentModel(model_info);
+      if (options?.persistPreference !== false) {
+        writeLastProviderModelPreference(model_info);
+      }
     },
     []
   );
@@ -80,18 +88,22 @@ export const useGuidModelSelection = (agentKey: ProviderAgentKey = 'aionrs'): Gu
 
       selectedModelKeyRef.current = null;
 
-      const defaultModel = modelList[0];
-      const resolvedUseModel = defaultModel?.models[0] ?? '';
+      const savedModel = resolveProviderModelPreference({
+        providers: modelList,
+        preference: readLastProviderModelPreference(),
+        getAvailableModels,
+      });
+      const defaultProvider: IProvider | undefined = modelList[0];
+      const resolvedModel = savedModel
+        ? savedModel
+        : defaultProvider && {
+            ...defaultProvider,
+            use_model: getAvailableModels(defaultProvider)[0] ?? '',
+          };
 
-      if (!defaultModel || !resolvedUseModel) return;
+      if (!resolvedModel?.use_model) return;
 
-      await setCurrentModel(
-        {
-          ...defaultModel,
-          use_model: resolvedUseModel,
-        },
-        options
-      );
+      await setCurrentModel(resolvedModel, { persistPreference: options?.persistPreference === true });
     },
     [modelList, setCurrentModel]
   );

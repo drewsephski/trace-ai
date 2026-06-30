@@ -27,6 +27,22 @@
   border: 1px solid var(--bg-3);
 }
 
+.workspace-toolbar-icon-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.workspace-toolbar-icon-button:hover,
+.workspace-toolbar-icon-button:focus-visible {
+  color: var(--text-primary);
+  background-color: var(--bg-hover);
+}
+
 /* VSCode-style file tree: chevron switcher + per-type icons, no connector lines */
 .chat-workspace .workspace-tree .workspace-tree-chevron {
   opacity: 0.55;

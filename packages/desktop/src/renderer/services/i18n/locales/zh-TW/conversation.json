@@ -350,6 +350,7 @@
     "search.empty": "搜索結果為空",
     "addFile": "新增檔案",
     "refresh": "重新整理",
+    "collapseAll": "全部折疊",
     "temporarySpace": "臨時空間",
     "dragOverlayTitle": "拖曳匯入",
     "dragOverlayDesc": "將檔案或資料夾拖曳到此處即可複製到目前專案。",

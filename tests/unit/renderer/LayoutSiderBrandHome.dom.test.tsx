@@ -140,7 +140,7 @@ describe('Layout sider brand Home button', () => {
 
     // No actionable role/label in chat routes.
     expect(screen.queryByLabelText(BACK_KEY)).toBeNull();
-    const wordmark = screen.getByText('Trace');
+    const wordmark = screen.getByAltText('Trace');
     fireEvent.click(wordmark);
     expect(navigate).not.toHaveBeenCalled();
   });
@@ -149,12 +149,12 @@ describe('Layout sider brand Home button', () => {
     currentPathname = '/conversation/xyz';
     renderLayout();
 
-    fireEvent.click(screen.getByText('Trace'));
+    fireEvent.click(screen.getByAltText('Trace'));
     expect(navigate).not.toHaveBeenCalled();
   });
 
   it('clicking the logo icon counts toward the devtools easter-egg and never navigates', () => {
-    currentPathname = '/settings/about';
+    currentPathname = '/guid';
     sessionStorage.setItem('aion:last-non-settings-path', '/conversation/abc');
     renderLayout();
 

@@ -645,6 +645,7 @@ export type I18nKey =
   | 'conversation.workspace.changes.unstage'
   | 'conversation.workspace.changes.unstageAll'
   | 'conversation.workspace.changes.unstaged'
+  | 'conversation.workspace.collapseAll'
   | 'conversation.workspace.contextMenu.addToChat'
   | 'conversation.workspace.contextMenu.addedToChat'
   | 'conversation.workspace.contextMenu.deleteConfirm'

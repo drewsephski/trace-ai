@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { IMessageThinking } from '@/common/chat/chatLib';
 import MessageThinking from '@/renderer/pages/conversation/Messages/components/MessageThinking';
@@ -54,5 +54,20 @@ describe('MessageThinking', () => {
     render(<MessageThinking message={createThinkingMessage(createdAt)} />);
 
     expect(screen.getByText('Thinking... · 7s')).toBeInTheDocument();
+  });
+
+  it('keeps thinking content mounted while marking it hidden during collapse', () => {
+    vi.setSystemTime(new Date('2026-05-26T09:00:10.000Z'));
+    const createdAt = Date.now() - 5_000;
+
+    render(<MessageThinking message={createThinkingMessage(createdAt)} />);
+
+    const bodyShell = screen.getByText('analyzing').closest('[aria-hidden]');
+    expect(bodyShell).toHaveAttribute('aria-hidden', 'false');
+
+    fireEvent.click(screen.getByText('Thinking... · 5s'));
+
+    expect(screen.getByText('analyzing')).toBeInTheDocument();
+    expect(bodyShell).toHaveAttribute('aria-hidden', 'true');
   });
 });

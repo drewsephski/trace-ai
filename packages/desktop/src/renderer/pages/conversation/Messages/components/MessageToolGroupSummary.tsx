@@ -98,22 +98,26 @@ const ToolItemDetail: React.FC<{ item: NormalizedToolCall }> = ({ item }) => {
           </span>
         )}
       </div>
-      {expanded && hasDetail && (
-        <div className='tool-detail-panel m-l-20px m-t-4px'>
-          {loadingFull && <div className='tool-detail-label'>Loading...</div>}
-          {loadError && <div className='tool-detail-label'>Failed to load full output</div>}
-          {displayItem.input && (
-            <div className='tool-detail-section'>
-              <div className='tool-detail-label'>Input</div>
-              <pre className='tool-detail-content'>{displayItem.input}</pre>
+      {hasDetail && (
+        <div className='tool-detail-shell aion-motion-collapse' data-collapsed={!expanded} aria-hidden={!expanded}>
+          <div className='aion-motion-collapse__inner'>
+            <div className='tool-detail-panel'>
+              {loadingFull && <div className='tool-detail-label'>Loading...</div>}
+              {loadError && <div className='tool-detail-label'>Failed to load full output</div>}
+              {displayItem.input && (
+                <div className='tool-detail-section'>
+                  <div className='tool-detail-label'>Input</div>
+                  <pre className='tool-detail-content'>{displayItem.input}</pre>
+                </div>
+              )}
+              {displayItem.output && (
+                <div className='tool-detail-section'>
+                  <div className='tool-detail-label'>Output</div>
+                  <pre className='tool-detail-content'>{displayItem.output}</pre>
+                </div>
+              )}
             </div>
-          )}
-          {displayItem.output && (
-            <div className='tool-detail-section'>
-              <div className='tool-detail-label'>Output</div>
-              <pre className='tool-detail-content'>{displayItem.output}</pre>
-            </div>
-          )}
+          </div>
         </div>
       )}
       {item.imagePath && (
@@ -161,13 +165,19 @@ const MessageToolGroupSummary: React.FC<{ messages: ToolMessage[] }> = ({ messag
           <Right theme='outline' size='12' />
         </span>
       </div>
-      {showMore && (
-        <div className='tool-group-summary__body'>
-          {tools.map((item) => (
-            <ToolItemDetail key={item.key} item={item} />
-          ))}
+      <div
+        className='tool-group-summary__body-shell aion-motion-collapse'
+        data-collapsed={!showMore}
+        aria-hidden={!showMore}
+      >
+        <div className='aion-motion-collapse__inner'>
+          <div className='tool-group-summary__body'>
+            {tools.map((item) => (
+              <ToolItemDetail key={item.key} item={item} />
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

@@ -156,12 +156,6 @@ const AionCollapseComponent: React.FC<AionCollapseProps> & { Item: typeof AionCo
     onChange?.(nextKeys);
   };
 
-  // 挂载状态，用于控制动画 / Mount state for animation control
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <div className={classNames('rounded-16px  flex flex-col gap-12px bg-2 py-18px px-[12px] md:px-[32px]', className)}>
       {items.map((child) => {
@@ -202,19 +196,15 @@ const AionCollapseComponent: React.FC<AionCollapseProps> & { Item: typeof AionCo
               {expandIconPosition === 'right' && <span className='flex items-center'>{iconNode}</span>}
             </div>
             {/* 面板内容（使用 grid 实现平滑动画）/ Panel content (using grid for smooth animation) */}
-            <div className='transition-all duration-300 ease-in-out'>
-              {isActive && (
-                <div
-                  className={classNames(
-                    'grid overflow-hidden',
-                    mounted && 'transition-all duration-300 ease-in-out',
-                    contentClassName
-                  )}
-                  style={{ gridTemplateRows: '1fr', ...contentStyle }}
-                >
-                  <div className={classNames('overflow-hidden', contentDividerClass)}>{child.props.children}</div>
-                </div>
-              )}
+            <div
+              className={classNames('aion-motion-collapse', contentClassName)}
+              data-collapsed={!isActive}
+              aria-hidden={!isActive}
+              style={contentStyle}
+            >
+              <div className={classNames('aion-motion-collapse__inner', isActive && contentDividerClass)}>
+                {child.props.children}
+              </div>
             </div>
           </div>
         );

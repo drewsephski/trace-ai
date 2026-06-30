@@ -296,6 +296,7 @@ const ChatWorkspace: React.FC<WorkspaceProps> = ({
             searchInputRef={searchHook.searchInputRef}
             loading={treeHook.loading}
             refreshWorkspace={treeHook.refreshWorkspace}
+            onCollapseAll={treeHook.collapseAllFiles}
             handleSelectHostFiles={pasteHook.handleSelectHostFiles}
             handleUploadDeviceFiles={pasteHook.handleUploadDeviceFiles}
             setShowHostFileSelector={searchHook.setShowHostFileSelector}

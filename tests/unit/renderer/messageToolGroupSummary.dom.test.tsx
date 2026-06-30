@@ -17,6 +17,39 @@ vi.mock('@/common', () => ({
 }));
 
 describe('MessageToolGroupSummary', () => {
+  it('keeps step details mounted while marking the collapsed trace hidden', () => {
+    render(
+      <MessageToolGroupSummary
+        messages={[
+          {
+            id: 'message-1',
+            conversation_id: 'conversation-1',
+            type: 'acp_tool_call',
+            content: {
+              update: {
+                session_update: 'tool_call',
+                tool_call_id: 'tool-1',
+                status: 'completed',
+                title: 'rg',
+                kind: 'search',
+                raw_input: { pattern: 'needle', path: '.' },
+                content: [{ type: 'content', content: { type: 'text', text: 'preview output' } }],
+              },
+            },
+          } as unknown as ToolMessage,
+        ]}
+      />
+    );
+
+    const traceShell = screen.getByText('rg').closest('[aria-hidden]');
+    expect(traceShell).toHaveAttribute('aria-hidden', 'true');
+
+    fireEvent.click(screen.getByText('View Steps · 1'));
+
+    expect(screen.getByText('rg')).toBeInTheDocument();
+    expect(traceShell).toHaveAttribute('aria-hidden', 'false');
+  });
+
   it('loads full tool content when expanding a compact history item', async () => {
     const invoke = vi.mocked(ipcBridge.database.getConversationMessage.invoke);
     invoke.mockResolvedValue({

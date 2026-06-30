@@ -86,8 +86,12 @@ const MessageThinking: React.FC<{ message: IMessageThinking }> = ({ message }) =
           <Right theme='outline' size='12' />
         </span>
       </div>
-      <div ref={bodyRef} className={`${styles.body} ${!expanded ? styles.collapsed : ''}`}>
-        {text}
+      <div className={`${styles.bodyShell} aion-motion-collapse`} data-collapsed={!expanded} aria-hidden={!expanded}>
+        <div className='aion-motion-collapse__inner'>
+          <div ref={bodyRef} className={styles.body}>
+            {text}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -350,6 +350,7 @@
     "search.empty": "검색 결과가 없습니다",
     "addFile": "파일 추가",
     "refresh": "새로고침",
+    "collapseAll": "모두 접기",
     "temporarySpace": "임시 공간",
     "dragOverlayTitle": "놓아서 가져오기",
     "dragOverlayDesc": "파일이나 폴더를 여기로 드래그하여 이 프로젝트로 복사하세요.",

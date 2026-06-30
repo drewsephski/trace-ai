@@ -89,6 +89,7 @@ export const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
   const { theme } = useThemeContext(); // 主题上下文（亮色/暗色）Theme context (light/dark)
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed); // 折叠状态 Collapse state
   const [needsCollapse, setNeedsCollapse] = useState(false); // 是否需要折叠功能 Whether collapse feature is needed
+  const [contentHeight, setContentHeight] = useState(0); // 内容真实高度 Full content height
   const contentRef = useRef<HTMLDivElement>(null); // 内容容器引用 Content container ref
 
   // 检测内容高度 Detect content height using ResizeObserver
@@ -101,6 +102,7 @@ export const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
     const scheduleHeightCheck = () => {
       const update = () => {
         const contentHeight = element.scrollHeight;
+        setContentHeight(contentHeight);
         setNeedsCollapse(contentHeight > maxHeight);
       };
 
@@ -155,12 +157,15 @@ export const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
   // 计算内容区域样式 Calculate content area style
   const contentStyle = useMemo(() => {
     const style: React.CSSProperties = {
-      maxHeight: isCollapsed ? `${maxHeight}px` : undefined,
+      maxHeight: needsCollapse ? `${isCollapsed ? maxHeight : Math.max(contentHeight, maxHeight)}px` : undefined,
       overflowX: allowHorizontalScroll ? 'auto' : 'hidden',
-      overflowY: isCollapsed ? 'hidden' : 'visible',
+      overflowY: needsCollapse ? 'hidden' : 'visible',
+      transition:
+        'max-height var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard), opacity var(--aion-motion-fast-duration) ease',
+      willChange: needsCollapse ? 'max-height' : undefined,
     };
 
-    if (!allowHorizontalScroll && !isCollapsed) {
+    if (!allowHorizontalScroll && !needsCollapse) {
       style.overflowX = 'visible';
     }
 
@@ -171,7 +176,7 @@ export const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
     }
 
     return style;
-  }, [allowHorizontalScroll, isCollapsed, maxHeight, useMask]);
+  }, [allowHorizontalScroll, contentHeight, isCollapsed, maxHeight, needsCollapse, useMask]);
 
   // 计算背景渐变颜色 Calculate background gradient color
   const bgGradient = useMemo(() => {
@@ -181,11 +186,7 @@ export const CollapsibleContent: React.FC<CollapsibleContentProps> = ({
   return (
     <div className={classNames('relative', className)}>
       {/* 内容区域 Content area */}
-      <div
-        ref={contentRef}
-        className={classNames('transition-all duration-300', contentClassName)}
-        style={contentStyle}
-      >
+      <div ref={contentRef} className={classNames(contentClassName)} style={contentStyle}>
         {children}
       </div>
 

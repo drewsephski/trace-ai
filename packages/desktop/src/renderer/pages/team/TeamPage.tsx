@@ -24,6 +24,7 @@ import { useTeamSession } from './hooks/useTeamSession';
 import { useTeamRunView, type TeamRunViewState } from './hooks/useTeamRunView';
 import { getConversationOrNull } from '@/renderer/pages/conversation/utils/conversationCache';
 import { warmupConversation } from '@/renderer/pages/conversation/utils/warmupConversation';
+import { writeLastProviderModelPreference } from '@/renderer/pages/conversation/utils/providerModelPreference';
 import { resolveTeamWorkspaceView } from './utils/teamWorkspaceView';
 
 type Props = {
@@ -61,6 +62,9 @@ const AionrsHeaderModelSelector: React.FC<{ conversation_id: string; initialMode
     async (_provider: IProvider, modelName: string) => {
       const selected = { ..._provider, use_model: modelName } as TProviderWithModel;
       const ok = await ipcBridge.conversation.update.invoke({ id: conversation_id, updates: { model: selected } });
+      if (ok) {
+        writeLastProviderModelPreference(selected);
+      }
       return Boolean(ok);
     },
     [conversation_id]

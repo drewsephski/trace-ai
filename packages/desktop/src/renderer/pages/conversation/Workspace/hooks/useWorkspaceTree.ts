@@ -239,6 +239,10 @@ export function useWorkspaceTree({ workspace, conversation_id, eventPrefix }: Us
     selectedNodeRef.current = null;
   }, []);
 
+  const collapseAllFiles = useCallback(() => {
+    setExpandedKeys([]);
+  }, []);
+
   return {
     // State / 状态
     files,
@@ -256,6 +260,7 @@ export function useWorkspaceTree({ workspace, conversation_id, eventPrefix }: Us
     setSelected,
     loadWorkspace,
     refreshWorkspace,
+    collapseAllFiles,
     ensureNodeSelected,
     clearSelection,
   };

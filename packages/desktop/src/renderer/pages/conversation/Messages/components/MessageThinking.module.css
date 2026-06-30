@@ -44,13 +44,20 @@
   transform: rotate(90deg);
 }
 
+.bodyShell {
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+.bodyShell[data-collapsed='true'] {
+  margin-top: 0;
+}
+
 .body {
   color: #86909c;
   font-size: 13px;
   line-height: 1.7;
   padding: 10px 14px;
-  margin-top: 6px;
-  margin-left: 20px;
   background: color-mix(in srgb, var(--aou-1) 50%, #fff);
   border-radius: 8px;
   white-space: pre-wrap;
@@ -60,10 +67,6 @@
 
 :global([data-theme='dark']) .body {
   background: var(--aou-1);
-}
-
-.collapsed {
-  display: none;
 }
 
 .summary {

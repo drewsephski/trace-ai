@@ -11,7 +11,7 @@ import { CronJobIndicator } from '@/renderer/pages/cron';
 import { resolveConversationLeadingMark } from '@/renderer/pages/conversation/utils/conversationAssistantIdentity';
 import { cleanupSiderTooltips, getSiderTooltipProps } from '@/renderer/utils/ui/siderTooltip';
 import { useLayoutContext } from '@/renderer/hooks/context/LayoutContext';
-import { Checkbox, Dropdown, Menu, Spin, Tooltip } from '@arco-design/web-react';
+import { Checkbox, Dropdown, Menu, Tooltip } from '@arco-design/web-react';
 import { DeleteOne, EditOne, Export, MessageOne, MoreOne, Pushpin } from '@icon-park/react';
 import classNames from 'classnames';
 import React from 'react';
@@ -19,6 +19,54 @@ import { useTranslation } from 'react-i18next';
 
 import type { ConversationRowProps } from './types';
 import { isConversationPinned } from './utils/groupingHelpers';
+
+function Swirling(props: React.ComponentProps<'svg'>) {
+  return (
+    <>
+      <style>{`
+        @keyframes loading-ui-swirling-spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes loading-ui-swirling-dash {
+          0% {
+            stroke-dasharray: 1, 800;
+            stroke-dashoffset: 0;
+          }
+          50% {
+            stroke-dasharray: 400, 400;
+            stroke-dashoffset: -200px;
+          }
+          100% {
+            stroke-dasharray: 800, 1;
+            stroke-dashoffset: -800px;
+          }
+        }
+
+        .loading-ui-swirling-circle {
+          transform-origin: center;
+          animation:
+            loading-ui-swirling-dash var(--duration, 1.5s) ease-in-out infinite alternate,
+            loading-ui-swirling-spin calc(var(--duration, 1.5s) * 1.333333) linear infinite;
+        }
+      `}</style>
+      <svg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg' {...props}>
+        <circle
+          className='loading-ui-swirling-circle'
+          cx='400'
+          cy='400'
+          r='200'
+          fill='none'
+          stroke='currentColor'
+          strokeLinecap='round'
+          strokeWidth='50'
+        />
+      </svg>
+    </>
+  );
+}
 
 const ConversationRow: React.FC<ConversationRowProps> = (props) => {
   const {
@@ -155,7 +203,16 @@ const ConversationRow: React.FC<ConversationRowProps> = (props) => {
           </span>
         )}
         <span className='size-22px flex items-center justify-center shrink-0 relative'>
-          {isGenerating && !batchMode ? <Spin size={16} /> : renderLeadingIcon()}
+          {isGenerating && !batchMode ? (
+            <Swirling
+              aria-hidden='true'
+              className='size-16px text-white'
+              data-testid='conversation-row-swirling-loader'
+              focusable='false'
+            />
+          ) : (
+            renderLeadingIcon()
+          )}
           {/* Pinned indicator: only visible when row is hovered, overlays leading icon */}
           {!batchMode && isPinned && !isMobile && !isGenerating && (
             <span

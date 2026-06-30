@@ -350,6 +350,7 @@
     "search.empty": "The search result is empty",
     "addFile": "Add File",
     "refresh": "Refresh",
+    "collapseAll": "Collapse All",
     "temporarySpace": "Temporary Space",
     "dragOverlayTitle": "Drop to import",
     "dragOverlayDesc": "Drag files or folders here to copy them into this project.",

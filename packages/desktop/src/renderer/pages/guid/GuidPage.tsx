@@ -24,6 +24,11 @@ import { useGuidSend } from './hooks/useGuidSend';
 import { useTypewriterPlaceholder } from './hooks/useTypewriterPlaceholder';
 import { ensureBackendMcpCatalog } from '@/renderer/hooks/mcp/catalog';
 import { resolveGuidAssistantDefaults } from './utils/assistantDefaults';
+import {
+  readLastProviderModelPreference,
+  resolveLastProviderForPreferredModel,
+} from '../conversation/utils/providerModelPreference';
+import { getAvailableModels } from './utils/modelUtils';
 import SpeechInputButton from '@/renderer/components/chat/SpeechInputButton';
 import { appendSpeechTranscript } from '@/renderer/hooks/system/useSpeechInput';
 import { useLiveTranscriptInsertion } from '@/renderer/hooks/system/useLiveTranscriptInsertion';
@@ -291,13 +296,22 @@ const GuidPage: React.FC = () => {
 
       if (effectiveBackend === 'aionrs') {
         if (resolvedDefaults.modelId) {
-          const matchedProvider = modelSelection.modelList.find((provider) =>
-            provider.models.includes(resolvedDefaults.modelId!)
-          );
-          if (matchedProvider) {
+          const preference = readLastProviderModelPreference();
+          const savedModel = resolveLastProviderForPreferredModel({
+            providers: modelSelection.modelList,
+            preference,
+            getAvailableModels,
+            preferredModelName: resolvedDefaults.modelId,
+          });
+          const matchedProvider = savedModel
+            ? undefined
+            : modelSelection.modelList.find((provider) =>
+                getAvailableModels(provider).includes(resolvedDefaults.modelId!)
+              );
+          if (savedModel || matchedProvider) {
             await modelSelection.setCurrentModel(
-              {
-                ...matchedProvider,
+              savedModel ?? {
+                ...matchedProvider!,
                 use_model: resolvedDefaults.modelId,
               },
               { persistPreference: false }
@@ -362,9 +376,9 @@ const GuidPage: React.FC = () => {
   );
   const setGuidCurrentModel = useCallback(
     (model: TProviderWithModel) => {
-      return modelSelection.setCurrentModel(model, { persistPreference: !hasSelectedAssistant });
+      return modelSelection.setCurrentModel(model);
     },
-    [hasSelectedAssistant, modelSelection]
+    [modelSelection]
   );
 
   // Reset guid-local UI state before paint so same-route navigations do not

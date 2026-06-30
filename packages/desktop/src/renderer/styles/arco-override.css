@@ -109,7 +109,56 @@ html body .arco-popconfirm-arrow.arco-trigger-arrow {
   border-radius: 8px;
   .arco-collapse-item-header {
     border-bottom: none;
+    transition: color var(--aion-motion-fast-duration) ease;
   }
+
+  .arco-collapse-item-content {
+    overflow: hidden;
+    transition:
+      height var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard),
+      opacity var(--aion-motion-fast-duration) ease;
+  }
+
+  .arco-collapse-item-content-box {
+    transition:
+      opacity var(--aion-motion-fast-duration) ease,
+      transform var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard);
+  }
+
+  .arco-collapse-item-content-hidden {
+    opacity: 0;
+  }
+
+  .arco-collapse-item-content-hidden .arco-collapse-item-content-box {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+
+  .arco-collapse-item-active .arco-collapse-item-content-box {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.arco-trigger-popup:not(.arco-trigger-popup-hidden) .arco-dropdown,
+.arco-trigger-popup:not(.arco-trigger-popup-hidden) .arco-select-popup,
+.arco-trigger-popup:not(.arco-trigger-popup-hidden) .arco-popover,
+.arco-trigger-popup:not(.arco-trigger-popup-hidden) .arco-picker-container {
+  animation: aion-popup-open var(--aion-motion-fast-duration) var(--aion-motion-ease-standard);
+  transform-origin: top center;
+}
+
+.aionui-steps .arco-steps-item,
+.aionui-steps .arco-steps-item-icon,
+.aionui-steps .arco-steps-item-content,
+.aionui-steps .arco-steps-item-title,
+.aionui-steps .arco-steps-item-description {
+  transition:
+    color var(--aion-motion-fast-duration) ease,
+    border-color var(--aion-motion-fast-duration) ease,
+    background-color var(--aion-motion-fast-duration) ease,
+    opacity var(--aion-motion-fast-duration) ease,
+    transform var(--aion-motion-collapse-duration) var(--aion-motion-ease-standard);
 }
 
 /* Arco Tag dark mode styles - enhance contrast with semi-transparent backgrounds */

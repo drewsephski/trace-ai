@@ -211,6 +211,7 @@ let backendStartupFailureInfo: BackendStartupFailureInfo | null = null;
 let rendererInitialLanguage: string | null = null;
 let backendMigrationsScheduled = false;
 let ensureAdminUserPromise: Promise<void> | null = null;
+let patchBuiltinSkillsPromise: Promise<void> | null = null;
 
 ipcMain.on('get-backend-port', (event) => {
   event.returnValue = backendManager.port;
@@ -296,6 +297,23 @@ function ensureAdminUserOnce(backendPort: number): Promise<void> {
   return ensureAdminUserPromise;
 }
 
+function patchBuiltinSkillsOnce(backendPort: number): Promise<void> {
+  if (!patchBuiltinSkillsPromise) {
+    patchBuiltinSkillsPromise = (async () => {
+      try {
+        const [{ getDataPath }, { patchBuiltinSkills }] = await Promise.all([
+          import('./process/utils/utils'),
+          import('./process/utils/patchBuiltinSkills'),
+        ]);
+        await patchBuiltinSkills(getDataPath(), { backendPort });
+      } catch (error) {
+        console.error('[Trace] Failed to patch built-in skills:', error);
+      }
+    })();
+  }
+  return patchBuiltinSkillsPromise;
+}
+
 function markBackendReady(backendPort: number, source: string): void {
   if (backendStartedOk) return;
   console.log(`[AionUi] ${source} ready (port=${backendPort})`);
@@ -306,6 +324,7 @@ function markBackendReady(backendPort: number, source: string): void {
   backendStartupFailureInfo = null;
   (globalThis as typeof globalThis & { __backendStartupFailed?: boolean }).__backendStartupFailed = false;
   void ensureAdminUserOnce(backendPort);
+  void patchBuiltinSkillsOnce(backendPort);
   scheduleBackendMigrations();
 }
 

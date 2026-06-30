@@ -14,6 +14,7 @@ import { iconColors } from '@/renderer/styles/colors';
 import { isElectronDesktop } from '@/renderer/utils/platform';
 import { Button, Checkbox, Dropdown, Menu, Message, Tooltip } from '@arco-design/web-react';
 import { ArrowUp, Lightning, Plus, Shield, UploadOne } from '@icon-park/react';
+import classNames from 'classnames';
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../index.module.css';
@@ -47,6 +48,44 @@ type GuidActionRowProps = {
   speechInputNode?: React.ReactNode;
   onSend: () => void;
 };
+
+function TwinOrbit({ className, children, ...props }: React.ComponentProps<'span'>) {
+  return (
+    <>
+      <style>{`
+        @keyframes loading-ui-twin-orbit-rotate {
+          100% {
+            transform: rotate(360deg) translate(155%);
+          }
+        }
+      `}</style>
+      <span
+        role='status'
+        className={classNames('relative inline-block aspect-square rounded-full bg-current', className)}
+        {...props}
+      >
+        <span
+          aria-hidden='true'
+          className='absolute inset-0 rounded-full bg-current'
+          style={{
+            transform: 'rotate(0deg) translate(155%)',
+            animation: 'loading-ui-twin-orbit-rotate var(--duration, 1s) ease infinite',
+          }}
+        />
+        <span
+          aria-hidden='true'
+          className='absolute inset-0 rounded-full bg-current'
+          style={{
+            transform: 'rotate(0deg) translate(155%)',
+            animation: 'loading-ui-twin-orbit-rotate var(--duration, 1s) ease infinite',
+            animationDelay: 'calc(var(--duration, 1s) / 2)',
+          }}
+        />
+        <span className='sr-only'>{children}</span>
+      </span>
+    </>
+  );
+}
 
 const GuidActionRow: React.FC<GuidActionRowProps> = ({
   files,
@@ -110,6 +149,7 @@ const GuidActionRow: React.FC<GuidActionRowProps> = ({
 
   const activeSkillCount = allSkills.filter(isSkillChecked).length;
   const activeMcpCount = selectedMcpServerIds.length;
+  const isSendButtonActive = loading || !isButtonDisabled;
 
   const menuContent = (
     <Menu
@@ -295,14 +335,19 @@ const GuidActionRow: React.FC<GuidActionRowProps> = ({
         <Button
           shape='circle'
           type='primary'
-          loading={loading}
           disabled={isButtonDisabled}
           className='send-button-custom'
           style={{
-            backgroundColor: isButtonDisabled ? undefined : '#000000',
-            borderColor: isButtonDisabled ? undefined : '#000000',
+            backgroundColor: isSendButtonActive ? '#000000' : undefined,
+            borderColor: isSendButtonActive ? '#000000' : undefined,
           }}
-          icon={<ArrowUp theme='filled' size='14' fill='white' strokeWidth={5} />}
+          icon={
+            loading ? (
+              <TwinOrbit className='size-4px text-white'>{t('common.loading')}</TwinOrbit>
+            ) : (
+              <ArrowUp theme='filled' size='14' fill='white' strokeWidth={5} />
+            )
+          }
           onClick={onSend}
           data-testid='guid-send-btn'
         />

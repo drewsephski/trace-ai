@@ -313,6 +313,7 @@
     "search.empty": "Suchergebnis ist leer",
     "addFile": "Datei hinzufügen",
     "refresh": "Aktualisieren",
+    "collapseAll": "Alle einklappen",
     "temporarySpace": "Temporärer Bereich",
     "dragOverlayTitle": "Zum Importieren ablegen",
     "dragOverlayDesc": "Dateien oder Ordner hierher ziehen, um sie in diesen Arbeitsbereich zu kopieren.",

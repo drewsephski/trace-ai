@@ -356,6 +356,7 @@
     "search.empty": "O resultado da busca está vazio",
     "addFile": "Adicionar Arquivo",
     "refresh": "Atualizar",
+    "collapseAll": "Recolher Tudo",
     "temporarySpace": "Espaço Temporário",
     "dragOverlayTitle": "Solte para importar",
     "dragOverlayDesc": "Arraste arquivos ou pastas para cá para copiá-los para este projeto.",

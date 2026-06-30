@@ -350,6 +350,7 @@
     "search.empty": "搜索结果为空",
     "addFile": "添加文件",
     "refresh": "刷新",
+    "collapseAll": "全部折叠",
     "temporarySpace": "临时空间",
     "dragOverlayTitle": "拖拽导入",
     "dragOverlayDesc": "将文件或文件夹拖到此处，即可复制到当前项目。",

@@ -333,6 +333,7 @@
     "search.empty": "Arama sonucu boş",
     "addFile": "Dosya Ekle",
     "refresh": "Yenile",
+    "collapseAll": "Tümünü Daralt",
     "temporarySpace": "Geçici Alan",
     "dragOverlayTitle": "İçe aktarmak için bırakın",
     "dragOverlayDesc": "Dosyaları veya klasörleri bu çalışma alanına kopyalamak için buraya sürükleyin.",

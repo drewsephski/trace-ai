@@ -96,20 +96,24 @@ const MessageToolCall: React.FC<{ message: IMessageToolCall }> = ({ message }) =
           </span>
         )}
       </div>
-      {expanded && hasDetail && (
-        <div className='tool-detail-panel m-l-20px m-t-4px'>
-          {normalized.input && (
-            <div className='tool-detail-section'>
-              <div className='tool-detail-label'>Input</div>
-              <pre className='tool-detail-content'>{normalized.input}</pre>
+      {hasDetail && (
+        <div className='tool-detail-shell aion-motion-collapse' data-collapsed={!expanded} aria-hidden={!expanded}>
+          <div className='aion-motion-collapse__inner'>
+            <div className='tool-detail-panel'>
+              {normalized.input && (
+                <div className='tool-detail-section'>
+                  <div className='tool-detail-label'>Input</div>
+                  <pre className='tool-detail-content'>{normalized.input}</pre>
+                </div>
+              )}
+              {normalized.output && (
+                <div className='tool-detail-section'>
+                  <div className='tool-detail-label'>Output</div>
+                  <pre className='tool-detail-content'>{normalized.output}</pre>
+                </div>
+              )}
             </div>
-          )}
-          {normalized.output && (
-            <div className='tool-detail-section'>
-              <div className='tool-detail-label'>Output</div>
-              <pre className='tool-detail-content'>{normalized.output}</pre>
-            </div>
-          )}
+          </div>
         </div>
       )}
     </div>

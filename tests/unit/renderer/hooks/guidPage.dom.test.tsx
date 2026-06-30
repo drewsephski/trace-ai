@@ -277,6 +277,7 @@ import GuidPage from '@/renderer/pages/guid/GuidPage';
 
 describe('GuidPage', () => {
   beforeEach(() => {
+    localStorage.clear();
     locationMock.state = null;
     swrMock.useSWRMock.mockReturnValue({ data: null });
     capturedGuidActionRowProps.length = 0;
@@ -480,6 +481,49 @@ describe('GuidPage', () => {
       expect(modelSelectionMock.setCurrentModel).toHaveBeenCalledWith(
         expect.objectContaining({
           id: 'provider-openai',
+          use_model: 'gpt-4.1',
+        }),
+        { persistPreference: false }
+      );
+    });
+  });
+
+  it('keeps the last user-selected provider when applying an aionrs assistant default model', async () => {
+    localStorage.setItem(
+      'aionui_last_chat_provider_model',
+      JSON.stringify({ providerId: 'provider-b', modelName: 'last-model' })
+    );
+    swrMock.useSWRMock.mockReturnValue({ data: assistantDetailFixture });
+    resolveGuidAssistantDefaultsMock.mockReturnValue({
+      modelId: 'gpt-4.1',
+      disabledBuiltinSkillIds: [],
+      skillIds: [],
+      mcpIds: [],
+    });
+
+    modelSelectionMock.modelList = [
+      {
+        id: 'provider-a',
+        name: 'Default Provider',
+        models: ['gpt-4.1'],
+        use_model: 'gpt-4.1',
+        enabled: true,
+      },
+      {
+        id: 'provider-b',
+        name: 'Last Provider',
+        models: ['last-model', 'gpt-4.1'],
+        use_model: 'last-model',
+        enabled: true,
+      },
+    ];
+
+    render(<GuidPage />);
+
+    await vi.waitFor(() => {
+      expect(modelSelectionMock.setCurrentModel).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: 'provider-b',
           use_model: 'gpt-4.1',
         }),
         { persistPreference: false }

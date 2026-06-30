@@ -27,6 +27,7 @@ import AcpModelSelector from '@/renderer/components/agent/AcpModelSelector';
 import { getConversationOrNull } from '@/renderer/pages/conversation/utils/conversationCache';
 import { getConversationCreateErrorMessage } from '@/renderer/pages/conversation/utils/conversationCreateError';
 import { warmupConversation } from '@/renderer/pages/conversation/utils/warmupConversation';
+import { writeLastProviderModelPreference } from '@/renderer/pages/conversation/utils/providerModelPreference';
 import GoogleModelSelector from '../platforms/gemini/GoogleModelSelector';
 import AionrsChat from '../platforms/aionrs/AionrsChat';
 import AionrsModelSelector from '../platforms/aionrs/AionrsModelSelector';
@@ -157,6 +158,9 @@ const AionrsConversationPanel: React.FC<{ conversation: AionrsConversation; slid
         runtimeView.markStopAcknowledged(runtimeView.activeTurnId, result.runtime);
       }
       const ok = await ipcBridge.conversation.update.invoke({ id: conversation.id, updates: { model: selected } });
+      if (ok) {
+        writeLastProviderModelPreference(selected);
+      }
       return Boolean(ok);
     },
     [conversation.id, runtimeView]

@@ -6,8 +6,8 @@
 
 import { iconColors } from '@/renderer/styles/colors';
 import { isElectronDesktop } from '@/renderer/utils/platform';
-import { Dropdown, Input, Menu, Tooltip } from '@arco-design/web-react';
-import { Down, Plus, Refresh, Search } from '@icon-park/react';
+import { Button, Dropdown, Input, Menu, Tooltip } from '@arco-design/web-react';
+import { Down, FoldUpOne, Plus, Refresh, Search } from '@icon-park/react';
 import React from 'react';
 import UploadProgressBar from '@/renderer/components/media/UploadProgressBar';
 import type { TFunction } from 'i18next';
@@ -27,6 +27,7 @@ type WorkspaceToolbarProps = {
   // Tree state
   loading: boolean;
   refreshWorkspace: () => void;
+  onCollapseAll: () => void;
   // Upload
   handleSelectHostFiles: () => void;
   handleUploadDeviceFiles: () => void;
@@ -46,6 +47,7 @@ const WorkspaceToolbar: React.FC<WorkspaceToolbarProps> = ({
   searchInputRef,
   loading,
   refreshWorkspace,
+  onCollapseAll,
   handleSelectHostFiles,
   handleUploadDeviceFiles,
   setShowHostFileSelector,
@@ -120,6 +122,18 @@ const WorkspaceToolbar: React.FC<WorkspaceToolbarProps> = ({
                 />
               </span>
             </Dropdown>
+          )}
+          {!isWorkspaceCollapsed && (
+            <Tooltip content={t('conversation.workspace.collapseAll')}>
+              <Button
+                type='text'
+                size='mini'
+                className='workspace-toolbar-icon-button'
+                aria-label={t('conversation.workspace.collapseAll')}
+                icon={<FoldUpOne theme='outline' size='16' fill='currentColor' />}
+                onClick={onCollapseAll}
+              />
+            </Tooltip>
           )}
           <Tooltip content={t('conversation.workspace.refresh')}>
             <span>

@@ -350,6 +350,7 @@
     "search.empty": "検索結果は空です",
     "addFile": "ファイルを追加",
     "refresh": "更新",
+    "collapseAll": "すべて折りたたむ",
     "temporarySpace": "一時スペース",
     "dragOverlayTitle": "ドラッグして取り込み",
     "dragOverlayDesc": "ここにファイルやフォルダーをドロップすると、このプロジェクトにコピーされます。",

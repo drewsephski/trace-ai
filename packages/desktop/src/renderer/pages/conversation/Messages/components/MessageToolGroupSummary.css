@@ -61,13 +61,20 @@
   transform: rotate(90deg);
 }
 
+.tool-group-summary__body-shell {
+  margin-top: 6px;
+  margin-left: 20px;
+}
+
+.tool-group-summary__body-shell[data-collapsed='true'] {
+  margin-top: 0;
+}
+
 .tool-group-summary__body {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 10px 14px;
-  margin-top: 6px;
-  margin-left: 20px;
   background: color-mix(in srgb, var(--aou-1) 50%, #fff);
   border-radius: 8px;
 }
@@ -80,6 +87,15 @@
   border-left: 2px solid var(--color-border-2, #e5e6eb);
   padding-left: 10px;
   margin-bottom: 4px;
+}
+
+.tool-detail-shell {
+  margin-top: 4px;
+  margin-left: 20px;
+}
+
+.tool-detail-shell[data-collapsed='true'] {
+  margin-top: 0;
 }
 
 .tool-detail-section {
