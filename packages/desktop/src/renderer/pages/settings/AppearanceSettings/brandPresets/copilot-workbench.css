@@ -1,0 +1,146 @@
+/* Copilot Workbench: GitHub dark canvas with Copilot blue and violet highlights */
+
+:root {
+  --color-primary: #1492e7;
+  --primary: #1492e7;
+  --color-primary-light-1: #3193ea;
+  --color-primary-light-2: #8fc1f2;
+  --color-primary-light-3: #dbedfb;
+  --color-primary-dark-1: #0075b1;
+  --primary-rgb: 20, 146, 231;
+
+  --brand: #b179f1;
+  --brand-light: rgba(177, 121, 241, 0.16);
+  --brand-hover: #00b5ef;
+
+  --aou-1: #101215;
+  --aou-2: #161b22;
+  --aou-3: #262b33;
+  --aou-4: #2c2255;
+  --aou-5: #473788;
+  --aou-6: #1492e7;
+  --aou-7: #00b5ef;
+  --aou-8: #b179f1;
+  --aou-9: #dbedfb;
+  --aou-10: #ffffff;
+
+  --bg-base: #101215;
+  --bg-1: rgba(16, 18, 21, 0.84);
+  --bg-2: rgba(22, 27, 34, 0.8);
+  --bg-3: rgba(20, 146, 231, 0.2);
+  --bg-4: rgba(177, 121, 241, 0.18);
+  --bg-5: rgba(0, 181, 239, 0.16);
+  --bg-6: #6d7078;
+  --bg-8: #b1bac4;
+  --bg-9: #dbedfb;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(20, 146, 231, 0.12);
+  --bg-active: rgba(177, 121, 241, 0.14);
+
+  --color-bg-1: rgba(16, 18, 21, 0.84);
+  --color-bg-2: rgba(22, 27, 34, 0.8);
+  --color-bg-3: rgba(38, 43, 51, 0.84);
+  --color-bg-4: rgba(44, 34, 85, 0.62);
+  --color-fill: rgba(22, 27, 34, 0.76);
+  --color-fill-1: rgba(255, 255, 255, 0.07);
+  --color-fill-2: rgba(20, 146, 231, 0.12);
+  --color-fill-3: rgba(177, 121, 241, 0.13);
+
+  --text-primary: #f0f6fc;
+  --text-secondary: #dbedfb;
+  --text-disabled: #7c8980;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f0f6fc;
+  --color-text-2: #dbedfb;
+  --color-text-3: #b1bac4;
+  --color-text-4: #7c8980;
+
+  --border-base: rgba(177, 186, 196, 0.18);
+  --border-light: rgba(20, 146, 231, 0.2);
+  --color-border: rgba(177, 186, 196, 0.18);
+  --color-border-1: rgba(177, 186, 196, 0.18);
+  --color-border-2: rgba(20, 146, 231, 0.2);
+
+  --fill: rgba(22, 27, 34, 0.76);
+  --fill-0: rgba(255, 255, 255, 0.07);
+  --fill-white-to-black: #101215;
+  --dialog-fill-0: rgba(16, 18, 21, 0.95);
+  --inverse: #ffffff;
+
+  --success: #88c649;
+  --warning: #ff9419;
+  --danger: #ff6363;
+  --info: #1492e7;
+
+  --message-user-bg: rgba(20, 146, 231, 0.15);
+  --message-tips-bg: rgba(177, 121, 241, 0.12);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.07);
+  --color-guid-agent-bar: rgba(16, 18, 21, 0.74);
+
+  --premium-backdrop:
+    radial-gradient(circle at 14% 16%, rgba(20, 146, 231, 0.22), transparent 31%),
+    radial-gradient(circle at 82% 14%, rgba(177, 121, 241, 0.2), transparent 31%),
+    radial-gradient(circle at 70% 88%, rgba(0, 181, 239, 0.14), transparent 28%),
+    linear-gradient(135deg, #101215 0%, #161b22 45%, #2c2255 100%);
+  --premium-atmosphere:
+    linear-gradient(118deg, transparent 0%, rgba(219, 237, 251, 0.06) 44%, transparent 68%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.032) 0 1px, transparent 1px 22px);
+  --premium-content-bg: rgba(16, 18, 21, 0.5);
+  --premium-sidebar-bg: rgba(16, 18, 21, 0.74);
+  --premium-panel-bg: rgba(22, 27, 34, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #101215 0%, #1492e7 36%, #473788 72%, #b179f1 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.76;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(22px) saturate(1.12);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.12);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(22px) saturate(1.14);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(20, 146, 231, 0.56), rgba(177, 121, 241, 0.48));
+  border-radius: 999px;
+}

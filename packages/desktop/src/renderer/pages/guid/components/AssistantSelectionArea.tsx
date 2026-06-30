@@ -77,12 +77,11 @@ const AssistantSelectionArea: React.FC<AssistantSelectionAreaProps> = ({
         data-assistant-backend={assistantRuntimeKey(assistant)}
         data-assistant-selected={isSelected ? 'true' : 'false'}
         type='text'
-        className={`!inline-flex !min-w-0 !h-auto !items-center !gap-6px !rounded-999px !border-none !px-12px !py-8px !text-13px transition-all ${
+        className={`!inline-flex !min-w-0 !h-auto !items-center !gap-6px !rounded-999px !px-12px !py-8px !text-13px transition-all ${
           isSelected
-            ? 'font-600 text-t-primary shadow-sm'
-            : `text-t-secondary opacity-75 hover:opacity-100 ${styles.assistantSelectorInactive}`
+            ? `!border-solid font-600 ${styles.assistantSelectorSelected}`
+            : `!border-none text-t-secondary opacity-75 hover:opacity-100 ${styles.assistantSelectorInactive}`
         }`}
-        style={isSelected ? { background: 'var(--bg-base, #fff)' } : { background: 'transparent' }}
         onClick={() => {
           onSelectAssistant(assistant.id);
           setMoreVisible(false);
@@ -128,8 +127,7 @@ const AssistantSelectionArea: React.FC<AssistantSelectionAreaProps> = ({
     <div className='mt-18px mb-16px w-full'>
       <div className='flex w-full justify-center'>
         <div
-          className='inline-flex max-w-full items-center rounded-999px px-6px py-6px'
-          style={{ background: 'var(--color-guid-agent-bar, var(--aou-2))' }}
+          className={`inline-flex max-w-full items-center rounded-999px px-6px py-6px ${styles.assistantSelectorRail}`}
         >
           <div className='flex min-w-0 max-w-full items-center gap-6px'>
             {visibleAssistants.map((assistant) => renderAssistantPill(assistant, `preset-pill-${assistant.id}`))}

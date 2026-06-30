@@ -6,7 +6,7 @@
 
 import { ipcBridge } from '@/common';
 import { TEAM_MODE_ENABLED } from '@/common/config/constants';
-import traceLogo from '@/renderer/assets/logos/brand/app.png';
+import traceWordmark from '@/renderer/assets/logos/brand/wordmark.svg';
 import PwaPullToRefresh from '@/renderer/components/layout/PwaPullToRefresh';
 import Titlebar from '@/renderer/components/layout/Titlebar';
 import { Layout as ArcoLayout, Tooltip } from '@arco-design/web-react';
@@ -350,26 +350,10 @@ const Layout: React.FC<{
                   }
                 )}
               >
-                <div
-                  data-testid='layout-sider-brand-icon'
-                  className={classNames('shrink-0 size-32px relative rd-0.5rem overflow-hidden', {
-                    '!size-24px': collapsed,
-                  })}
-                  onClick={onClick}
-                >
-                  <img
-                    src={traceLogo}
-                    alt=''
-                    aria-hidden='true'
-                    className={classNames('size-full object-contain block', {
-                      'scale-140': !collapsed,
-                    })}
-                  />
-                </div>
                 {isSettingsRoute ? (
                   <Tooltip content={t('common.back', { defaultValue: 'Back to Chat' })} position='bottom'>
                     <div
-                      className='text-16px text-t-primary collapsed-hidden font-semibold cursor-pointer'
+                      className='collapsed-hidden cursor-pointer'
                       role='button'
                       tabIndex={0}
                       aria-label={t('common.back', { defaultValue: 'Back to Chat' })}
@@ -381,11 +365,18 @@ const Layout: React.FC<{
                         }
                       }}
                     >
-                      Trace
+                      <img
+                        src={traceWordmark}
+                        alt=''
+                        aria-hidden='true'
+                        className='block h-25px w-86px object-contain'
+                      />
                     </div>
                   </Tooltip>
                 ) : (
-                  <div className='text-16px text-t-primary collapsed-hidden font-semibold'>Trace</div>
+                  <div data-testid='layout-sider-brand-icon' className='collapsed-hidden' onClick={onClick}>
+                    <img src={traceWordmark} alt='Trace' className='block h-25px w-86px object-contain' />
+                  </div>
                 )}
                 {isMobile && !collapsed && (
                   <button

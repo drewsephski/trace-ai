@@ -1,0 +1,145 @@
+/* Cursor Midnight: cream and near-black brand palette with sharp blue focus */
+
+:root {
+  --color-primary: #4c8bf5;
+  --primary: #4c8bf5;
+  --color-primary-light-1: #7aabff;
+  --color-primary-light-2: #b7d0ff;
+  --color-primary-light-3: #e3ecff;
+  --color-primary-dark-1: #2f66c8;
+  --primary-rgb: 76, 139, 245;
+
+  --brand: #f7f7f4;
+  --brand-light: rgba(247, 247, 244, 0.14);
+  --brand-hover: #4c8bf5;
+
+  --aou-1: #14120b;
+  --aou-2: #1e1b12;
+  --aou-3: #2e2a1d;
+  --aou-4: #5c574b;
+  --aou-5: #928d82;
+  --aou-6: #4c8bf5;
+  --aou-7: #cfd8ee;
+  --aou-8: #f7f7f4;
+  --aou-9: #fbfaf7;
+  --aou-10: #ffffff;
+
+  --bg-base: #14120b;
+  --bg-1: rgba(20, 18, 11, 0.84);
+  --bg-2: rgba(30, 27, 18, 0.82);
+  --bg-3: rgba(247, 247, 244, 0.17);
+  --bg-4: rgba(76, 139, 245, 0.2);
+  --bg-5: rgba(207, 216, 238, 0.16);
+  --bg-6: #928d82;
+  --bg-8: #cfd8ee;
+  --bg-9: #f7f7f4;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(247, 247, 244, 0.08);
+  --bg-active: rgba(76, 139, 245, 0.14);
+
+  --color-bg-1: rgba(20, 18, 11, 0.84);
+  --color-bg-2: rgba(30, 27, 18, 0.82);
+  --color-bg-3: rgba(46, 42, 29, 0.86);
+  --color-bg-4: rgba(92, 87, 75, 0.72);
+  --color-fill: rgba(30, 27, 18, 0.76);
+  --color-fill-1: rgba(247, 247, 244, 0.07);
+  --color-fill-2: rgba(76, 139, 245, 0.11);
+  --color-fill-3: rgba(247, 247, 244, 0.1);
+
+  --text-primary: #f7f7f4;
+  --text-secondary: #dfded8;
+  --text-disabled: #928d82;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f7f7f4;
+  --color-text-2: #dfded8;
+  --color-text-3: #b9b6ad;
+  --color-text-4: #928d82;
+
+  --border-base: rgba(247, 247, 244, 0.16);
+  --border-light: rgba(76, 139, 245, 0.2);
+  --color-border: rgba(247, 247, 244, 0.16);
+  --color-border-1: rgba(247, 247, 244, 0.16);
+  --color-border-2: rgba(76, 139, 245, 0.2);
+
+  --fill: rgba(30, 27, 18, 0.76);
+  --fill-0: rgba(247, 247, 244, 0.07);
+  --fill-white-to-black: #14120b;
+  --dialog-fill-0: rgba(20, 18, 11, 0.95);
+  --inverse: #f7f7f4;
+
+  --success: #5fd098;
+  --warning: #eab86c;
+  --danger: #ff786f;
+  --info: #4c8bf5;
+
+  --message-user-bg: rgba(76, 139, 245, 0.14);
+  --message-tips-bg: rgba(247, 247, 244, 0.1);
+  --workspace-btn-bg: rgba(247, 247, 244, 0.07);
+  --color-guid-agent-bar: rgba(20, 18, 11, 0.72);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 16%, rgba(247, 247, 244, 0.16), transparent 30%),
+    radial-gradient(circle at 82% 14%, rgba(76, 139, 245, 0.2), transparent 30%),
+    linear-gradient(135deg, #14120b 0%, #1e1b12 48%, #111827 100%);
+  --premium-atmosphere:
+    linear-gradient(112deg, transparent 0%, rgba(247, 247, 244, 0.05) 46%, transparent 70%),
+    repeating-linear-gradient(90deg, rgba(247, 247, 244, 0.03) 0 1px, transparent 1px 26px);
+  --premium-content-bg: rgba(20, 18, 11, 0.5);
+  --premium-sidebar-bg: rgba(20, 18, 11, 0.74);
+  --premium-panel-bg: rgba(30, 27, 18, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #14120b 0%, #2e2a1d 42%, #4c8bf5 72%, #f7f7f4 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.72;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+  backdrop-filter: blur(22px) saturate(1.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(247, 247, 244, 0.42), rgba(76, 139, 245, 0.48));
+  border-radius: 999px;
+}

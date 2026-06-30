@@ -224,6 +224,21 @@
   "cssTheme": {
     "selectOrCustomize": "選擇或自訂主題",
     "followSystem": "跟隨系統",
+    "themeNames": {
+      "openaiCodex": "OpenAI Codex",
+      "claudeConsole": "Claude Console",
+      "opencodeTerminal": "OpenCode Terminal",
+      "geminiSpectrum": "Gemini Spectrum",
+      "cursorMidnight": "Cursor Midnight",
+      "copilotWorkbench": "Copilot Workbench",
+      "auroraGlass": "Aurora Glass",
+      "prismDaylight": "Prism Daylight",
+      "graphiteStudio": "Graphite Studio",
+      "neonCircuit": "Neon Circuit",
+      "porcelainStudio": "Porcelain Studio",
+      "zincCanvas": "Zinc Canvas",
+      "stoneTaupe": "Stone Taupe"
+    },
     "addManually": "手動新增",
     "default": "預設",
     "addToPreset": "新增主題",

@@ -224,6 +224,21 @@
   "cssTheme": {
     "selectOrCustomize": "테마 선택 또는 사용자 지정",
     "followSystem": "시스템 따라가기",
+    "themeNames": {
+      "openaiCodex": "OpenAI Codex",
+      "claudeConsole": "Claude Console",
+      "opencodeTerminal": "OpenCode Terminal",
+      "geminiSpectrum": "Gemini Spectrum",
+      "cursorMidnight": "Cursor Midnight",
+      "copilotWorkbench": "Copilot Workbench",
+      "auroraGlass": "Aurora Glass",
+      "prismDaylight": "Prism Daylight",
+      "graphiteStudio": "Graphite Studio",
+      "neonCircuit": "Neon Circuit",
+      "porcelainStudio": "Porcelain Studio",
+      "zincCanvas": "Zinc Canvas",
+      "stoneTaupe": "Stone Taupe"
+    },
     "addManually": "수동 추가",
     "default": "기본",
     "addToPreset": "테마 추가",

@@ -224,6 +224,21 @@
   "cssTheme": {
     "selectOrCustomize": "Select or customize a theme",
     "followSystem": "Follow System",
+    "themeNames": {
+      "openaiCodex": "OpenAI Codex",
+      "claudeConsole": "Claude Console",
+      "opencodeTerminal": "OpenCode Terminal",
+      "geminiSpectrum": "Gemini Spectrum",
+      "cursorMidnight": "Cursor Midnight",
+      "copilotWorkbench": "Copilot Workbench",
+      "auroraGlass": "Aurora Glass",
+      "prismDaylight": "Prism Daylight",
+      "graphiteStudio": "Graphite Studio",
+      "neonCircuit": "Neon Circuit",
+      "porcelainStudio": "Porcelain Studio",
+      "zincCanvas": "Zinc Canvas",
+      "stoneTaupe": "Stone Taupe"
+    },
     "addManually": "Add Manually",
     "default": "Default",
     "addToPreset": "Add Theme",

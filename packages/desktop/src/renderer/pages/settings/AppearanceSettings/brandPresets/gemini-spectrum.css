@@ -1,0 +1,146 @@
+/* Gemini Spectrum: Google blue-violet product gradient with clean cloud surfaces */
+
+:root {
+  --color-primary: #1a73e8;
+  --primary: #1a73e8;
+  --color-primary-light-1: #4285f4;
+  --color-primary-light-2: #8ab4f8;
+  --color-primary-light-3: #d2e3fc;
+  --color-primary-dark-1: #185abc;
+  --primary-rgb: 26, 115, 232;
+
+  --brand: #a142f4;
+  --brand-light: rgba(161, 66, 244, 0.14);
+  --brand-hover: #ea4335;
+
+  --aou-1: #0b1220;
+  --aou-2: #10213f;
+  --aou-3: #174ea6;
+  --aou-4: #1a73e8;
+  --aou-5: #4285f4;
+  --aou-6: #a142f4;
+  --aou-7: #ea4335;
+  --aou-8: #fbbc04;
+  --aou-9: #d2e3fc;
+  --aou-10: #ffffff;
+
+  --bg-base: #07111f;
+  --bg-1: rgba(7, 17, 31, 0.82);
+  --bg-2: rgba(16, 33, 63, 0.76);
+  --bg-3: rgba(66, 133, 244, 0.22);
+  --bg-4: rgba(161, 66, 244, 0.2);
+  --bg-5: rgba(251, 188, 4, 0.18);
+  --bg-6: #7696cf;
+  --bg-8: #b6cbf4;
+  --bg-9: #d2e3fc;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(66, 133, 244, 0.12);
+  --bg-active: rgba(161, 66, 244, 0.15);
+
+  --color-bg-1: rgba(7, 17, 31, 0.82);
+  --color-bg-2: rgba(16, 33, 63, 0.76);
+  --color-bg-3: rgba(23, 78, 166, 0.62);
+  --color-bg-4: rgba(26, 115, 232, 0.36);
+  --color-fill: rgba(16, 33, 63, 0.72);
+  --color-fill-1: rgba(255, 255, 255, 0.08);
+  --color-fill-2: rgba(66, 133, 244, 0.13);
+  --color-fill-3: rgba(161, 66, 244, 0.13);
+
+  --text-primary: #f8fbff;
+  --text-secondary: #d2e3fc;
+  --text-disabled: #8ab4f8;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f8fbff;
+  --color-text-2: #d2e3fc;
+  --color-text-3: #9db9ec;
+  --color-text-4: #7696cf;
+
+  --border-base: rgba(138, 180, 248, 0.24);
+  --border-light: rgba(255, 255, 255, 0.09);
+  --color-border: rgba(138, 180, 248, 0.24);
+  --color-border-1: rgba(138, 180, 248, 0.24);
+  --color-border-2: rgba(255, 255, 255, 0.09);
+
+  --fill: rgba(16, 33, 63, 0.72);
+  --fill-0: rgba(255, 255, 255, 0.08);
+  --fill-white-to-black: #07111f;
+  --dialog-fill-0: rgba(7, 17, 31, 0.95);
+  --inverse: #ffffff;
+
+  --success: #34a853;
+  --warning: #fbbc04;
+  --danger: #ea4335;
+  --info: #4285f4;
+
+  --message-user-bg: rgba(66, 133, 244, 0.15);
+  --message-tips-bg: rgba(161, 66, 244, 0.12);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.08);
+  --color-guid-agent-bar: rgba(7, 17, 31, 0.72);
+
+  --premium-backdrop:
+    radial-gradient(circle at 12% 18%, rgba(66, 133, 244, 0.24), transparent 32%),
+    radial-gradient(circle at 82% 12%, rgba(161, 66, 244, 0.22), transparent 30%),
+    radial-gradient(circle at 74% 86%, rgba(251, 188, 4, 0.15), transparent 30%),
+    linear-gradient(135deg, #07111f 0%, #10213f 45%, #26134a 100%);
+  --premium-atmosphere:
+    linear-gradient(116deg, transparent 0%, rgba(210, 227, 252, 0.07) 44%, transparent 68%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 22px);
+  --premium-content-bg: rgba(7, 17, 31, 0.5);
+  --premium-sidebar-bg: rgba(7, 17, 31, 0.72);
+  --premium-panel-bg: rgba(16, 33, 63, 0.72);
+  --theme-preview-bg: linear-gradient(135deg, #07111f 0%, #1a73e8 35%, #a142f4 70%, #fbbc04 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.76;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(22px) saturate(1.16);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(21px) saturate(1.14);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22px) saturate(1.18);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(66, 133, 244, 0.56), rgba(161, 66, 244, 0.48));
+  border-radius: 999px;
+}

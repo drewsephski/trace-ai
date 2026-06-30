@@ -1,0 +1,146 @@
+/* Claude Console: Anthropic warm neutrals with amber and clay accents */
+
+:root {
+  --color-primary: #d97757;
+  --primary: #d97757;
+  --color-primary-light-1: #e59478;
+  --color-primary-light-2: #f2b49e;
+  --color-primary-light-3: #ffe2d4;
+  --color-primary-dark-1: #ad5538;
+  --primary-rgb: 217, 119, 87;
+
+  --brand: #d97757;
+  --brand-light: rgba(217, 119, 87, 0.16);
+  --brand-hover: #eda100;
+
+  --aou-1: #141413;
+  --aou-2: #30302e;
+  --aou-3: #3d3d3a;
+  --aou-4: #87867f;
+  --aou-5: #b0aea5;
+  --aou-6: #d97757;
+  --aou-7: #eda100;
+  --aou-8: #6ea100;
+  --aou-9: #e8e6dc;
+  --aou-10: #f0eee6;
+
+  --bg-base: #141413;
+  --bg-1: rgba(20, 20, 19, 0.84);
+  --bg-2: rgba(48, 48, 46, 0.82);
+  --bg-3: rgba(217, 119, 87, 0.22);
+  --bg-4: rgba(237, 161, 0, 0.18);
+  --bg-5: rgba(110, 161, 0, 0.16);
+  --bg-6: #87867f;
+  --bg-8: #b0aea5;
+  --bg-9: #e8e6dc;
+  --bg-10: #f0eee6;
+  --bg-hover: rgba(217, 119, 87, 0.12);
+  --bg-active: rgba(237, 161, 0, 0.14);
+
+  --color-bg-1: rgba(20, 20, 19, 0.84);
+  --color-bg-2: rgba(48, 48, 46, 0.82);
+  --color-bg-3: rgba(61, 61, 58, 0.88);
+  --color-bg-4: rgba(86, 83, 76, 0.92);
+  --color-fill: rgba(48, 48, 46, 0.74);
+  --color-fill-1: rgba(240, 238, 230, 0.07);
+  --color-fill-2: rgba(217, 119, 87, 0.1);
+  --color-fill-3: rgba(237, 161, 0, 0.12);
+
+  --text-primary: #f0eee6;
+  --text-secondary: #d8d4c8;
+  --text-disabled: #87867f;
+  --text-0: #fffaf0;
+  --text-white: #fffaf0;
+  --color-text-1: #f0eee6;
+  --color-text-2: #d8d4c8;
+  --color-text-3: #b0aea5;
+  --color-text-4: #87867f;
+
+  --border-base: rgba(240, 238, 230, 0.16);
+  --border-light: rgba(240, 238, 230, 0.08);
+  --color-border: rgba(240, 238, 230, 0.16);
+  --color-border-1: rgba(240, 238, 230, 0.16);
+  --color-border-2: rgba(217, 119, 87, 0.2);
+
+  --fill: rgba(48, 48, 46, 0.74);
+  --fill-0: rgba(240, 238, 230, 0.07);
+  --fill-white-to-black: #141413;
+  --dialog-fill-0: rgba(20, 20, 19, 0.95);
+  --inverse: #f0eee6;
+
+  --success: #6ea100;
+  --warning: #eda100;
+  --danger: #d97757;
+  --info: #6396d6;
+
+  --message-user-bg: rgba(217, 119, 87, 0.15);
+  --message-tips-bg: rgba(237, 161, 0, 0.12);
+  --workspace-btn-bg: rgba(240, 238, 230, 0.07);
+  --color-guid-agent-bar: rgba(20, 20, 19, 0.72);
+
+  --premium-backdrop:
+    radial-gradient(circle at 12% 14%, rgba(217, 119, 87, 0.22), transparent 31%),
+    radial-gradient(circle at 80% 18%, rgba(237, 161, 0, 0.16), transparent 28%),
+    radial-gradient(circle at 62% 92%, rgba(99, 150, 214, 0.12), transparent 30%),
+    linear-gradient(135deg, #141413 0%, #30302e 48%, #211f1a 100%);
+  --premium-atmosphere:
+    linear-gradient(118deg, transparent 0%, rgba(240, 238, 230, 0.045) 42%, transparent 66%),
+    repeating-linear-gradient(0deg, rgba(240, 238, 230, 0.03) 0 1px, transparent 1px 28px);
+  --premium-content-bg: rgba(20, 20, 19, 0.5);
+  --premium-sidebar-bg: rgba(20, 20, 19, 0.76);
+  --premium-panel-bg: rgba(48, 48, 46, 0.76);
+  --theme-preview-bg: linear-gradient(135deg, #141413 0%, #3d3d3a 38%, #d97757 76%, #eda100 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.74;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.06);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22px) saturate(1.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(217, 119, 87, 0.58), rgba(237, 161, 0, 0.42));
+  border-radius: 999px;
+}

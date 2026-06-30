@@ -20,6 +20,7 @@ import { resolveExtensionAssetUrl } from '@renderer/utils/platform.ts';
 import { LIGHT_THEME_ID, SYSTEM_THEME_ID } from '@/common/theme/constants';
 
 interface ThemePreviewPalette {
+  previewBg: string;
   appBg: string;
   headerBg: string;
   sideBg: string;
@@ -33,6 +34,7 @@ interface ThemePreviewPalette {
 
 const fallbackThemePreviewPaletteByMode: Record<'light' | 'dark', ThemePreviewPalette> = {
   light: {
+    previewBg: '#f7f8fa',
     appBg: '#f7f8fa',
     headerBg: '#eef1f5',
     sideBg: '#eef1f5',
@@ -44,6 +46,7 @@ const fallbackThemePreviewPaletteByMode: Record<'light' | 'dark', ThemePreviewPa
     aiBubble: '#e5e7eb',
   },
   dark: {
+    previewBg: '#171a1f',
     appBg: '#171a1f',
     headerBg: '#1f242d',
     sideBg: '#1f242d',
@@ -54,6 +57,37 @@ const fallbackThemePreviewPaletteByMode: Record<'light' | 'dark', ThemePreviewPa
     userBubble: '#1e3a5f',
     aiBubble: '#2b313c',
   },
+};
+
+type BuiltinThemeNameKey =
+  | 'settings.cssTheme.themeNames.openaiCodex'
+  | 'settings.cssTheme.themeNames.claudeConsole'
+  | 'settings.cssTheme.themeNames.opencodeTerminal'
+  | 'settings.cssTheme.themeNames.geminiSpectrum'
+  | 'settings.cssTheme.themeNames.cursorMidnight'
+  | 'settings.cssTheme.themeNames.copilotWorkbench'
+  | 'settings.cssTheme.themeNames.auroraGlass'
+  | 'settings.cssTheme.themeNames.prismDaylight'
+  | 'settings.cssTheme.themeNames.graphiteStudio'
+  | 'settings.cssTheme.themeNames.neonCircuit'
+  | 'settings.cssTheme.themeNames.porcelainStudio'
+  | 'settings.cssTheme.themeNames.zincCanvas'
+  | 'settings.cssTheme.themeNames.stoneTaupe';
+
+const builtinThemeNameKeys: Record<string, BuiltinThemeNameKey> = {
+  'openai-codex': 'settings.cssTheme.themeNames.openaiCodex',
+  'claude-console': 'settings.cssTheme.themeNames.claudeConsole',
+  'opencode-terminal': 'settings.cssTheme.themeNames.opencodeTerminal',
+  'gemini-spectrum': 'settings.cssTheme.themeNames.geminiSpectrum',
+  'cursor-midnight': 'settings.cssTheme.themeNames.cursorMidnight',
+  'copilot-workbench': 'settings.cssTheme.themeNames.copilotWorkbench',
+  'aurora-glass': 'settings.cssTheme.themeNames.auroraGlass',
+  'prism-daylight': 'settings.cssTheme.themeNames.prismDaylight',
+  'graphite-studio': 'settings.cssTheme.themeNames.graphiteStudio',
+  'neon-circuit': 'settings.cssTheme.themeNames.neonCircuit',
+  'porcelain-studio': 'settings.cssTheme.themeNames.porcelainStudio',
+  'zinc-canvas': 'settings.cssTheme.themeNames.zincCanvas',
+  'stone-taupe': 'settings.cssTheme.themeNames.stoneTaupe',
 };
 
 const stripImportant = (value: string) => value.replace(/\s*!important\s*/gi, '').trim();
@@ -113,6 +147,9 @@ const readFromVarMap = (vars: Record<string, string>, keys: string[]) => {
   return '';
 };
 
+const getThemePreviewMode = (theme: Pick<Theme, 'appearance'>): 'light' | 'dark' =>
+  theme.appearance === 'dark' ? 'dark' : 'light';
+
 const extractThemePreviewPalette = (css: string, mode: 'light' | 'dark'): ThemePreviewPalette => {
   const modeFallback = fallbackThemePreviewPaletteByMode[mode];
   const rootVars = parseCssVarsFromBlocks(css, ':root');
@@ -130,8 +167,10 @@ const extractThemePreviewPalette = (css: string, mode: 'light' | 'dark'): ThemeP
   const textMutedRaw = readFromVarMap(activeVars, ['color-text-3', 'text-secondary', 'color-text-2']);
   const aiBubbleRaw = readFromVarMap(activeVars, ['color-fill-2', 'fill-2', 'bg-2', 'color-bg-2']);
   const userBubbleRaw = readFromVarMap(activeVars, ['color-primary-light-3', 'color-primary-light-2', 'color-primary']);
+  const previewBgRaw = readFromVarMap(activeVars, ['theme-preview-bg', 'premium-backdrop', 'bg-1', 'color-bg-1']);
 
   return {
+    previewBg: normalizeColorLike(previewBgRaw, modeFallback.previewBg),
     appBg: normalizeColorLike(appBgRaw, modeFallback.appBg),
     headerBg: normalizeColorLike(panelBgRaw, modeFallback.headerBg),
     sideBg: normalizeColorLike(panelBgRaw, modeFallback.sideBg),
@@ -147,7 +186,7 @@ const extractThemePreviewPalette = (css: string, mode: 'light' | 'dark'): ThemeP
 const ThemeLayoutPreview: React.FC<{ palette: ThemePreviewPalette }> = ({ palette }) => {
   return (
     <div className='absolute inset-0 pointer-events-none'>
-      <div className='absolute inset-0' style={{ background: palette.appBg }} />
+      <div className='absolute inset-0' style={{ background: palette.previewBg }} />
       <div
         className='absolute left-8px right-8px top-8px bottom-8px rounded-8px overflow-hidden border border-solid'
         style={{ borderColor: palette.border, background: palette.mainBg }}
@@ -239,8 +278,8 @@ const ensureBackgroundCss = <T extends { id?: string; cover?: string; css?: stri
  * 用于管理和切换 CSS 皮肤主题 / For managing and switching CSS skin themes
  */
 const CssThemeSettings: React.FC = () => {
-  const { t } = useTranslation();
-  const { theme: currentTheme, activeTheme, activeId, selectTheme } = useThemeContext();
+  const { t: translate } = useTranslation();
+  const { activeTheme, activeId, selectTheme } = useThemeContext();
   const [themes, setThemes] = useState<Theme[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingTheme, setEditingTheme] = useState<Theme | null>(null);
@@ -248,13 +287,21 @@ const CssThemeSettings: React.FC = () => {
 
   const activeThemeId = activeId ?? activeTheme?.id ?? DEFAULT_THEME_ID;
 
+  const getThemeDisplayName = useCallback(
+    (theme: Theme) => {
+      const nameKey = builtinThemeNameKeys[theme.id];
+      return nameKey ? translate(nameKey) : theme.name;
+    },
+    [translate]
+  );
+
   const themePreviewPalettes = useMemo(() => {
     const map = new Map<string, ThemePreviewPalette>();
     themes.forEach((cssTheme) => {
-      map.set(cssTheme.id, extractThemePreviewPalette(cssTheme.css || '', currentTheme === 'dark' ? 'dark' : 'light'));
+      map.set(cssTheme.id, extractThemePreviewPalette(cssTheme.css || '', getThemePreviewMode(cssTheme)));
     });
     return map;
-  }, [themes, currentTheme]);
+  }, [themes]);
 
   // Virtual "Follow System" card, third in the gallery (after Light and Dark).
   // Not part of BUILTIN_THEMES — it must never enter resolution/dedup/persistence.
@@ -262,7 +309,7 @@ const CssThemeSettings: React.FC = () => {
     if (themes.length === 0) return themes;
     const systemCard: Theme = {
       id: SYSTEM_THEME_ID,
-      name: t('settings.cssTheme.followSystem'),
+      name: translate('settings.cssTheme.followSystem'),
       appearance: 'light',
       builtin: true,
       created_at: 0,
@@ -271,7 +318,7 @@ const CssThemeSettings: React.FC = () => {
     const arr = [...themes];
     arr.splice(Math.min(2, arr.length), 0, systemCard);
     return arr;
-  }, [themes, t]);
+  }, [themes, translate]);
 
   // 加载主题列表 / Load theme list
   useEffect(() => {
@@ -326,12 +373,12 @@ const CssThemeSettings: React.FC = () => {
     async (theme: Theme) => {
       try {
         await selectTheme(theme.id);
-        Message.success(t('settings.cssTheme.applied', { name: theme.name }));
+        Message.success(translate('settings.cssTheme.applied', { name: getThemeDisplayName(theme) }));
       } catch {
-        Message.error(t('settings.cssTheme.applyFailed'));
+        Message.error(translate('settings.cssTheme.applyFailed'));
       }
     },
-    [selectTheme, t]
+    [getThemeDisplayName, selectTheme, translate]
   );
 
   /**
@@ -392,13 +439,13 @@ const CssThemeSettings: React.FC = () => {
 
         setModalVisible(false);
         setEditingTheme(null);
-        Message.success(t('common.saveSuccess'));
+        Message.success(translate('common.saveSuccess'));
       } catch (error) {
         console.error('Failed to save theme:', error);
-        Message.error(t('common.saveFailed'));
+        Message.error(translate('common.saveFailed'));
       }
     },
-    [editingTheme, themes, activeThemeId, selectTheme, t]
+    [editingTheme, themes, activeThemeId, selectTheme, translate]
   );
 
   /**
@@ -407,8 +454,8 @@ const CssThemeSettings: React.FC = () => {
   const handleDeleteTheme = useCallback(
     (themeId: string) => {
       Modal.confirm({
-        title: t('common.confirmDelete'),
-        content: t('settings.cssTheme.deleteConfirm'),
+        title: translate('common.confirmDelete'),
+        content: translate('settings.cssTheme.deleteConfirm'),
         okButtonProps: { status: 'danger' },
         onOk: async () => {
           try {
@@ -424,24 +471,26 @@ const CssThemeSettings: React.FC = () => {
             setThemes(updatedThemes);
             setModalVisible(false);
             setEditingTheme(null);
-            Message.success(t('common.deleteSuccess'));
+            Message.success(translate('common.deleteSuccess'));
           } catch (error) {
             console.error('Failed to delete theme:', error);
-            Message.error(t('common.deleteFailed'));
+            Message.error(translate('common.deleteFailed'));
           }
         },
       });
     },
-    [themes, activeThemeId, selectTheme, t]
+    [themes, activeThemeId, selectTheme, translate]
   );
 
   return (
     <div className='space-y-12px'>
       {/* 标题栏 / Header */}
       <div className='flex items-start md:items-center justify-between gap-8px flex-wrap'>
-        <span className='text-14px text-t-secondary leading-22px'>{t('settings.cssTheme.selectOrCustomize')}</span>
+        <span className='text-14px text-t-secondary leading-22px'>
+          {translate('settings.cssTheme.selectOrCustomize')}
+        </span>
         <Button type='primary' size='small' className='!h-32px !rounded-8px !px-14px !m-0' onClick={handleAddTheme}>
-          {t('settings.cssTheme.addManually')}
+          {translate('settings.cssTheme.addManually')}
         </Button>
       </div>
 
@@ -454,8 +503,7 @@ const CssThemeSettings: React.FC = () => {
       >
         {displayThemes.map((theme) => {
           const previewPalette =
-            themePreviewPalettes.get(theme.id) ||
-            fallbackThemePreviewPaletteByMode[currentTheme === 'dark' ? 'dark' : 'light'];
+            themePreviewPalettes.get(theme.id) || fallbackThemePreviewPaletteByMode[getThemePreviewMode(theme)];
           const cardStyle = theme.cover
             ? {
                 backgroundImage: `url(${theme.cover})`,
@@ -482,7 +530,7 @@ const CssThemeSettings: React.FC = () => {
 
               {/* 底部渐变遮罩与名称、编辑按钮 / Bottom gradient overlay with name and edit button */}
               <div className='absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-between p-8px'>
-                <span className='text-13px text-white truncate flex-1'>{theme.name}</span>
+                <span className='text-13px text-white truncate flex-1'>{getThemeDisplayName(theme)}</span>
                 {/* 编辑按钮（仅用户主题） / Edit button (user themes only) */}
                 {hoveredThemeId === theme.id && !theme.builtin && (
                   <div

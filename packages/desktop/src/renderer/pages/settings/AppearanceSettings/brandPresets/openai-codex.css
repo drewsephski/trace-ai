@@ -1,0 +1,145 @@
+/* OpenAI Codex: neutral ChatGPT-style workbench with subtle green signal */
+
+:root {
+  --color-primary: #10a37f;
+  --primary: #10a37f;
+  --color-primary-light-1: #38c5a5;
+  --color-primary-light-2: #8ee8d3;
+  --color-primary-light-3: #d9f7ef;
+  --color-primary-dark-1: #0a7f63;
+  --primary-rgb: 16, 163, 127;
+
+  --brand: #10a37f;
+  --brand-light: rgba(16, 163, 127, 0.16);
+  --brand-hover: #19c39b;
+
+  --aou-1: #050509;
+  --aou-2: #111216;
+  --aou-3: #202123;
+  --aou-4: #343541;
+  --aou-5: #565869;
+  --aou-6: #8e8ea0;
+  --aou-7: #acacbe;
+  --aou-8: #10a37f;
+  --aou-9: #ececf1;
+  --aou-10: #ffffff;
+
+  --bg-base: #050509;
+  --bg-1: rgba(32, 33, 35, 0.84);
+  --bg-2: rgba(52, 53, 65, 0.78);
+  --bg-3: rgba(142, 142, 160, 0.22);
+  --bg-4: rgba(172, 172, 190, 0.2);
+  --bg-5: rgba(16, 163, 127, 0.24);
+  --bg-6: #8e8ea0;
+  --bg-8: #acacbe;
+  --bg-9: #ececf1;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(16, 163, 127, 0.12);
+  --bg-active: rgba(16, 163, 127, 0.18);
+
+  --color-bg-1: rgba(32, 33, 35, 0.84);
+  --color-bg-2: rgba(52, 53, 65, 0.78);
+  --color-bg-3: rgba(64, 65, 79, 0.86);
+  --color-bg-4: rgba(86, 88, 105, 0.9);
+  --color-fill: rgba(52, 53, 65, 0.72);
+  --color-fill-1: rgba(255, 255, 255, 0.07);
+  --color-fill-2: rgba(172, 172, 190, 0.12);
+  --color-fill-3: rgba(16, 163, 127, 0.14);
+
+  --text-primary: #ececf1;
+  --text-secondary: #c5c5d2;
+  --text-disabled: #8e8ea0;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #ececf1;
+  --color-text-2: #c5c5d2;
+  --color-text-3: #8e8ea0;
+  --color-text-4: #6f7081;
+
+  --border-base: rgba(172, 172, 190, 0.22);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(172, 172, 190, 0.22);
+  --color-border-1: rgba(172, 172, 190, 0.22);
+  --color-border-2: rgba(255, 255, 255, 0.09);
+
+  --fill: rgba(52, 53, 65, 0.72);
+  --fill-0: rgba(255, 255, 255, 0.07);
+  --fill-white-to-black: #050509;
+  --dialog-fill-0: rgba(32, 33, 35, 0.95);
+  --inverse: #ffffff;
+
+  --success: #10a37f;
+  --warning: #f5b95b;
+  --danger: #ff6f7d;
+  --info: #8e8ea0;
+
+  --message-user-bg: rgba(16, 163, 127, 0.16);
+  --message-tips-bg: rgba(142, 142, 160, 0.13);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.07);
+  --color-guid-agent-bar: rgba(32, 33, 35, 0.72);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 14%, rgba(16, 163, 127, 0.16), transparent 31%),
+    radial-gradient(circle at 82% 18%, rgba(172, 172, 190, 0.1), transparent 28%),
+    linear-gradient(135deg, #050509 0%, #202123 45%, #343541 100%);
+  --premium-atmosphere:
+    linear-gradient(115deg, transparent 0%, rgba(236, 236, 241, 0.035) 44%, transparent 68%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 24px);
+  --premium-content-bg: rgba(5, 5, 9, 0.46);
+  --premium-sidebar-bg: rgba(17, 18, 22, 0.74);
+  --premium-panel-bg: rgba(32, 33, 35, 0.76);
+  --theme-preview-bg: linear-gradient(135deg, #050509 0%, #202123 40%, #343541 72%, #0f3d35 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.74;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(22px) saturate(1.08);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.1);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(22px) saturate(1.12);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(172, 172, 190, 0.5), rgba(16, 163, 127, 0.46));
+  border-radius: 999px;
+}

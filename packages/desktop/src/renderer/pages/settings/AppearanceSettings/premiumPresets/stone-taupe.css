@@ -1,0 +1,145 @@
+/* Stone Taupe: balanced neutral dark theme with warm gray depth */
+
+:root {
+  --color-primary: #b8b2a7;
+  --primary: #b8b2a7;
+  --color-primary-light-1: #d7d1c5;
+  --color-primary-light-2: #e7e2d8;
+  --color-primary-light-3: #f3efe7;
+  --color-primary-dark-1: #8d8477;
+  --primary-rgb: 184, 178, 167;
+
+  --brand: #8d8477;
+  --brand-light: rgba(184, 178, 167, 0.13);
+  --brand-hover: #d7d1c5;
+
+  --aou-1: #12110f;
+  --aou-2: #1c1a17;
+  --aou-3: #292620;
+  --aou-4: #403b34;
+  --aou-5: #625b50;
+  --aou-6: #8d8477;
+  --aou-7: #b8b2a7;
+  --aou-8: #d7d1c5;
+  --aou-9: #e7e2d8;
+  --aou-10: #f3efe7;
+
+  --bg-base: #12110f;
+  --bg-1: rgba(18, 17, 15, 0.84);
+  --bg-2: rgba(28, 26, 23, 0.82);
+  --bg-3: rgba(184, 178, 167, 0.18);
+  --bg-4: rgba(98, 91, 80, 0.3);
+  --bg-5: rgba(215, 209, 197, 0.12);
+  --bg-6: #8d8477;
+  --bg-8: #b8b2a7;
+  --bg-9: #e7e2d8;
+  --bg-10: #f3efe7;
+  --bg-hover: rgba(184, 178, 167, 0.09);
+  --bg-active: rgba(215, 209, 197, 0.12);
+
+  --color-bg-1: rgba(18, 17, 15, 0.84);
+  --color-bg-2: rgba(28, 26, 23, 0.82);
+  --color-bg-3: rgba(41, 38, 32, 0.86);
+  --color-bg-4: rgba(64, 59, 52, 0.78);
+  --color-fill: rgba(28, 26, 23, 0.76);
+  --color-fill-1: rgba(243, 239, 231, 0.07);
+  --color-fill-2: rgba(184, 178, 167, 0.11);
+  --color-fill-3: rgba(215, 209, 197, 0.1);
+
+  --text-primary: #f3efe7;
+  --text-secondary: #d7d1c5;
+  --text-disabled: #8d8477;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f3efe7;
+  --color-text-2: #d7d1c5;
+  --color-text-3: #b8b2a7;
+  --color-text-4: #8d8477;
+
+  --border-base: rgba(215, 209, 197, 0.15);
+  --border-light: rgba(243, 239, 231, 0.08);
+  --color-border: rgba(215, 209, 197, 0.15);
+  --color-border-1: rgba(215, 209, 197, 0.15);
+  --color-border-2: rgba(243, 239, 231, 0.08);
+
+  --fill: rgba(28, 26, 23, 0.76);
+  --fill-0: rgba(243, 239, 231, 0.07);
+  --fill-white-to-black: #12110f;
+  --dialog-fill-0: rgba(18, 17, 15, 0.95);
+  --inverse: #ffffff;
+
+  --success: #8fa188;
+  --warning: #b6a36d;
+  --danger: #b88880;
+  --info: #b8b2a7;
+
+  --message-user-bg: rgba(184, 178, 167, 0.13);
+  --message-tips-bg: rgba(215, 209, 197, 0.1);
+  --workspace-btn-bg: rgba(243, 239, 231, 0.07);
+  --color-guid-agent-bar: rgba(18, 17, 15, 0.74);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 16%, rgba(215, 209, 197, 0.12), transparent 28%),
+    radial-gradient(circle at 82% 20%, rgba(98, 91, 80, 0.2), transparent 30%),
+    linear-gradient(135deg, #12110f 0%, #292620 46%, #1c1a17 100%);
+  --premium-atmosphere:
+    linear-gradient(116deg, transparent 0%, rgba(243, 239, 231, 0.04) 44%, transparent 70%),
+    repeating-linear-gradient(0deg, rgba(243, 239, 231, 0.026) 0 1px, transparent 1px 26px);
+  --premium-content-bg: rgba(18, 17, 15, 0.5);
+  --premium-sidebar-bg: rgba(18, 17, 15, 0.74);
+  --premium-panel-bg: rgba(28, 26, 23, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #12110f 0%, #292620 48%, #625b50 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.72;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.04);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.04);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22px) saturate(1.06);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(215, 209, 197, 0.4), rgba(98, 91, 80, 0.46));
+  border-radius: 999px;
+}

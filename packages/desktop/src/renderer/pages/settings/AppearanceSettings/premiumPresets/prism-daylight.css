@@ -1,0 +1,146 @@
+/* Prism Daylight: bright glass cards over a modern pastel mesh */
+
+:root {
+  --color-primary: #2663ff;
+  --primary: #2663ff;
+  --color-primary-light-1: #5d88ff;
+  --color-primary-light-2: #9cb6ff;
+  --color-primary-light-3: #dce5ff;
+  --color-primary-dark-1: #1749c8;
+  --primary-rgb: 38, 99, 255;
+
+  --brand: #df5bb8;
+  --brand-light: #fff0fa;
+  --brand-hover: #7f6cff;
+
+  --aou-1: #ffffff;
+  --aou-2: #f3f6ff;
+  --aou-3: #e4eaff;
+  --aou-4: #cdd8ff;
+  --aou-5: #a7b9ff;
+  --aou-6: #7f6cff;
+  --aou-7: #df5bb8;
+  --aou-8: #ff8d6b;
+  --aou-9: #25506c;
+  --aou-10: #101827;
+
+  --bg-base: #fffdfb;
+  --bg-1: rgba(255, 255, 255, 0.82);
+  --bg-2: rgba(246, 249, 255, 0.88);
+  --bg-3: rgba(128, 150, 205, 0.24);
+  --bg-4: #c9d2ea;
+  --bg-5: #9aa8ca;
+  --bg-6: #687796;
+  --bg-8: #40506d;
+  --bg-9: #1f2938;
+  --bg-10: #0f1724;
+  --bg-hover: rgba(38, 99, 255, 0.08);
+  --bg-active: rgba(223, 91, 184, 0.12);
+
+  --color-bg-1: rgba(255, 255, 255, 0.82);
+  --color-bg-2: rgba(246, 249, 255, 0.88);
+  --color-bg-3: #edf2ff;
+  --color-bg-4: #dbe5ff;
+  --color-fill: rgba(255, 255, 255, 0.72);
+  --color-fill-1: rgba(38, 99, 255, 0.08);
+  --color-fill-2: rgba(223, 91, 184, 0.1);
+  --color-fill-3: rgba(255, 141, 107, 0.12);
+
+  --text-primary: #141a2a;
+  --text-secondary: #4e5b72;
+  --text-disabled: #a5aec0;
+  --text-0: #141a2a;
+  --text-white: #ffffff;
+  --color-text-1: #141a2a;
+  --color-text-2: #4e5b72;
+  --color-text-3: #748098;
+  --color-text-4: #a5aec0;
+
+  --border-base: rgba(108, 126, 180, 0.24);
+  --border-light: rgba(255, 255, 255, 0.72);
+  --color-border: rgba(108, 126, 180, 0.24);
+  --color-border-1: rgba(108, 126, 180, 0.24);
+  --color-border-2: rgba(255, 255, 255, 0.72);
+
+  --fill: rgba(255, 255, 255, 0.72);
+  --fill-0: rgba(255, 255, 255, 0.74);
+  --fill-white-to-black: #ffffff;
+  --dialog-fill-0: rgba(255, 255, 255, 0.94);
+  --inverse: #141a2a;
+
+  --success: #168f6b;
+  --warning: #c27700;
+  --danger: #d84c73;
+  --info: #2663ff;
+
+  --message-user-bg: rgba(38, 99, 255, 0.12);
+  --message-tips-bg: rgba(223, 91, 184, 0.1);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.66);
+  --color-guid-agent-bar: rgba(255, 255, 255, 0.62);
+
+  --premium-backdrop:
+    radial-gradient(circle at 14% 18%, rgba(38, 99, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 82% 22%, rgba(223, 91, 184, 0.22), transparent 32%),
+    radial-gradient(circle at 48% 92%, rgba(255, 190, 92, 0.2), transparent 34%),
+    linear-gradient(135deg, #fffdfb 0%, #eef5ff 48%, #fff6fb 100%);
+  --premium-atmosphere:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.08), transparent 32%, rgba(255, 255, 255, 0.16) 58%, transparent),
+    repeating-linear-gradient(90deg, rgba(38, 99, 255, 0.035) 0 1px, transparent 1px 22px);
+  --premium-content-bg: rgba(255, 255, 255, 0.5);
+  --premium-sidebar-bg: rgba(255, 255, 255, 0.66);
+  --premium-panel-bg: rgba(255, 255, 255, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #fffdfb 0%, #dfeaff 34%, #ffdff2 66%, #fff4d6 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.86;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(22px) saturate(1.18);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.16);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 22px 62px rgba(56, 70, 112, 0.18);
+  backdrop-filter: blur(22px) saturate(1.16);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(38, 99, 255, 0.4), rgba(223, 91, 184, 0.42));
+  border-radius: 999px;
+}

@@ -1,0 +1,145 @@
+/* Zinc Canvas: dark neutral workspace with restrained cool contrast */
+
+:root {
+  --color-primary: #a1a1aa;
+  --primary: #a1a1aa;
+  --color-primary-light-1: #d4d4d8;
+  --color-primary-light-2: #e4e4e7;
+  --color-primary-light-3: #f4f4f5;
+  --color-primary-dark-1: #71717a;
+  --primary-rgb: 161, 161, 170;
+
+  --brand: #d4d4d8;
+  --brand-light: rgba(212, 212, 216, 0.12);
+  --brand-hover: #f4f4f5;
+
+  --aou-1: #09090b;
+  --aou-2: #111113;
+  --aou-3: #18181b;
+  --aou-4: #27272a;
+  --aou-5: #3f3f46;
+  --aou-6: #71717a;
+  --aou-7: #a1a1aa;
+  --aou-8: #d4d4d8;
+  --aou-9: #e4e4e7;
+  --aou-10: #f4f4f5;
+
+  --bg-base: #09090b;
+  --bg-1: rgba(9, 9, 11, 0.84);
+  --bg-2: rgba(24, 24, 27, 0.8);
+  --bg-3: rgba(161, 161, 170, 0.18);
+  --bg-4: rgba(63, 63, 70, 0.32);
+  --bg-5: rgba(212, 212, 216, 0.13);
+  --bg-6: #71717a;
+  --bg-8: #a1a1aa;
+  --bg-9: #e4e4e7;
+  --bg-10: #f4f4f5;
+  --bg-hover: rgba(212, 212, 216, 0.08);
+  --bg-active: rgba(161, 161, 170, 0.12);
+
+  --color-bg-1: rgba(9, 9, 11, 0.84);
+  --color-bg-2: rgba(24, 24, 27, 0.8);
+  --color-bg-3: rgba(39, 39, 42, 0.86);
+  --color-bg-4: rgba(63, 63, 70, 0.78);
+  --color-fill: rgba(24, 24, 27, 0.76);
+  --color-fill-1: rgba(244, 244, 245, 0.07);
+  --color-fill-2: rgba(161, 161, 170, 0.11);
+  --color-fill-3: rgba(212, 212, 216, 0.1);
+
+  --text-primary: #f4f4f5;
+  --text-secondary: #d4d4d8;
+  --text-disabled: #71717a;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f4f4f5;
+  --color-text-2: #d4d4d8;
+  --color-text-3: #a1a1aa;
+  --color-text-4: #71717a;
+
+  --border-base: rgba(212, 212, 216, 0.16);
+  --border-light: rgba(244, 244, 245, 0.08);
+  --color-border: rgba(212, 212, 216, 0.16);
+  --color-border-1: rgba(212, 212, 216, 0.16);
+  --color-border-2: rgba(244, 244, 245, 0.08);
+
+  --fill: rgba(24, 24, 27, 0.76);
+  --fill-0: rgba(244, 244, 245, 0.07);
+  --fill-white-to-black: #09090b;
+  --dialog-fill-0: rgba(9, 9, 11, 0.95);
+  --inverse: #ffffff;
+
+  --success: #8fa393;
+  --warning: #b6a06f;
+  --danger: #b68282;
+  --info: #a1a1aa;
+
+  --message-user-bg: rgba(161, 161, 170, 0.13);
+  --message-tips-bg: rgba(212, 212, 216, 0.1);
+  --workspace-btn-bg: rgba(244, 244, 245, 0.07);
+  --color-guid-agent-bar: rgba(9, 9, 11, 0.74);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 16%, rgba(212, 212, 216, 0.12), transparent 28%),
+    radial-gradient(circle at 84% 18%, rgba(113, 113, 122, 0.16), transparent 30%),
+    linear-gradient(135deg, #09090b 0%, #18181b 48%, #111113 100%);
+  --premium-atmosphere:
+    linear-gradient(116deg, transparent 0%, rgba(244, 244, 245, 0.04) 44%, transparent 70%),
+    repeating-linear-gradient(90deg, rgba(244, 244, 245, 0.028) 0 1px, transparent 1px 24px);
+  --premium-content-bg: rgba(9, 9, 11, 0.5);
+  --premium-sidebar-bg: rgba(9, 9, 11, 0.74);
+  --premium-panel-bg: rgba(24, 24, 27, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #09090b 0%, #18181b 45%, #3f3f46 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.72;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.04);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.04);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(22px) saturate(1.06);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(212, 212, 216, 0.4), rgba(113, 113, 122, 0.46));
+  border-radius: 999px;
+}

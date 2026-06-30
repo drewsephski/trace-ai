@@ -1,0 +1,146 @@
+/* Porcelain Studio: quiet light neutral workspace with soft paper depth */
+
+:root {
+  --color-primary: #4f5f6f;
+  --primary: #4f5f6f;
+  --color-primary-light-1: #738191;
+  --color-primary-light-2: #a9b1ba;
+  --color-primary-light-3: #e1e5e8;
+  --color-primary-dark-1: #33404d;
+  --primary-rgb: 79, 95, 111;
+
+  --brand: #6c6258;
+  --brand-light: rgba(108, 98, 88, 0.12);
+  --brand-hover: #33404d;
+
+  --aou-1: #ffffff;
+  --aou-2: #faf9f6;
+  --aou-3: #f0eee9;
+  --aou-4: #dedbd2;
+  --aou-5: #b7b2a6;
+  --aou-6: #6c6258;
+  --aou-7: #4f5f6f;
+  --aou-8: #33404d;
+  --aou-9: #1f252c;
+  --aou-10: #111418;
+
+  --bg-base: #faf9f6;
+  --bg-1: rgba(250, 249, 246, 0.86);
+  --bg-2: rgba(255, 255, 255, 0.78);
+  --bg-3: rgba(183, 178, 166, 0.28);
+  --bg-4: rgba(79, 95, 111, 0.16);
+  --bg-5: rgba(108, 98, 88, 0.14);
+  --bg-6: #8b867c;
+  --bg-8: #4f5f6f;
+  --bg-9: #1f252c;
+  --bg-10: #111418;
+  --bg-hover: rgba(79, 95, 111, 0.08);
+  --bg-active: rgba(108, 98, 88, 0.1);
+
+  --color-bg-1: rgba(250, 249, 246, 0.86);
+  --color-bg-2: rgba(255, 255, 255, 0.78);
+  --color-bg-3: #f0eee9;
+  --color-bg-4: #e6e2da;
+  --color-fill: rgba(255, 255, 255, 0.72);
+  --color-fill-1: rgba(79, 95, 111, 0.07);
+  --color-fill-2: rgba(108, 98, 88, 0.09);
+  --color-fill-3: rgba(183, 178, 166, 0.14);
+
+  --text-primary: #171a1f;
+  --text-secondary: #4a5159;
+  --text-disabled: #9b968c;
+  --text-0: #171a1f;
+  --text-white: #ffffff;
+  --color-text-1: #171a1f;
+  --color-text-2: #4a5159;
+  --color-text-3: #767168;
+  --color-text-4: #a9a398;
+
+  --border-base: rgba(79, 95, 111, 0.16);
+  --border-light: rgba(255, 255, 255, 0.78);
+  --color-border: rgba(79, 95, 111, 0.16);
+  --color-border-1: rgba(79, 95, 111, 0.16);
+  --color-border-2: rgba(255, 255, 255, 0.78);
+
+  --fill: rgba(255, 255, 255, 0.72);
+  --fill-0: rgba(255, 255, 255, 0.78);
+  --fill-white-to-black: #ffffff;
+  --dialog-fill-0: rgba(255, 255, 255, 0.95);
+  --inverse: #171a1f;
+
+  --success: #587461;
+  --warning: #9a7247;
+  --danger: #a45d5a;
+  --info: #4f5f6f;
+
+  --message-user-bg: rgba(79, 95, 111, 0.11);
+  --message-tips-bg: rgba(108, 98, 88, 0.1);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.68);
+  --color-guid-agent-bar: rgba(255, 255, 255, 0.62);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 18%, rgba(255, 255, 255, 0.78), transparent 34%),
+    radial-gradient(circle at 84% 20%, rgba(183, 178, 166, 0.2), transparent 32%),
+    radial-gradient(circle at 64% 88%, rgba(79, 95, 111, 0.12), transparent 34%),
+    linear-gradient(135deg, #faf9f6 0%, #f0eee9 48%, #e7e4dd 100%);
+  --premium-atmosphere:
+    linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.32) 42%, transparent 68%),
+    repeating-linear-gradient(90deg, rgba(79, 95, 111, 0.025) 0 1px, transparent 1px 24px);
+  --premium-content-bg: rgba(255, 255, 255, 0.5);
+  --premium-sidebar-bg: rgba(255, 255, 255, 0.66);
+  --premium-panel-bg: rgba(255, 255, 255, 0.78);
+  --theme-preview-bg: linear-gradient(135deg, #faf9f6 0%, #f0eee9 48%, #b7b2a6 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.72;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 22px 62px rgba(79, 95, 111, 0.16);
+  backdrop-filter: blur(22px) saturate(1.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(79, 95, 111, 0.34), rgba(108, 98, 88, 0.3));
+  border-radius: 999px;
+}

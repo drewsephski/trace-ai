@@ -1,0 +1,149 @@
+/* Graphite Studio: premium neutral surfaces with amber and cyan signal accents */
+
+:root {
+  --color-primary: #f0b35a;
+  --primary: #f0b35a;
+  --color-primary-light-1: #ffc879;
+  --color-primary-light-2: #ffdfa8;
+  --color-primary-light-3: #fff0d4;
+  --color-primary-dark-1: #c68532;
+  --primary-rgb: 240, 179, 90;
+
+  --brand: #66d9e8;
+  --brand-light: rgba(102, 217, 232, 0.14);
+  --brand-hover: #f0b35a;
+
+  --aou-1: #101113;
+  --aou-2: #181a1f;
+  --aou-3: #24272d;
+  --aou-4: #323640;
+  --aou-5: #4a5260;
+  --aou-6: #66d9e8;
+  --aou-7: #f0b35a;
+  --aou-8: #ffd99a;
+  --aou-9: #e7edf4;
+  --aou-10: #ffffff;
+
+  --bg-base: #0b0c0e;
+  --bg-1: rgba(17, 18, 22, 0.9);
+  --bg-2: rgba(26, 29, 35, 0.88);
+  --bg-3: #333842;
+  --bg-4: #4a515d;
+  --bg-5: #656e7c;
+  --bg-6: #858f9f;
+  --bg-8: #b6bfcb;
+  --bg-9: #e0e6ed;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(240, 179, 90, 0.12);
+  --bg-active: rgba(102, 217, 232, 0.14);
+
+  --color-bg-1: rgba(17, 18, 22, 0.9);
+  --color-bg-2: rgba(26, 29, 35, 0.88);
+  --color-bg-3: #252932;
+  --color-bg-4: #333842;
+  --color-fill: rgba(26, 29, 35, 0.78);
+  --color-fill-1: rgba(255, 255, 255, 0.07);
+  --color-fill-2: rgba(240, 179, 90, 0.1);
+  --color-fill-3: rgba(102, 217, 232, 0.1);
+
+  --text-primary: #f4f1ea;
+  --text-secondary: #c4c2bb;
+  --text-disabled: #717783;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f4f1ea;
+  --color-text-2: #c4c2bb;
+  --color-text-3: #9299a5;
+  --color-text-4: #68707c;
+
+  --border-base: rgba(255, 255, 255, 0.12);
+  --border-light: rgba(255, 255, 255, 0.07);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-border-1: rgba(255, 255, 255, 0.12);
+  --color-border-2: rgba(255, 255, 255, 0.07);
+
+  --fill: rgba(26, 29, 35, 0.78);
+  --fill-0: rgba(255, 255, 255, 0.07);
+  --fill-white-to-black: #0b0c0e;
+  --dialog-fill-0: rgba(22, 24, 29, 0.96);
+  --inverse: #ffffff;
+
+  --success: #7bd88f;
+  --warning: #f0b35a;
+  --danger: #f2777a;
+  --info: #66d9e8;
+
+  --message-user-bg: rgba(240, 179, 90, 0.14);
+  --message-tips-bg: rgba(102, 217, 232, 0.1);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.07);
+  --color-guid-agent-bar: rgba(18, 20, 25, 0.8);
+
+  --premium-backdrop: linear-gradient(145deg, #0b0c0e 0%, #181b21 48%, #0d0f13 100%);
+  --premium-atmosphere:
+    radial-gradient(circle at 18% 12%, rgba(240, 179, 90, 0.18), transparent 30%),
+    radial-gradient(circle at 84% 82%, rgba(102, 217, 232, 0.14), transparent 32%),
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  --premium-content-bg: rgba(11, 12, 14, 0.5);
+  --premium-sidebar-bg: rgba(15, 17, 21, 0.78);
+  --premium-panel-bg: rgba(23, 25, 30, 0.86);
+  --theme-preview-bg: linear-gradient(135deg, #0b0c0e 0%, #282018 40%, #12343a 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  background-size:
+    auto,
+    auto,
+    34px 34px,
+    34px 34px;
+  opacity: 0.78;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(18px);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(18px);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(20px);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(240, 179, 90, 0.48), rgba(102, 217, 232, 0.34));
+  border-radius: 999px;
+}

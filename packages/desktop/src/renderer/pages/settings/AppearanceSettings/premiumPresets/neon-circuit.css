@@ -1,0 +1,171 @@
+/* Neon Circuit: high-contrast dark mesh with electric green and hot coral accents */
+
+:root {
+  --color-primary: #5cff9d;
+  --primary: #5cff9d;
+  --color-primary-light-1: #82ffb7;
+  --color-primary-light-2: #b3ffd2;
+  --color-primary-light-3: #e0ffed;
+  --color-primary-dark-1: #20c96c;
+  --primary-rgb: 92, 255, 157;
+
+  --brand: #ff5e8a;
+  --brand-light: rgba(255, 94, 138, 0.14);
+  --brand-hover: #4ddcff;
+
+  --aou-1: #06100c;
+  --aou-2: #0b1b15;
+  --aou-3: #123022;
+  --aou-4: #1b5134;
+  --aou-5: #278052;
+  --aou-6: #5cff9d;
+  --aou-7: #4ddcff;
+  --aou-8: #ff5e8a;
+  --aou-9: #ffe76b;
+  --aou-10: #fafffc;
+
+  --bg-base: #030806;
+  --bg-1: rgba(4, 12, 10, 0.88);
+  --bg-2: rgba(9, 21, 18, 0.84);
+  --bg-3: rgba(92, 255, 157, 0.22);
+  --bg-4: rgba(77, 220, 255, 0.24);
+  --bg-5: rgba(255, 94, 138, 0.26);
+  --bg-6: #648177;
+  --bg-8: #a2c7bb;
+  --bg-9: #dff7ee;
+  --bg-10: #ffffff;
+  --bg-hover: rgba(92, 255, 157, 0.12);
+  --bg-active: rgba(255, 94, 138, 0.16);
+
+  --color-bg-1: rgba(4, 12, 10, 0.88);
+  --color-bg-2: rgba(9, 21, 18, 0.84);
+  --color-bg-3: rgba(14, 35, 29, 0.9);
+  --color-bg-4: rgba(20, 55, 43, 0.92);
+  --color-fill: rgba(9, 21, 18, 0.76);
+  --color-fill-1: rgba(92, 255, 157, 0.08);
+  --color-fill-2: rgba(77, 220, 255, 0.1);
+  --color-fill-3: rgba(255, 94, 138, 0.1);
+
+  --text-primary: #f5fff9;
+  --text-secondary: #bed6cc;
+  --text-disabled: #647c72;
+  --text-0: #ffffff;
+  --text-white: #ffffff;
+  --color-text-1: #f5fff9;
+  --color-text-2: #bed6cc;
+  --color-text-3: #83a096;
+  --color-text-4: #52685f;
+
+  --border-base: rgba(92, 255, 157, 0.2);
+  --border-light: rgba(255, 255, 255, 0.07);
+  --color-border: rgba(92, 255, 157, 0.2);
+  --color-border-1: rgba(92, 255, 157, 0.2);
+  --color-border-2: rgba(255, 255, 255, 0.07);
+
+  --fill: rgba(9, 21, 18, 0.76);
+  --fill-0: rgba(255, 255, 255, 0.07);
+  --fill-white-to-black: #030806;
+  --dialog-fill-0: rgba(6, 16, 13, 0.96);
+  --inverse: #ffffff;
+
+  --success: #5cff9d;
+  --warning: #ffe76b;
+  --danger: #ff5e8a;
+  --info: #4ddcff;
+
+  --message-user-bg: rgba(92, 255, 157, 0.13);
+  --message-tips-bg: rgba(77, 220, 255, 0.1);
+  --workspace-btn-bg: rgba(255, 255, 255, 0.07);
+  --color-guid-agent-bar: rgba(6, 16, 13, 0.78);
+
+  --premium-backdrop:
+    radial-gradient(circle at 16% 10%, rgba(92, 255, 157, 0.2), transparent 34%),
+    radial-gradient(circle at 84% 24%, rgba(255, 94, 138, 0.18), transparent 30%),
+    radial-gradient(circle at 76% 90%, rgba(77, 220, 255, 0.16), transparent 36%),
+    linear-gradient(135deg, #030806 0%, #061712 52%, #020606 100%);
+  --premium-atmosphere:
+    repeating-linear-gradient(0deg, rgba(92, 255, 157, 0.04) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, rgba(77, 220, 255, 0.035) 0 1px, transparent 1px 24px),
+    linear-gradient(120deg, transparent 20%, rgba(255, 94, 138, 0.08) 48%, transparent 74%);
+  --premium-content-bg: rgba(3, 8, 6, 0.48);
+  --premium-sidebar-bg: rgba(4, 12, 10, 0.76);
+  --premium-panel-bg: rgba(7, 18, 15, 0.86);
+  --theme-preview-bg: linear-gradient(135deg, #030806 0%, #0c3321 38%, #123343 66%, #38121f 100%);
+}
+
+body,
+#root,
+.app-shell,
+.arco-layout {
+  background: var(--premium-backdrop);
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.app-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--premium-atmosphere);
+  opacity: 0.82;
+  animation: premiumCircuitScan 16s linear infinite;
+}
+
+.layout-content,
+.layout-content.bg-1,
+.arco-layout-content {
+  background: var(--premium-content-bg);
+  backdrop-filter: blur(20px) saturate(1.2);
+}
+
+#root .arco-layout-sider.layout-sider,
+.chat-layout-header,
+.app-titlebar {
+  background: var(--premium-sidebar-bg);
+  border-color: var(--border-base);
+  backdrop-filter: blur(20px) saturate(1.18);
+}
+
+.arco-modal,
+.arco-drawer,
+.arco-card,
+.arco-popover-content,
+.arco-dropdown-menu,
+.arco-trigger-popup {
+  background: var(--premium-panel-bg);
+  border: 1px solid var(--border-base);
+  box-shadow:
+    0 24px 68px rgba(0, 0, 0, 0.42),
+    0 0 26px rgba(92, 255, 157, 0.08);
+  backdrop-filter: blur(22px) saturate(1.22);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(92, 255, 157, 0.54), rgba(255, 94, 138, 0.42));
+  border-radius: 999px;
+}
+
+@keyframes premiumCircuitScan {
+  from {
+    background-position:
+      0 0,
+      0 0,
+      -40px 0;
+  }
+  to {
+    background-position:
+      0 48px,
+      48px 0,
+      40px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell::before {
+    animation: none;
+  }
+}

@@ -7,25 +7,21 @@
 import type { Theme } from '@/common/theme/types';
 import { LIGHT_THEME_ID, DARK_THEME_ID } from '@/common/theme/constants';
 
-import {
-  defaultThemeCover,
-  misakaMikotoCover,
-  helloKittyCover,
-  retroWindowsCover,
-  y2kJpCover,
-  retromaObsidianBookCover,
-} from '@renderer/pages/settings/AppearanceSettings/themeCovers';
+import { defaultThemeCover } from '@renderer/pages/settings/AppearanceSettings/themeCovers';
 
-import misakaMikotoCss from '@renderer/pages/settings/AppearanceSettings/presets/misaka-mikoto.css?raw';
-import helloKittyCss from '@renderer/pages/settings/AppearanceSettings/presets/hello-kitty.css?raw';
-import retroWindowsCss from '@renderer/pages/settings/AppearanceSettings/presets/retro-windows.css?raw';
-import retromaY2kCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-y2k.css?raw';
-import retromaObsidianBookCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book.css?raw';
-import retromaObsidianBook2Css from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book-2.css?raw';
-import retromaObsidianBookDarkCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book-2-1-dark.css?raw';
-import retromaNocturneParchmentCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-nocturne-parchment.css?raw';
-import discourseHorizonCss from '@renderer/pages/settings/AppearanceSettings/presets/discourse-horizon.css?raw';
-import glitteringInputFieldCss from '@renderer/pages/settings/AppearanceSettings/presets/glittering-input-field.css?raw';
+import auroraGlassCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/aurora-glass.css?raw';
+import prismDaylightCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/prism-daylight.css?raw';
+import graphiteStudioCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/graphite-studio.css?raw';
+import neonCircuitCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/neon-circuit.css?raw';
+import porcelainStudioCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/porcelain-studio.css?raw';
+import zincCanvasCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/zinc-canvas.css?raw';
+import stoneTaupeCss from '@renderer/pages/settings/AppearanceSettings/premiumPresets/stone-taupe.css?raw';
+import openaiCodexCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/openai-codex.css?raw';
+import claudeConsoleCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/claude-console.css?raw';
+import opencodeTerminalCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/opencode-terminal.css?raw';
+import geminiSpectrumCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/gemini-spectrum.css?raw';
+import cursorMidnightCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/cursor-midnight.css?raw';
+import copilotWorkbenchCss from '@renderer/pages/settings/AppearanceSettings/brandPresets/copilot-workbench.css?raw';
 
 const T0 = 0;
 
@@ -51,22 +47,19 @@ export const BUILTIN_THEMES: Theme[] = [
     updated_at: T0,
   },
   { id: DARK_THEME_ID, name: 'Dark', appearance: 'dark', builtin: true, created_at: T0, updated_at: T0 },
-  decorative('misaka-mikoto-theme', 'Misaka Mikoto Theme', 'light', misakaMikotoCss, misakaMikotoCover),
-  decorative('hello-kitty', 'Hello Kitty', 'light', helloKittyCss, helloKittyCover),
-  decorative('retro-windows', 'Retro Windows', 'light', retroWindowsCss, retroWindowsCover),
-  decorative('retroma-y2k-jp-v42-pure', 'Y2K Ledger', 'light', retromaY2kCss, y2kJpCover),
-  decorative(
-    'retroma-obsidian-book',
-    'Retroma Obsidian Book',
-    'dark',
-    retromaObsidianBookCss,
-    retromaObsidianBookCover
-  ),
-  decorative('retroma-obsidian-book-slate', 'Retroma Obsidian Slate', 'dark', retromaObsidianBook2Css),
-  decorative('retroma-obsidian-book-night', 'Retroma Obsidian Night', 'dark', retromaObsidianBookDarkCss),
-  decorative('retroma-nocturne-parchment', 'Retroma Nocturne Parchment', 'dark', retromaNocturneParchmentCss),
-  decorative('discourse-horizon', 'Discourse Horizon', 'light', discourseHorizonCss),
-  decorative('glittering-input-field', 'Glittering Input Field', 'light', glitteringInputFieldCss),
+  decorative('openai-codex', 'OpenAI Codex', 'dark', openaiCodexCss),
+  decorative('claude-console', 'Claude Console', 'dark', claudeConsoleCss),
+  decorative('opencode-terminal', 'OpenCode Terminal', 'dark', opencodeTerminalCss),
+  decorative('gemini-spectrum', 'Gemini Spectrum', 'dark', geminiSpectrumCss),
+  decorative('cursor-midnight', 'Cursor Midnight', 'dark', cursorMidnightCss),
+  decorative('copilot-workbench', 'Copilot Workbench', 'dark', copilotWorkbenchCss),
+  decorative('aurora-glass', 'Aurora Glass', 'dark', auroraGlassCss),
+  decorative('prism-daylight', 'Prism Daylight', 'light', prismDaylightCss),
+  decorative('graphite-studio', 'Graphite Studio', 'dark', graphiteStudioCss),
+  decorative('neon-circuit', 'Neon Circuit', 'dark', neonCircuitCss),
+  decorative('porcelain-studio', 'Porcelain Studio', 'light', porcelainStudioCss),
+  decorative('zinc-canvas', 'Zinc Canvas', 'dark', zincCanvasCss),
+  decorative('stone-taupe', 'Stone Taupe', 'dark', stoneTaupeCss),
 ];
 
 export const BUILTIN_THEME_IDS = new Set(BUILTIN_THEMES.map((t) => t.id));
