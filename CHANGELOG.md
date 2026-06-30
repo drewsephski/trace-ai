@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.1.29](https://github.com/drewsephski/trace-ai/compare/v2.1.28...v2.1.29) (2026-06-30)
+
+### Desktop
+
+#### Refactoring
+
+- Refactor desktop app architecture and UI flows
+
+---
+
 ## [2.1.28](https://github.com/drewsephski/trace-ai/compare/v2.1.27...v2.1.28) (2026-06-30)
 
 ### Desktop

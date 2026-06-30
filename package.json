@@ -1,6 +1,6 @@
 {
   "name": "trace",
-  "version": "2.1.28",
+  "version": "2.1.29",
   "description": "Trace is a local-first desktop workspace for running AI agents with reviewable file, command, skill, and MCP workflows.",
   "keywords": [],
   "homepage": "https://github.com/drewsephski/trace-ai",

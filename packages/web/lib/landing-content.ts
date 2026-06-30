@@ -1,4 +1,4 @@
-export const releaseVersion = '2.1.28';
+export const releaseVersion = '2.1.29';
 export const githubRepo = 'https://github.com/drewsephski/trace-ai';
 export const releasePage = `${githubRepo}/releases`;
 export const releaseBase = `${releasePage}/download/v${releaseVersion}`;
