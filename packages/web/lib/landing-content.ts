@@ -1,8 +1,8 @@
-export const releaseVersion = '2.1.27'
-export const githubRepo = 'https://github.com/drewsephski/trace-ai'
-export const releasePage = `${githubRepo}/releases`
-export const releaseBase = `${releasePage}/download/v${releaseVersion}`
-export const macDownloadHref = `${releaseBase}/Trace-${releaseVersion}-mac-arm64.dmg`
+export const releaseVersion = '2.1.27';
+export const githubRepo = 'https://github.com/drewsephski/trace-ai';
+export const releasePage = `${githubRepo}/releases`;
+export const releaseBase = `${releasePage}/download/v${releaseVersion}`;
+export const macDownloadHref = `${releaseBase}/Trace-${releaseVersion}-mac-arm64.dmg`;
 
 export const navLinks = [
   { name: 'Features', href: '#features' },
@@ -10,16 +10,16 @@ export const navLinks = [
   { name: 'Agents', href: '#agents' },
   { name: 'Local-first', href: '#local-first' },
   { name: 'Download', href: '#download' },
-] as const
+] as const;
 
-export const heroWords = ['run', 'review', 'extend', 'automate'] as const
+export const heroWords = ['run', 'review', 'extend', 'automate'] as const;
 
 export const heroStats = [
   { value: 'Local-first', label: 'desktop runtime', detail: 'NO HOSTED SERVER REQUIRED' },
   { value: '8+', label: 'agent runtimes', detail: 'CLAUDE CODE, CODEX, GEMINI, MORE' },
   { value: 'MCP', label: 'shared tool layer', detail: 'CONNECT ONCE, REUSE EVERYWHERE' },
   { value: '3 OS', label: 'desktop builds', detail: 'MACOS / WINDOWS / LINUX' },
-] as const
+] as const;
 
 export const featureItems = [
   {
@@ -50,14 +50,13 @@ export const featureItems = [
       'Reuse assistant skills, configure MCP servers, run scheduled tasks, and coordinate multi-agent team workflows without changing product surfaces.',
     visual: 'automation',
   },
-] as const
+] as const;
 
 export const workflowSteps = [
   {
     number: 'I',
     title: 'Connect the agent runtimes you already use',
-    description:
-      'Add provider keys or local endpoints, then pick the assistant or compatible agent for the job.',
+    description: 'Add provider keys or local endpoints, then pick the assistant or compatible agent for the job.',
     code: `agents:
   - Claude Code
   - Codex
@@ -91,7 +90,7 @@ export const workflowSteps = [
     - allow_for_session
     - deny`,
   },
-] as const
+] as const;
 
 export const localFirstLayers = [
   { name: 'Desktop app', role: 'Electron runtime for local sessions, files, tools, and approvals' },
@@ -100,14 +99,14 @@ export const localFirstLayers = [
   { name: 'Channels', role: 'Slack, email, queues, and messaging integrations for review workflows' },
   { name: 'Releases', role: 'GitHub Releases publish installers and update metadata' },
   { name: 'Hosted companion', role: 'Optional landing, account, billing, and license surfaces' },
-] as const
+] as const;
 
 export const capabilityMetrics = [
   { value: 8, suffix: '+', label: 'agent runtimes supported' },
   { value: 3, suffix: '', label: 'desktop operating systems' },
   { value: 4, suffix: '', label: 'approval paths for agent actions' },
   { value: 0, suffix: '', label: 'hosted servers required for core use' },
-] as const
+] as const;
 
 export const integrationItems = [
   { name: 'Claude Code', category: 'Agent runtime' },
@@ -122,7 +121,7 @@ export const integrationItems = [
   { name: 'Skills', category: 'Reusable workflows' },
   { name: 'Team mode', category: 'Multi-agent coordination' },
   { name: 'Scheduled tasks', category: 'Automation' },
-] as const
+] as const;
 
 export const controlFeatures = [
   {
@@ -141,7 +140,7 @@ export const controlFeatures = [
     title: 'Intentional remote access',
     description: 'WebUI and messaging channels are opt-in surfaces for workflows that need them.',
   },
-] as const
+] as const;
 
 export const controlPrinciples = [
   'Local-first',
@@ -149,7 +148,7 @@ export const controlPrinciples = [
   'Open source',
   'Cross-platform',
   'Agent-neutral',
-] as const
+] as const;
 
 export const developerExamples = [
   {
@@ -172,7 +171,7 @@ bun run format
 bunx tsc --noEmit
 bun run test`,
   },
-] as const
+] as const;
 
 export const developerFeatures = [
   {
@@ -191,20 +190,18 @@ export const developerFeatures = [
     title: 'Open extension points',
     description: 'Skills, MCP, channels, and compatible agent runtimes stay pluggable.',
   },
-] as const
+] as const;
 
 export const useCases = [
   {
-    quote:
-      'Refactor a real repository with a coding agent while every file edit and shell command remains reviewable.',
+    quote: 'Refactor a real repository with a coding agent while every file edit and shell command remains reviewable.',
     author: 'Codebase work',
     role: 'Local folders, attached files, generated previews',
     company: 'Workspace',
     metric: 'Project context stays visible',
   },
   {
-    quote:
-      'Run several agent runtimes from the same desktop app instead of switching tools for every model or CLI.',
+    quote: 'Run several agent runtimes from the same desktop app instead of switching tools for every model or CLI.',
     author: 'Agent switching',
     role: 'Claude Code, Codex, OpenCode, Gemini, and ACP',
     company: 'Runtimes',
@@ -226,7 +223,7 @@ export const useCases = [
     company: 'Optional access',
     metric: 'Desktop remains the source of control',
   },
-] as const
+] as const;
 
 export const downloadOptions = [
   {
@@ -244,22 +241,33 @@ export const downloadOptions = [
     description: 'Signed desktop builds for macOS, Windows, and Linux, distributed through GitHub Releases.',
     price: `v${releaseVersion}`,
     cadence: 'Release',
-    features: ['macOS Apple Silicon and Intel', 'Windows and Linux builds', 'Installer/update metadata', 'Release notes and assets'],
+    features: [
+      'macOS Apple Silicon and Intel',
+      'Windows and Linux builds',
+      'Installer/update metadata',
+      'Release notes and assets',
+    ],
     cta: 'Download Trace',
     href: macDownloadHref,
     popular: true,
   },
   {
     name: 'Hosted companion',
-    description: 'Optional web surface for landing pages, accounts, license checkout, or future hosted product features.',
+    description:
+      'Optional web surface for landing pages, accounts, license checkout, or future hosted product features.',
     price: 'Optional',
     cadence: 'Web',
-    features: ['Does not replace local core', 'Useful for account features', 'Can support license workflows', 'Keeps remote access intentional'],
+    features: [
+      'Does not replace local core',
+      'Useful for account features',
+      'Can support license workflows',
+      'Keeps remote access intentional',
+    ],
     cta: 'See releases',
     href: releasePage,
     popular: false,
   },
-] as const
+] as const;
 
 export const footerLinks = {
   Product: [
@@ -285,4 +293,4 @@ export const footerLinks = {
     { name: 'Approvals', href: '#security' },
     { name: 'Open source', href: githubRepo },
   ],
-} as const
+} as const;

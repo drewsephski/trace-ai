@@ -1,7 +1,7 @@
-import { dirname } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = dirname(fileURLToPath(import.meta.url))
+const root = dirname(fileURLToPath(import.meta.url));
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -11,6 +11,6 @@ const nextConfig = {
   turbopack: {
     root,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

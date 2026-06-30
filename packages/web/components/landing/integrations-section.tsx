@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { useEffect, useState, useRef } from 'react'
-import { integrationItems } from '@/lib/landing-content'
+import { useEffect, useState, useRef } from 'react';
+import { integrationItems } from '@/lib/landing-content';
 
-const reversedIntegrationItems = integrationItems.toReversed()
+const reversedIntegrationItems = integrationItems.toReversed();
 
 export function IntegrationsSection() {
   const [isVisible, setIsVisible] = useState(true);
@@ -22,67 +22,66 @@ export function IntegrationsSection() {
   }, []);
 
   return (
-    <section id="agents" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+    <section id='agents' ref={sectionRef} className='relative py-24 lg:py-32 overflow-hidden'>
+      <div className='max-w-[1400px] mx-auto px-6 lg:px-12'>
         {/* Header */}
         <div
           className={`text-center max-w-3xl mx-auto mb-16 lg:mb-24 transition-all duration-700 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <span className="inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6">
-            <span className="w-8 h-px bg-foreground/30" />
+          <span className='inline-flex items-center gap-3 text-sm font-mono text-muted-foreground mb-6'>
+            <span className='w-8 h-px bg-foreground/30' />
             Agents and tools
-            <span className="w-8 h-px bg-foreground/30" />
+            <span className='w-8 h-px bg-foreground/30' />
           </span>
-          <h2 className="text-4xl lg:text-6xl font-display tracking-tight mb-6">
+          <h2 className='text-4xl lg:text-6xl font-display tracking-tight mb-6'>
             Bring your agents,
             <br />
             tools, and skills.
           </h2>
-          <p className="text-xl text-muted-foreground">
-            Trace is agent-neutral: connect compatible runtimes, reuse MCP servers,
-            and keep workflow-specific skills close to the workspace.
+          <p className='text-xl text-muted-foreground'>
+            Trace is agent-neutral: connect compatible runtimes, reuse MCP servers, and keep workflow-specific skills
+            close to the workspace.
           </p>
         </div>
-
       </div>
-      
+
       {/* Full-width marquees outside container */}
-      <div className="w-full mb-6">
-        <div className="flex gap-6 marquee">
+      <div className='w-full mb-6'>
+        <div className='flex gap-6 marquee'>
           {[...Array(2)].map((_, setIndex) => (
-            <div key={setIndex} className="flex gap-6 shrink-0">
+            <div key={setIndex} className='flex gap-6 shrink-0'>
               {integrationItems.map((integration) => (
                 <div
                   key={`${integration.name}-${setIndex}`}
-                  className="shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group"
+                  className='shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group'
                 >
-                  <div className="text-lg font-medium group-hover:translate-x-1 transition-transform">
+                  <div className='text-lg font-medium group-hover:translate-x-1 transition-transform'>
                     {integration.name}
                   </div>
-                  <div className="text-sm text-muted-foreground">{integration.category}</div>
+                  <div className='text-sm text-muted-foreground'>{integration.category}</div>
                 </div>
               ))}
             </div>
           ))}
         </div>
       </div>
-      
+
       {/* Reverse marquee */}
-      <div className="w-full">
-        <div className="flex gap-6 marquee-reverse">
+      <div className='w-full'>
+        <div className='flex gap-6 marquee-reverse'>
           {[...Array(2)].map((_, setIndex) => (
-            <div key={setIndex} className="flex gap-6 shrink-0">
+            <div key={setIndex} className='flex gap-6 shrink-0'>
               {reversedIntegrationItems.map((integration) => (
                 <div
                   key={`${integration.name}-reverse-${setIndex}`}
-                  className="shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group"
+                  className='shrink-0 px-8 py-6 border border-foreground/10 hover:border-foreground/30 hover:bg-foreground/[0.02] transition-all duration-300 group'
                 >
-                  <div className="text-lg font-medium group-hover:translate-x-1 transition-transform">
+                  <div className='text-lg font-medium group-hover:translate-x-1 transition-transform'>
                     {integration.name}
                   </div>
-                  <div className="text-sm text-muted-foreground">{integration.category}</div>
+                  <div className='text-sm text-muted-foreground'>{integration.category}</div>
                 </div>
               ))}
             </div>

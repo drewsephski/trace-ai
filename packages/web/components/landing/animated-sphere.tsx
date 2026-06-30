@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export function AnimatedSphere() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -10,10 +10,10 @@ export function AnimatedSphere() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const chars = "░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯";
+    const chars = '░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯';
     let time = 0;
 
     const resize = () => {
@@ -25,7 +25,7 @@ export function AnimatedSphere() {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     const render = () => {
       const rect = canvas.getBoundingClientRect();
@@ -35,9 +35,9 @@ export function AnimatedSphere() {
       const centerY = rect.height / 2;
       const radius = Math.min(rect.width, rect.height) * 0.525;
 
-      ctx.font = "12px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.font = '12px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
       const points: { x: number; y: number; z: number; char: string }[] = [];
 
@@ -87,16 +87,10 @@ export function AnimatedSphere() {
     render();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-full"
-      style={{ display: "block" }}
-    />
-  );
+  return <canvas ref={canvasRef} className='w-full h-full' style={{ display: 'block' }} />;
 }

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export function AnimatedWave() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -10,10 +10,10 @@ export function AnimatedWave() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const chars = "·∘○◯◌●◉";
+    const chars = '·∘○◯◌●◉';
     let time = 0;
 
     const resize = () => {
@@ -25,15 +25,15 @@ export function AnimatedWave() {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     const render = () => {
       const rect = canvas.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      ctx.font = "14px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.font = '14px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
       const cols = Math.floor(rect.width / 20);
       const rows = Math.floor(rect.height / 20);
@@ -47,10 +47,10 @@ export function AnimatedWave() {
           const wave1 = Math.sin(x * 0.2 + time * 2) * Math.cos(y * 0.15 + time);
           const wave2 = Math.sin((x + y) * 0.1 + time * 1.5);
           const wave3 = Math.cos(x * 0.1 - y * 0.1 + time * 0.8);
-          
+
           const combined = (wave1 + wave2 + wave3) / 3;
           const normalized = (combined + 1) / 2;
-          
+
           const charIndex = Math.floor(normalized * (chars.length - 1));
           const alpha = 0.15 + normalized * 0.5;
 
@@ -66,16 +66,10 @@ export function AnimatedWave() {
     render();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-full"
-      style={{ display: "block" }}
-    />
-  );
+  return <canvas ref={canvasRef} className='w-full h-full' style={{ display: 'block' }} />;
 }

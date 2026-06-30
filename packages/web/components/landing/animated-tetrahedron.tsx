@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export function AnimatedTetrahedron() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -10,10 +10,10 @@ export function AnimatedTetrahedron() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const chars = "░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯";
+    const chars = '░▒▓█▀▄▌▐│─┤├┴┬╭╮╰╯';
     let time = 0;
 
     const resize = () => {
@@ -25,20 +25,24 @@ export function AnimatedTetrahedron() {
     };
 
     resize();
-    window.addEventListener("resize", resize);
+    window.addEventListener('resize', resize);
 
     // Tetrahedron vertices
     const vertices = [
-      { x: 0, y: 1, z: 0 },           // Top
+      { x: 0, y: 1, z: 0 }, // Top
       { x: -0.943, y: -0.333, z: -0.5 }, // Bottom left back
-      { x: 0.943, y: -0.333, z: -0.5 },  // Bottom right back
-      { x: 0, y: -0.333, z: 1 },         // Bottom front
+      { x: 0.943, y: -0.333, z: -0.5 }, // Bottom right back
+      { x: 0, y: -0.333, z: 1 }, // Bottom front
     ];
 
     // Edges connecting vertices
     const edges = [
-      [0, 1], [0, 2], [0, 3], // Top to bottom vertices
-      [1, 2], [2, 3], [3, 1], // Bottom triangle
+      [0, 1],
+      [0, 2],
+      [0, 3], // Top to bottom vertices
+      [1, 2],
+      [2, 3],
+      [3, 1], // Bottom triangle
     ];
 
     // Faces for filling with points
@@ -75,9 +79,9 @@ export function AnimatedTetrahedron() {
       const centerY = rect.height / 2;
       const scale = Math.min(rect.width, rect.height) * 0.7;
 
-      ctx.font = "18px monospace";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
+      ctx.font = '18px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
 
       const points: { x: number; y: number; z: number; char: string }[] = [];
 
@@ -160,16 +164,10 @@ export function AnimatedTetrahedron() {
     render();
 
     return () => {
-      window.removeEventListener("resize", resize);
+      window.removeEventListener('resize', resize);
       cancelAnimationFrame(frameRef.current);
     };
   }, []);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="w-full h-full"
-      style={{ display: "block" }}
-    />
-  );
+  return <canvas ref={canvasRef} className='w-full h-full' style={{ display: 'block' }} />;
 }
