@@ -86,8 +86,8 @@ detect_arch() {
 
 # ─── 取得版本號 ──────────────────────────────────────────────────────────────
 resolve_version() {
-    if [[ -n "${TRACE_VERSION:-${AIONUI_VERSION:-}}" ]]; then
-        VERSION="${TRACE_VERSION:-$AIONUI_VERSION}"
+    if [[ -n "${TRACE_VERSION:-${TRACE_VERSION:-}}" ]]; then
+        VERSION="${TRACE_VERSION:-$TRACE_VERSION}"
         info "使用指定版本: ${BOLD}v$VERSION${NC}"
     else
         info "正在查詢最新版本..."
@@ -193,7 +193,7 @@ create_service_script() {
 
 PIDFILE="/var/run/trace.pid"
 LOGFILE="/var/log/trace.log"
-WORKDIR="${TRACE_WORKDIR:-${AIONUI_WORKDIR:-$HOME}}"
+WORKDIR="${TRACE_WORKDIR:-${TRACE_WORKDIR:-$HOME}}"
 
 start() {
     if [ -f "$PIDFILE" ] && kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
@@ -205,7 +205,7 @@ start() {
     cd "$WORKDIR" || exit 1
 
     nohup xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
-        /usr/bin/Trace --webui --remote --no-sandbox \
+        /usr/bin/Trace --webui --no-sandbox \
         > "$LOGFILE" 2>&1 &
 
     echo $! > "$PIDFILE"
@@ -213,9 +213,7 @@ start() {
 
     if kill -0 "$(cat "$PIDFILE")" 2>/dev/null; then
         echo "✅ Trace 啟動成功 (PID: $(cat "$PIDFILE"))"
-        local ip
-        ip=$(hostname -I 2>/dev/null | awk '{print $1}')
-        echo "🌐 WebUI: http://${ip:-localhost}:25808"
+        echo "🌐 WebUI: http://127.0.0.1:25808"
     else
         echo "❌ Trace 啟動失敗，請查看日誌: $LOGFILE"
         rm -f "$PIDFILE"
@@ -309,7 +307,7 @@ Wants=network-online.target
 Type=simple
 User=root
 WorkingDirectory=/root
-ExecStart=/usr/bin/xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" /usr/bin/Trace --webui --remote --no-sandbox
+ExecStart=/usr/bin/xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" /usr/bin/Trace --webui --no-sandbox
 Restart=on-failure
 RestartSec=10
 StandardOutput=journal
@@ -400,7 +398,7 @@ print_summary() {
     if [[ "${MODE}" == "headless" ]]; then
         echo -e "  ${YELLOW}💡 提示:${NC}"
         echo "     • 設定工作目錄: export TRACE_WORKDIR=/path/to/workspace"
-        echo "     • 遠端存取方式: SSH 隧道 / ngrok / 直接開放 25808 端口"
+        echo "     • 遠端存取方式: SSH 隧道 / VPN / 帶認證的 HTTPS 反向代理"
         echo "     • 詳細指南: docs/guides/deploy-server.md"
         echo ""
     fi
@@ -411,7 +409,7 @@ main() {
     banner
 
     # 安裝模式：headless (預設) 或 desktop
-    MODE="${TRACE_MODE:-${AIONUI_MODE:-headless}}"
+    MODE="${TRACE_MODE:-${TRACE_MODE:-headless}}"
     info "安裝模式: ${BOLD}$MODE${NC}"
 
     # Step 1: 前置檢查

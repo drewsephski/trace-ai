@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -695,7 +695,8 @@ const HTMLRenderer: React.FC<HTMLRendererProps> = ({
               bottom: 0,
               height: '100%',
             }}
-            webpreferences='allowRunningInsecureContent, javascript=yes'
+            allowpopups={false}
+            webpreferences='contextIsolation=yes, nodeIntegration=no, nodeIntegrationInSubFrames=no, nativeWindowOpen=no, sandbox=yes, allowRunningInsecureContent=no, javascript=yes'
           />
         </>
       ) : (

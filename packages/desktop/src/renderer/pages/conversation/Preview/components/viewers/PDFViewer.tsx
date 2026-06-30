@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -163,6 +163,8 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({ file_path, content, hideToolbar
           src={pdfSrc}
           className='w-full h-full'
           style={{ display: 'inline-flex' }}
+          allowpopups={false}
+          webpreferences='contextIsolation=yes, nodeIntegration=no, nodeIntegrationInSubFrames=no, nativeWindowOpen=no, sandbox=yes, allowRunningInsecureContent=no'
         />
       </div>
     </div>

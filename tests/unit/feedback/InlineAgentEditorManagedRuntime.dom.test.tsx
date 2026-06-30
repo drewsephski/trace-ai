@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -21,6 +21,44 @@ vi.mock('@/renderer/hooks/context/ThemeContext', () => ({
 vi.mock('@/renderer/components/chat/EmojiPicker', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
+
+vi.mock('@arco-design/web-react', () => {
+  const Button = ({
+    children,
+    loading: _loading,
+    long: _long,
+    type: _type,
+    ...props
+  }: React.ButtonHTMLAttributes<HTMLButtonElement> & { loading?: boolean; long?: boolean; type?: string }) => (
+    <button type='button' {...props}>
+      {children}
+    </button>
+  );
+  const Input = ({
+    onChange,
+    ...props
+  }: Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> & { onChange?: (value: string) => void }) => (
+    <input {...props} onChange={(event) => onChange?.(event.currentTarget.value)} />
+  );
+  const Collapse = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+  Collapse.Item = ({ children, header }: { children: React.ReactNode; header?: React.ReactNode }) => (
+    <section>
+      {header}
+      {children}
+    </section>
+  );
+  return {
+    Alert: ({ content }: { content: React.ReactNode }) => <div role='alert'>{content}</div>,
+    Avatar: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    Button,
+    Collapse,
+    ConfigProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    Input,
+    Typography: {
+      Text: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+    },
+  };
+});
 
 vi.mock('@uiw/react-codemirror', () => ({
   default: () => <div data-testid='codemirror-stub' />,
@@ -43,7 +81,7 @@ const renderEditor = () =>
   );
 
 const fillCommandAndTest = async (user: ReturnType<typeof userEvent.setup>, command: string) => {
-  const commandInput = document.querySelectorAll('.arco-input')[1] as HTMLInputElement;
+  const commandInput = screen.getByPlaceholderText('settings.commandPlaceholder');
   await act(async () => {
     await user.type(commandInput, command);
   });

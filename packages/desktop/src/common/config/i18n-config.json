@@ -2,6 +2,8 @@
   "referenceLanguage": "en-US",
   "fallbackLanguage": "en-US",
   "supportedLanguages": ["en-US", "ja-JP", "ko-KR", "tr-TR", "ru-RU", "uk-UA", "pt-BR", "de-DE"],
+  "launchSupportedLanguages": ["en-US", "ja-JP", "ko-KR", "tr-TR", "ru-RU", "uk-UA", "pt-BR", "de-DE"],
+  "translationBacklogLanguages": ["zh-CN", "zh-TW"],
   "modules": [
     "common",
     "agentMode",

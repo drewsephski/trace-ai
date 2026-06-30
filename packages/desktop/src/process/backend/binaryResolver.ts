@@ -2,7 +2,7 @@
  * Resolve the aioncore binary path.
  *
  * Search order:
- *  1. Explicit AIONUI_BACKEND_BIN override
+ *  1. Explicit TRACE_BACKEND_BIN override
  *  2. Bundled with app (production)
  *  3. Repo-local resources/bundled-aioncore (development)
  *  4. System PATH
@@ -100,7 +100,7 @@ export function resolveBinaryPath(): string {
 }
 
 function resolveFromEnvOverride(diagnostics: BackendBinaryResolveDiagnostics): string | null {
-  const envOverridePath = process.env.AIONUI_BACKEND_BIN?.trim();
+  const envOverridePath = process.env.TRACE_BACKEND_BIN?.trim();
   if (!envOverridePath) return null;
 
   diagnostics.envOverridePath = envOverridePath;

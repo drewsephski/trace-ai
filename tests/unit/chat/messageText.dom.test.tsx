@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -184,7 +184,7 @@ describe('MessageText attachment paths', () => {
       position: 'right',
       createdAt: Date.now(),
       content: {
-        content: 'look at this\n\n[[AION_FILES]]\nuploads/photo.png',
+        content: 'look at this\n\n[[TRACE_FILES]]\nuploads/photo.png',
       },
     };
 
@@ -218,7 +218,32 @@ describe('MessageText attachment paths', () => {
 
     const content = screen.getByTestId('message-text-content');
     expect(content.parentElement?.className).toContain('min-w-0');
+    expect(content.parentElement?.parentElement?.className).toContain('w-full');
     expect(content.parentElement?.className).not.toContain('max-w-780px');
+  });
+
+  it('keeps user message text content-sized while preserving right alignment', () => {
+    const message: IMessageText = {
+      id: 'msg-user-width',
+      msg_id: 'msg-user-width',
+      conversation_id: 'conv-1',
+      type: 'text',
+      position: 'right',
+      createdAt: Date.now(),
+      content: {
+        content: 'compact user message',
+      },
+    };
+
+    render(
+      <ConversationProvider value={{ conversationId: 'conv-1', workspace: '/workspace/demo', type: 'acp' }}>
+        <MessageText message={message} />
+      </ConversationProvider>
+    );
+
+    const content = screen.getByTestId('message-text-content');
+    expect(content.parentElement?.parentElement?.className).toContain('items-end');
+    expect(content.parentElement?.parentElement?.className).not.toContain('w-full');
   });
 
   it('keeps absolute attachment paths unchanged before previewing', () => {
@@ -230,7 +255,7 @@ describe('MessageText attachment paths', () => {
       position: 'right',
       createdAt: Date.now(),
       content: {
-        content: 'look at this\n\n[[AION_FILES]]\n/Users/demo/Desktop/photo.png',
+        content: 'look at this\n\n[[TRACE_FILES]]\n/Users/demo/Desktop/photo.png',
       },
     };
 

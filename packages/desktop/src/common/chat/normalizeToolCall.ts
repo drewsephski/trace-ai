@@ -1,3 +1,4 @@
+import { normalizeTraceToolDisplayText } from './chatLib';
 import type { IMessageAcpToolCall, IMessageToolCall, IMessageToolGroup } from './chatLib';
 import { getAcpImagePath } from './acpToolCallOutput';
 
@@ -57,12 +58,14 @@ const getResultDisplayText = (
 export function normalizeToolGroup(message: IMessageToolGroup): NormalizedToolCall[] {
   if (!Array.isArray(message.content)) return [];
   return message.content.map(({ name, call_id, description, confirmationDetails, status, result_display }) => {
-    let desc = typeof description === 'string' ? description.slice(0, 100) : '';
+    let desc = typeof description === 'string' ? normalizeTraceToolDisplayText(description).slice(0, 100) : '';
     const type = confirmationDetails?.type;
     if (type === 'edit') desc = confirmationDetails.file_name;
     if (type === 'exec') desc = confirmationDetails.command;
     if (type === 'info') desc = confirmationDetails.urls?.join(';') || confirmationDetails.title;
-    if (type === 'mcp') desc = confirmationDetails.server_name + ':' + confirmationDetails.tool_name;
+    if (type === 'mcp') {
+      desc = normalizeTraceToolDisplayText(confirmationDetails.server_name + ':' + confirmationDetails.tool_name);
+    }
 
     let input: string | undefined;
     if (confirmationDetails) {
@@ -74,7 +77,7 @@ export function normalizeToolGroup(message: IMessageToolGroup): NormalizedToolCa
 
     return {
       key: call_id,
-      name,
+      name: normalizeTraceToolDisplayText(name),
       status: normalizeToolGroupStatus(status),
       description: desc,
       input,
@@ -169,9 +172,9 @@ export function normalizeAcpToolCall(message: IMessageAcpToolCall): NormalizedTo
 
   return {
     key: update.tool_call_id,
-    name: update.title,
+    name: normalizeTraceToolDisplayText(update.title),
     status: normalizeAcpStatus(update.status),
-    description: keyParam || (rawInput?.command as string) || update.kind,
+    description: normalizeTraceToolDisplayText(keyParam || (rawInput?.command as string) || update.kind),
     input,
     output,
     truncated: content?._compact?.truncated === true,
@@ -208,9 +211,9 @@ export function normalizeToolCall(message: IMessageToolCall): NormalizedToolCall
 
   return {
     key: call_id,
-    name,
+    name: normalizeTraceToolDisplayText(name),
     status: normalizeToolCallStatus(status),
-    description: description || undefined,
+    description: description ? normalizeTraceToolDisplayText(description) : undefined,
     input: displayInput,
     output,
   };

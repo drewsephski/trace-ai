@@ -3,84 +3,84 @@
 
 !include "x64.nsh"
 
-!ifndef AIONUI_APP_PROCESS_CHECK_DEFINED
-!define AIONUI_APP_PROCESS_CHECK_DEFINED
-!define AIONUI_APP_EXECUTABLE_FILENAME "AionUi.exe"
-!define AIONUI_PROCESS_CHECK_LOG "aionui-installer-process-check.log"
+!ifndef TRACE_APP_PROCESS_CHECK_DEFINED
+!define TRACE_APP_PROCESS_CHECK_DEFINED
+!define TRACE_APP_EXECUTABLE_FILENAME "Trace.exe"
+!define TRACE_PROCESS_CHECK_LOG "trace-installer-process-check.log"
 
 !ifndef BUILD_UNINSTALLER
-  Var /GLOBAL AionUiUninstallHadErrors
-  Var /GLOBAL AionUiUninstallLogResult
-  Var /GLOBAL AionUiVerifyResourceResult
+  Var /GLOBAL TraceUninstallHadErrors
+  Var /GLOBAL TraceUninstallLogResult
+  Var /GLOBAL TraceVerifyResourceResult
 !endif
 
-!macro AIONUI_LOG_UNINSTALLER_REPAIR _PHASE
+!macro TRACE_LOG_UNINSTALLER_REPAIR _PHASE
   nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     $$path = '$INSTDIR\${UNINSTALL_FILENAME}'; \
     $$item = Get-Item -LiteralPath $$path -ErrorAction SilentlyContinue; \
     $$version = if ($$item) { $$item.VersionInfo.ProductVersion } else { '' }; \
     $$length = if ($$item) { $$item.Length } else { '' }; \
     Add-Content -LiteralPath $$log -Encoding UTF8 -Value ('[' + (Get-Date -Format o) + '] uninstaller-repair phase=${_PHASE} instDir=$INSTDIR path=' + $$path + ' exists=' + [bool]$$item + ' version=' + $$version + ' length=' + $$length) \
   }"`
-  Pop $AionUiRepairLogResult
+  Pop $TraceRepairLogResult
 !macroend
 
-!macro AIONUI_REPAIR_INSTALLED_UNINSTALLER
-  Var /GLOBAL AionUiInstalledUninstaller
-  Var /GLOBAL AionUiBundledUninstaller
-  Var /GLOBAL AionUiRepairLogResult
+!macro TRACE_REPAIR_INSTALLED_UNINSTALLER
+  Var /GLOBAL TraceInstalledUninstaller
+  Var /GLOBAL TraceBundledUninstaller
+  Var /GLOBAL TraceRepairLogResult
 
-  !insertmacro AIONUI_LOG_UNINSTALLER_REPAIR "before"
-  StrCpy $AionUiInstalledUninstaller "$INSTDIR\${UNINSTALL_FILENAME}"
+  !insertmacro TRACE_LOG_UNINSTALLER_REPAIR "before"
+  StrCpy $TraceInstalledUninstaller "$INSTDIR\${UNINSTALL_FILENAME}"
 
-  ${If} ${FileExists} "$AionUiInstalledUninstaller"
+  ${If} ${FileExists} "$TraceInstalledUninstaller"
     InitPluginsDir
-    StrCpy $AionUiBundledUninstaller "$PLUGINSDIR\AionUi-fixed-uninstaller.exe"
+    StrCpy $TraceBundledUninstaller "$PLUGINSDIR\Trace-fixed-uninstaller.exe"
     SetOverwrite on
-    File "/oname=$PLUGINSDIR\AionUi-fixed-uninstaller.exe" "${UNINSTALLER_OUT_FILE}"
+    File "/oname=$PLUGINSDIR\Trace-fixed-uninstaller.exe" "${UNINSTALLER_OUT_FILE}"
 
     ClearErrors
-    CopyFiles /SILENT "$AionUiBundledUninstaller" "$AionUiInstalledUninstaller"
+    CopyFiles /SILENT "$TraceBundledUninstaller" "$TraceInstalledUninstaller"
     ${If} ${Errors}
-      !insertmacro AIONUI_LOG_UNINSTALLER_REPAIR "copy-failed"
-      MessageBox MB_OK|MB_ICONEXCLAMATION "AionUi cannot update because the existing uninstaller is locked.$\r$\n$\r$\nPlease close AionUi completely and try again. If it still fails, restart Windows and run this installer again.$\r$\n$\r$\nIf the problem continues, uninstall the old AionUi from Windows Settings, then run this installer again."
+      !insertmacro TRACE_LOG_UNINSTALLER_REPAIR "copy-failed"
+      MessageBox MB_OK|MB_ICONEXCLAMATION "Trace cannot update because the existing uninstaller is locked.$\r$\n$\r$\nPlease close Trace completely and try again. If it still fails, restart Windows and run this installer again.$\r$\n$\r$\nIf the problem continues, uninstall the old Trace from Windows Settings, then run this installer again."
       SetErrorLevel 2
       Quit
     ${Else}
-      !insertmacro AIONUI_LOG_UNINSTALLER_REPAIR "after-copy"
+      !insertmacro TRACE_LOG_UNINSTALLER_REPAIR "after-copy"
     ${EndIf}
   ${Else}
-    !insertmacro AIONUI_LOG_UNINSTALLER_REPAIR "missing"
+    !insertmacro TRACE_LOG_UNINSTALLER_REPAIR "missing"
   ${EndIf}
 !macroend
 
-!macro AIONUI_LOG_UNINSTALL_RESULT _ROOT_KEY _HAD_ERRORS
+!macro TRACE_LOG_UNINSTALL_RESULT _ROOT_KEY _HAD_ERRORS
   nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     Add-Content -LiteralPath $$log -Encoding UTF8 -Value ('[' + (Get-Date -Format o) + '] uninstall-result root=${_ROOT_KEY} launchErrors=${_HAD_ERRORS} exitCode=$R0 instDir=$INSTDIR') \
   }"`
-  Pop $AionUiUninstallLogResult
+  Pop $TraceUninstallLogResult
 !macroend
 
-!macro AIONUI_LOG_EVENT _MESSAGE
+!macro TRACE_LOG_EVENT _MESSAGE
   Push $9
   nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     Add-Content -LiteralPath $$log -Encoding UTF8 -Value ('[' + (Get-Date -Format o) + '] ${_MESSAGE}') \
   }"`
   Pop $9
   Pop $9
 !macroend
 
-!macro AIONUI_LOG_ATOMIC_REMOVE_FAILURE
+!macro TRACE_LOG_ATOMIC_REMOVE_FAILURE
   Push $9
   nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     $$failed = '$R0'; \
     $$instDir = '$INSTDIR'; \
     $$oldInstallDir = '$PLUGINSDIR\old-install'; \
@@ -94,10 +94,10 @@
   Pop $9
 !macroend
 
-!macro AIONUI_REMOVE_INSTALL_DIR
+!macro TRACE_REMOVE_INSTALL_DIR
   nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'Stop'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     $$path = [System.IO.Path]::GetFullPath('$INSTDIR'); \
     try { \
       if (Test-Path -LiteralPath $$path) { \
@@ -111,15 +111,15 @@
       exit 1 \
     } \
   }"`
-  Pop $AionUiRemoveDirResult
+  Pop $TraceRemoveDirResult
 !macroend
 
-!macro AIONUI_FIND_APP_PROCESS _RETURN
+!macro TRACE_FIND_APP_PROCESS _RETURN
   nsExec::Exec `"$PowerShellPath" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     $$instDir = '$INSTDIR'; \
-    $$target = [System.IO.Path]::GetFullPath((Join-Path $$instDir '${AIONUI_APP_EXECUTABLE_FILENAME}')); \
+    $$target = [System.IO.Path]::GetFullPath((Join-Path $$instDir '${TRACE_APP_EXECUTABLE_FILENAME}')); \
     $$psProc = @(Get-CimInstance -ClassName Win32_Process | Where-Object { $$_.ProcessId -eq $$PID })[0]; \
     $$installerPid = $$psProc.ParentProcessId; \
     $$hits = @(Get-CimInstance -ClassName Win32_Process | Where-Object { \
@@ -127,7 +127,7 @@
       $$cmd = $$_.CommandLine; \
       if (-not $$path) { $$path = $$_.Path } \
       $$_.ProcessId -ne $$installerPid -and \
-      $$_.Name -ieq '${AIONUI_APP_EXECUTABLE_FILENAME}' -and \
+      $$_.Name -ieq '${TRACE_APP_EXECUTABLE_FILENAME}' -and \
       $$path -and \
       $$cmd -notmatch '--type=' -and \
       [string]::Equals([System.IO.Path]::GetFullPath($$path), $$target, [System.StringComparison]::CurrentCultureIgnoreCase) \
@@ -139,12 +139,12 @@
   Pop ${_RETURN}
 !macroend
 
-!macro AIONUI_STOP_APP_PROCESSES
+!macro TRACE_STOP_APP_PROCESSES
   nsExec::Exec `"$PowerShellPath" -NoProfile -ExecutionPolicy Bypass -Command "& { \
     $$ErrorActionPreference = 'SilentlyContinue'; \
-    $$log = Join-Path $$env:TEMP '${AIONUI_PROCESS_CHECK_LOG}'; \
+    $$log = Join-Path $$env:TEMP '${TRACE_PROCESS_CHECK_LOG}'; \
     $$instDir = '$INSTDIR'; \
-    $$target = [System.IO.Path]::GetFullPath((Join-Path $$instDir '${AIONUI_APP_EXECUTABLE_FILENAME}')); \
+    $$target = [System.IO.Path]::GetFullPath((Join-Path $$instDir '${TRACE_APP_EXECUTABLE_FILENAME}')); \
     $$psProc = @(Get-CimInstance -ClassName Win32_Process | Where-Object { $$_.ProcessId -eq $$PID })[0]; \
     $$installerPid = $$psProc.ParentProcessId; \
     $$all = @(Get-CimInstance -ClassName Win32_Process); \
@@ -153,7 +153,7 @@
       $$cmd = $$_.CommandLine; \
       if (-not $$path) { $$path = $$_.Path } \
       $$_.ProcessId -ne $$installerPid -and \
-      $$_.Name -ieq '${AIONUI_APP_EXECUTABLE_FILENAME}' -and \
+      $$_.Name -ieq '${TRACE_APP_EXECUTABLE_FILENAME}' -and \
       $$path -and \
       $$cmd -notmatch '--type=' -and \
       [string]::Equals([System.IO.Path]::GetFullPath($$path), $$target, [System.StringComparison]::CurrentCultureIgnoreCase) \
@@ -170,69 +170,69 @@
     foreach ($$id in ($$ids | Sort-Object -Descending)) { Stop-Process -Id $$id -Force -ErrorAction SilentlyContinue } \
     exit 0 \
   }"`
-  Pop $AionUiStopResult
+  Pop $TraceStopResult
 !macroend
 
 !macro customCheckAppRunning
-  Var /GLOBAL AionUiCheckResult
-  Var /GLOBAL AionUiCloseRetries
-  Var /GLOBAL AionUiStopResult
+  Var /GLOBAL TraceCheckResult
+  Var /GLOBAL TraceCloseRetries
+  Var /GLOBAL TraceStopResult
 
-  !insertmacro AIONUI_FIND_APP_PROCESS $AionUiCheckResult
-  ${If} $AionUiCheckResult == 0
-    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(appRunning)" /SD IDOK IDOK aionui_do_stop_process
+  !insertmacro TRACE_FIND_APP_PROCESS $TraceCheckResult
+  ${If} $TraceCheckResult == 0
+    MessageBox MB_OKCANCEL|MB_ICONEXCLAMATION "$(appRunning)" /SD IDOK IDOK trace_do_stop_process
     Quit
 
-    aionui_do_stop_process:
+    trace_do_stop_process:
       DetailPrint "$(appClosing)"
-      !insertmacro AIONUI_STOP_APP_PROCESSES
-      StrCpy $AionUiCloseRetries 0
+      !insertmacro TRACE_STOP_APP_PROCESSES
+      StrCpy $TraceCloseRetries 0
 
-    aionui_wait_for_close:
+    trace_wait_for_close:
       Sleep 1000
-      !insertmacro AIONUI_FIND_APP_PROCESS $AionUiCheckResult
-      ${If} $AionUiCheckResult == 0
-        IntOp $AionUiCloseRetries $AionUiCloseRetries + 1
-        ${If} $AionUiCloseRetries > 10
-          MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "$(appCannotBeClosed)" /SD IDCANCEL IDRETRY aionui_wait_for_close
+      !insertmacro TRACE_FIND_APP_PROCESS $TraceCheckResult
+      ${If} $TraceCheckResult == 0
+        IntOp $TraceCloseRetries $TraceCloseRetries + 1
+        ${If} $TraceCloseRetries > 10
+          MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION "$(appCannotBeClosed)" /SD IDCANCEL IDRETRY trace_wait_for_close
           Quit
         ${Else}
-          !insertmacro AIONUI_STOP_APP_PROCESSES
-          Goto aionui_wait_for_close
+          !insertmacro TRACE_STOP_APP_PROCESSES
+          Goto trace_wait_for_close
         ${EndIf}
       ${EndIf}
   ${EndIf}
 !macroend
 
 !macro customInit
-  !insertmacro AIONUI_REPAIR_INSTALLED_UNINSTALLER
+  !insertmacro TRACE_REPAIR_INSTALLED_UNINSTALLER
 !macroend
 
-!macro AIONUI_VERIFY_BUNDLED_AIONCORE_RESOURCES _RUNTIME_KEY
+!macro TRACE_VERIFY_BUNDLED_AIONCORE_RESOURCES _RUNTIME_KEY
   InitPluginsDir
   File "/oname=$PLUGINSDIR\verify-bundled-aioncore-install.ps1" "${PROJECT_DIR}\resources\verify-bundled-aioncore-install.ps1"
-  nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "$PLUGINSDIR\verify-bundled-aioncore-install.ps1" -InstallDir "$INSTDIR" -RuntimeKey "${_RUNTIME_KEY}" -LogPath "$TEMP\${AIONUI_PROCESS_CHECK_LOG}"`
-  Pop $AionUiVerifyResourceResult
+  nsExec::Exec `"$SYSDIR\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -ExecutionPolicy Bypass -File "$PLUGINSDIR\verify-bundled-aioncore-install.ps1" -InstallDir "$INSTDIR" -RuntimeKey "${_RUNTIME_KEY}" -LogPath "$TEMP\${TRACE_PROCESS_CHECK_LOG}"`
+  Pop $TraceVerifyResourceResult
 
-  ${If} $AionUiVerifyResourceResult != 0
+  ${If} $TraceVerifyResourceResult != 0
     Abort `Bundled AionCore resources are incomplete after installation.`
   ${EndIf}
 !macroend
 
 !macro customInstall
-  !insertmacro AIONUI_VERIFY_BUNDLED_AIONCORE_RESOURCES "win32-x64"
+  !insertmacro TRACE_VERIFY_BUNDLED_AIONCORE_RESOURCES "win32-x64"
 !macroend
 
-!macro AIONUI_HANDLE_UNINSTALL_RESULT _ROOT_KEY
+!macro TRACE_HANDLE_UNINSTALL_RESULT _ROOT_KEY
   ${If} ${Errors}
-    StrCpy $AionUiUninstallHadErrors "1"
+    StrCpy $TraceUninstallHadErrors "1"
   ${Else}
-    StrCpy $AionUiUninstallHadErrors "0"
+    StrCpy $TraceUninstallHadErrors "0"
   ${EndIf}
 
-  !insertmacro AIONUI_LOG_UNINSTALL_RESULT "${_ROOT_KEY}" "$AionUiUninstallHadErrors"
+  !insertmacro TRACE_LOG_UNINSTALL_RESULT "${_ROOT_KEY}" "$TraceUninstallHadErrors"
 
-  ${If} $AionUiUninstallHadErrors == "1"
+  ${If} $TraceUninstallHadErrors == "1"
     DetailPrint `Uninstall was not successful. Not able to launch uninstaller!`
     Return
   ${EndIf}
@@ -246,25 +246,25 @@
 !macroend
 
 !macro customUnInstallCheck
-  !insertmacro AIONUI_HANDLE_UNINSTALL_RESULT "SHELL_CONTEXT"
+  !insertmacro TRACE_HANDLE_UNINSTALL_RESULT "SHELL_CONTEXT"
 !macroend
 
 !macro customUnInstallCheckCurrentUser
-  !insertmacro AIONUI_HANDLE_UNINSTALL_RESULT "HKEY_CURRENT_USER"
+  !insertmacro TRACE_HANDLE_UNINSTALL_RESULT "HKEY_CURRENT_USER"
 !macroend
 
 !macro customUnInit
-  !insertmacro AIONUI_LOG_EVENT "uninit instDir=$INSTDIR"
+  !insertmacro TRACE_LOG_EVENT "uninit instDir=$INSTDIR"
 !macroend
 
 !macro customUnInstall
-  !insertmacro AIONUI_LOG_EVENT "uninstall-section start instDir=$INSTDIR"
+  !insertmacro TRACE_LOG_EVENT "uninstall-section start instDir=$INSTDIR"
 !macroend
 
 !macro customRemoveFiles
-  !insertmacro AIONUI_LOG_EVENT "remove-start instDir=$INSTDIR"
+  !insertmacro TRACE_LOG_EVENT "remove-start instDir=$INSTDIR"
   StrCpy $R1 ""
-  Var /GLOBAL AionUiRemoveDirResult
+  Var /GLOBAL TraceRemoveDirResult
 
   ${if} ${isUpdated}
     CreateDirectory "$PLUGINSDIR\old-install"
@@ -272,23 +272,23 @@
     Push ""
     Call un.atomicRMDir
     Pop $R0
-    !insertmacro AIONUI_LOG_EVENT "remove-atomic result=$R0"
+    !insertmacro TRACE_LOG_EVENT "remove-atomic result=$R0"
 
     ${if} $R0 != 0
       DetailPrint "Atomic update cleanup failed; restoring previous installation before recursive cleanup: $R0"
-      !insertmacro AIONUI_LOG_ATOMIC_REMOVE_FAILURE
+      !insertmacro TRACE_LOG_ATOMIC_REMOVE_FAILURE
       StrCpy $R1 $R0
 
       Push ""
       Call un.restoreFiles
       Pop $R0
-      !insertmacro AIONUI_LOG_EVENT "remove-restore result=$R0"
+      !insertmacro TRACE_LOG_EVENT "remove-restore result=$R0"
     ${endif}
   ${endif}
 
   SetOutPath $TEMP
-  !insertmacro AIONUI_REMOVE_INSTALL_DIR
-  ${if} $AionUiRemoveDirResult != 0
+  !insertmacro TRACE_REMOVE_INSTALL_DIR
+  ${if} $TraceRemoveDirResult != 0
     ${if} $R1 != ""
       DetailPrint `Can't safely remove previous installation after atomic cleanup failed. First failed path: $R1`
     ${else}
@@ -297,7 +297,7 @@
     SetErrorLevel 2
     Quit
   ${else}
-    !insertmacro AIONUI_LOG_EVENT "remove-final errors=0 instDir=$INSTDIR"
+    !insertmacro TRACE_LOG_EVENT "remove-final errors=0 instDir=$INSTDIR"
   ${endif}
 !macroend
 !endif
@@ -310,9 +310,9 @@ Function .onVerifyInstDir
   ${IfNot} ${RunningX64}
     MessageBox MB_OK|MB_ICONSTOP \
       "Installation package architecture mismatch$\n$\n\
-      This AionUi installer is designed for x64 architecture.$\n$\n\
+      This Trace installer is designed for x64 architecture.$\n$\n\
       Your system is 32-bit architecture. Please download the appropriate version for your architecture.$\n$\n\
-      Download: https://github.com/iOfficeAI/AionUi/releases"
+      Download: https://github.com/iOfficeAI/Trace/releases"
     Quit
   ${EndIf}
 
@@ -320,9 +320,9 @@ Function .onVerifyInstDir
   ${If} ${IsNativeARM64}
     MessageBox MB_OK|MB_ICONSTOP \
       "Installation package architecture mismatch$\n$\n\
-      This AionUi installer is designed for x64 architecture.$\n$\n\
+      This Trace installer is designed for x64 architecture.$\n$\n\
       Your system is ARM64 architecture. Please download the ARM64 version.$\n$\n\
-      Download: https://github.com/iOfficeAI/AionUi/releases"
+      Download: https://github.com/iOfficeAI/Trace/releases"
     Quit
   ${EndIf}
 FunctionEnd

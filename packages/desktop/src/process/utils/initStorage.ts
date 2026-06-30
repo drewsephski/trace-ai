@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -36,10 +36,10 @@ type ArchitectureType = 'x64' | 'arm64' | 'ia32' | 'arm';
 const nodePath = path;
 
 const STORAGE_PATH = {
-  config: 'aionui-config.txt',
-  chatMessage: 'aionui-chat-message.txt',
-  chat: 'aionui-chat.txt',
-  env: '.aionui-env',
+  config: 'trace-config.txt',
+  chatMessage: 'trace-chat-message.txt',
+  chat: 'trace-chat.txt',
+  env: '.trace-env',
   assistants: 'assistants',
   skills: 'skills',
   cronSkills: 'cron-skills',
@@ -236,7 +236,7 @@ const JsonFileBuilder = <S extends object = Record<string, unknown>>(file_path: 
 
 const envFile = JsonFileBuilder<IEnvStorageRefer>(path.join(getHomePage(), STORAGE_PATH.env));
 
-const dirConfig = envFile.getSync('aionui.dir');
+const dirConfig = envFile.getSync('trace.dir');
 
 const cacheDir = dirConfig?.cacheDir || getHomePage();
 
@@ -249,11 +249,11 @@ const _chatFile = JsonFileBuilder<IChatConversationRefer>(path.join(cacheDir, ST
 const chatFile = _chatFile;
 
 const buildMessageListStorage = (conversation_id: string, dir: string) => {
-  const fullName = path.join(dir, 'aionui-chat-history', conversation_id + '.txt');
+  const fullName = path.join(dir, 'trace-chat-history', conversation_id + '.txt');
   if (!existsSync(fullName)) {
-    mkdirSync(path.join(dir, 'aionui-chat-history'));
+    mkdirSync(path.join(dir, 'trace-chat-history'));
   }
-  return JsonFileBuilder<TMessage[]>(path.join(dir, 'aionui-chat-history', conversation_id + '.txt'));
+  return JsonFileBuilder<TMessage[]>(path.join(dir, 'trace-chat-history', conversation_id + '.txt'));
 };
 
 const conversationHistoryProxy = (options: typeof _chatMessageFile, dir: string) => {
@@ -274,7 +274,7 @@ const conversationHistoryProxy = (options: typeof _chatMessageFile, dir: string)
     backup(conversation_id: string) {
       const storage = buildMessageListStorage(conversation_id, dir);
       return storage.backup(
-        path.join(dir, 'aionui-chat-history', 'backup', conversation_id + '_' + Date.now() + '.txt')
+        path.join(dir, 'trace-chat-history', 'backup', conversation_id + '_' + Date.now() + '.txt')
       );
     },
   };
@@ -324,8 +324,8 @@ const cleanupLegacyBuiltinSkillsDir = () => {
 /**
  * Ensure user-facing config directories exist. Built-in assistant rules and
  * skill files are now owned by the backend (see
- * `crates/aionui-app/assets/builtin-assistants/` and
- * `crates/aionui-app/assets/builtin-skills/`) — neither is synced from
+ * `crates/trace-app/assets/builtin-assistants/` and
+ * `crates/trace-app/assets/builtin-skills/`) — neither is synced from
  * renderer resources anymore.
  */
 const ensureAssistantDirs = async (): Promise<void> => {
@@ -385,7 +385,7 @@ const initStorage = async () => {
   mark('4. MCP config initialization skipped');
 
   // 5. Ensure assistant-related directories exist. Built-in assistant records
-  //    now live in the backend SQLite catalog (see aionui-assistant crate) and
+  //    now live in the backend SQLite catalog (see trace-assistant crate) and
   //    are no longer seeded into ConfigStorage. User-authored rule md files
   //    continue to live under `{cacheDir}/assistants/` until the one-shot
   //    migration (T3b) imports them into the backend.

@@ -1,12 +1,19 @@
 {
   "name": "trace",
   "version": "2.1.28",
-  "description": "Drew's private AI agent workspace.",
+  "description": "Trace is a local-first desktop workspace for running AI agents with reviewable file, command, skill, and MCP workflows.",
   "keywords": [],
+  "homepage": "https://github.com/drewsephski/trace-ai",
+  "bugs": {
+    "url": "https://github.com/drewsephski/trace-ai/issues"
+  },
   "license": "Apache-2.0",
   "author": {
-    "name": "Drew Sepeczi",
-    "email": "drew@trace.local"
+    "name": "Drew Sepeczi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drewsephski/trace-ai.git"
   },
   "workspaces": [
     "packages/*"
@@ -73,7 +80,6 @@
   },
   "dependencies": {
     "@agentclientprotocol/sdk": "^0.18.2",
-    "@aionui/web-host": "workspace:*",
     "@anthropic-ai/sdk": "^0.71.2",
     "@arco-design/web-react": "^2.66.1",
     "@aws-sdk/client-bedrock": "^3.987.0",
@@ -103,6 +109,7 @@
     "@office-ai/aioncli-core": "^0.30.6",
     "@office-ai/platform": "^0.3.16",
     "@sentry/electron": "^7.10.0",
+    "@trace/web-host": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@uiw/codemirror-extensions-langs": "^4.25.1",

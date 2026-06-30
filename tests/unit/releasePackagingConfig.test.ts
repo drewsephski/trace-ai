@@ -21,6 +21,15 @@ function yamlBlock(content: string, key: string): string {
 }
 
 describe('release packaging configuration', () => {
+  it('keeps landing package and download metadata on the current release version', () => {
+    const rootPackage = JSON.parse(readProjectFile('package.json')) as { version: string };
+    const webPackage = JSON.parse(readProjectFile('packages/web/package.json')) as { version: string };
+    const landingContent = readProjectFile('packages/web/lib/landing-content.ts');
+
+    expect(webPackage.version).toBe(rootPackage.version);
+    expect(landingContent).toContain(`export const releaseVersion = '${rootPackage.version}';`);
+  });
+
   it('keeps mac zip artifacts enabled', () => {
     const config = readProjectFile('packages/desktop/electron-builder.yml');
     const macBlock = yamlBlock(config, 'mac');
@@ -41,7 +50,7 @@ describe('release packaging configuration', () => {
     const workflow = readProjectFile('.github/workflows/_build-reusable.yml');
 
     expect(workflow).toContain('out/Trace-*-mac-*.zip');
-    expect(workflow).not.toContain('out/AionUi-*-win32-*.zip');
+    expect(workflow).not.toContain('out/Trace-*-win32-*.zip');
   });
 
   it('retries mac prepackaged builds with both dmg and zip targets', () => {
@@ -51,7 +60,7 @@ describe('release packaging configuration', () => {
   });
 
   it('fails release asset preparation when a mac zip is missing', () => {
-    const tempDir = mkdtempSync(resolve(tmpdir(), 'aionui-release-assets-'));
+    const tempDir = mkdtempSync(resolve(tmpdir(), 'trace-release-assets-'));
     const artifactsDir = resolve(tempDir, 'build-artifacts');
     const outputDir = resolve(tempDir, 'release-assets');
 

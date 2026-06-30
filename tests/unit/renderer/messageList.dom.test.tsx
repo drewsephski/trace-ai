@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -183,15 +183,17 @@ describe('MessageList', () => {
     expect(messageRow.className).not.toContain('pt-10px');
   });
 
-  it('uses fluid golden-ratio side inset for message rows', () => {
+  it('uses container-friendly desktop side insets for message rows', () => {
     render(<MessageList />, {
       wrapper: ({ children }) => <Wrapper>{children}</Wrapper>,
     });
 
     const messageRow = screen.getByTestId('message-text-left');
     expect(messageRow.className).toContain('w-[calc(100%-24px)]');
-    expect(messageRow.className).toContain('md:w-[calc(100%-clamp(80px,10vw,240px))]');
+    expect(messageRow.className).toContain('md:w-[calc(100%-48px)]');
+    expect(messageRow.className).toContain('xl:w-[calc(100%-64px)]');
     expect(messageRow.className).toContain('max-w-none');
+    expect(messageRow.className).not.toContain('10vw');
     expect(messageRow.className).not.toContain('max-w-780px');
   });
 

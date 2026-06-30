@@ -2,8 +2,8 @@
  * WebUI static server.
  *
  * Serves out/renderer/ as the SPA and reverse-proxies /api/*, /ws, /api/stt/stream,
- * /login and /logout to aioncore. All auth goes to backend's aionui-auth crate;
- * /login and /logout are aionui-auth's top-level paths, the rest live under
+ * /login and /logout to aioncore. All auth goes to backend's trace-auth crate;
+ * /login and /logout are trace-auth's top-level paths, the rest live under
  * /api/auth/*. /ws and /api/stt/stream are WebSocket/stream upgrades spliced at
  * TCP level; /api/stt/stream is the STT streaming endpoint.
  *
@@ -32,6 +32,59 @@ export type StaticServerHandle = {
 };
 
 const DEFAULT_PORT = 25808;
+
+function isValidIPv4(address: string): boolean {
+  const parts = address.split('.');
+  if (parts.length !== 4) return false;
+  return parts.every((part) => {
+    if (!/^\d{1,3}$/.test(part)) return false;
+    const octet = Number(part);
+    return octet >= 0 && octet <= 255 && String(octet) === String(Number(part));
+  });
+}
+
+function normalizeRemoteAddress(address: string | undefined): string | null {
+  if (!address) return null;
+  const zoneIndex = address.indexOf('%');
+  const withoutZone = zoneIndex >= 0 ? address.slice(0, zoneIndex) : address;
+  if (withoutZone.startsWith('::ffff:')) return withoutZone.slice('::ffff:'.length);
+  return withoutZone;
+}
+
+export function isPrivateNetworkAddress(address: string | undefined): boolean {
+  const normalized = normalizeRemoteAddress(address);
+  if (!normalized) return false;
+
+  if (isValidIPv4(normalized)) {
+    const [a, b] = normalized.split('.').map(Number) as [number, number, number, number];
+    return (
+      a === 10 ||
+      a === 127 ||
+      (a === 169 && b === 254) ||
+      (a === 172 && b >= 16 && b <= 31) ||
+      (a === 192 && b === 168) ||
+      (a === 100 && b >= 64 && b <= 127)
+    );
+  }
+
+  const lower = normalized.toLowerCase();
+  return lower === '::1' || lower.startsWith('fe80:') || lower.startsWith('fc') || lower.startsWith('fd');
+}
+
+function rejectPublicRemoteClient(client: Socket): void {
+  const body = JSON.stringify({
+    error: 'REMOTE_CLIENT_NOT_ALLOWED',
+    message: 'Remote WebUI accepts loopback and private-network clients only.',
+  });
+  client.end(
+    'HTTP/1.1 403 Forbidden\r\n' +
+      'Content-Type: application/json\r\n' +
+      `Content-Length: ${Buffer.byteLength(body)}\r\n` +
+      'Connection: close\r\n' +
+      '\r\n' +
+      body
+  );
+}
 
 function getLanIP(): string | null {
   const nets = networkInterfaces();
@@ -139,7 +192,7 @@ export async function startStaticServer(opts: StaticServerOptions): Promise<Stat
       }
 
       // /api/* — reverse proxy to backend (includes /api/auth/*).
-      // /login and /logout are aionui-auth's top-level auth endpoints: proxy them too
+      // /login and /logout are trace-auth's top-level auth endpoints: proxy them too
       // so WebUI browser clients reach the backend without a path-rewrite.
       if (req.url.startsWith('/api/') || req.url.startsWith('/api?') || req.url === '/login' || req.url === '/logout') {
         forwardToBackend(req, res, opts.backendPort);
@@ -151,7 +204,7 @@ export async function startStaticServer(opts: StaticServerOptions): Promise<Stat
         public: opts.staticDir,
         rewrites: [{ source: '**', destination: '/index.html' }],
       });
-    } catch (err) {
+    } catch {
       if (!res.headersSent) {
         res.writeHead(500, { 'content-type': 'application/json' });
         res.end(JSON.stringify({ error: 'INTERNAL_ERROR' }));
@@ -179,6 +232,11 @@ export async function startStaticServer(opts: StaticServerOptions): Promise<Stat
   // server (everything else). Both routes use raw TCP splice — no reliance
   // on http.Server's upgrade event.
   const tcp_server = net.createServer((client: Socket) => {
+    if (allowRemote && !isPrivateNetworkAddress(client.remoteAddress)) {
+      rejectPublicRemoteClient(client);
+      return;
+    }
+
     let peeked = Buffer.alloc(0);
     let settled = false;
     const cleanup = (): void => {

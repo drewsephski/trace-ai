@@ -66,34 +66,34 @@ export function getInstallationIntegrityDiagnosticsSentText(
 
 function buildInstallationIntegrityTags(diagnostics: InstallationIntegrityDiagnostics): FeedbackEventTags {
   const tags: FeedbackEventTags = {
-    'aionui.installation_integrity.user_report': 'true',
-    'aionui.installation_integrity.report_source': diagnostics.source,
+    'trace.installation_integrity.user_report': 'true',
+    'trace.installation_integrity.report_source': diagnostics.source,
   };
 
   if (diagnostics.runtime?.failureKind) {
-    tags['aionui.installation_integrity.failure_kind'] = diagnostics.runtime.failureKind;
+    tags['trace.installation_integrity.failure_kind'] = diagnostics.runtime.failureKind;
   }
   if (diagnostics.runtime?.resource) {
-    tags['aionui.runtime_resource'] = diagnostics.runtime.resource;
+    tags['trace.runtime_resource'] = diagnostics.runtime.resource;
   }
   if (diagnostics.runtime?.resourceId) {
-    tags['aionui.runtime_resource_id'] = diagnostics.runtime.resourceId;
+    tags['trace.runtime_resource_id'] = diagnostics.runtime.resourceId;
   }
   if (diagnostics.runtime?.scopeKind) {
-    tags['aionui.runtime_scope'] = diagnostics.runtime.scopeKind;
+    tags['trace.runtime_scope'] = diagnostics.runtime.scopeKind;
   }
 
   const reason = diagnostics.backendStartupFailure?.reason;
   if (typeof reason === 'string') {
-    tags['aionui.backend_startup_failure.reason'] = reason;
+    tags['trace.backend_startup_failure.reason'] = reason;
   }
   const backendBoundaryCode = diagnostics.backendStartupFailure?.backendBoundaryCode;
   if (typeof backendBoundaryCode === 'string') {
-    tags['aionui.backend_startup_failure.backend_boundary_code'] = backendBoundaryCode;
+    tags['trace.backend_startup_failure.backend_boundary_code'] = backendBoundaryCode;
   }
   const backendBoundaryStage = diagnostics.backendStartupFailure?.backendBoundaryStage;
   if (typeof backendBoundaryStage === 'string') {
-    tags['aionui.backend_startup_failure.backend_boundary_stage'] = backendBoundaryStage;
+    tags['trace.backend_startup_failure.backend_boundary_stage'] = backendBoundaryStage;
   }
 
   return tags;
@@ -116,7 +116,7 @@ export async function reportInstallationIntegrityDiagnostics(
     tags: buildInstallationIntegrityTags(diagnostics),
   });
 
-  if (typeof window !== 'undefined' && window.__aionuiE2ETest) {
+  if (typeof window !== 'undefined' && window.__traceE2ETest) {
     window.__installationIntegrityReportCount = (window.__installationIntegrityReportCount ?? 0) + 1;
     window.__lastInstallationIntegrityReportMessage = 'installation-integrity-user-report';
   }

@@ -14,7 +14,7 @@ vi.mock('node:fs', () => ({
 }));
 
 const originalResourcesPath = (process as NodeJS.Process & { resourcesPath?: string }).resourcesPath;
-const originalBackendBin = process.env.AIONUI_BACKEND_BIN;
+const originalBackendBin = process.env.TRACE_BACKEND_BIN;
 
 function setResourcesPath(resourcesPath: string | undefined): void {
   Object.defineProperty(process, 'resourcesPath', {
@@ -38,14 +38,14 @@ describe('resolveBinaryPath', () => {
   afterEach(() => {
     setResourcesPath(originalResourcesPath);
     if (originalBackendBin === undefined) {
-      delete process.env.AIONUI_BACKEND_BIN;
+      delete process.env.TRACE_BACKEND_BIN;
     } else {
-      process.env.AIONUI_BACKEND_BIN = originalBackendBin;
+      process.env.TRACE_BACKEND_BIN = originalBackendBin;
     }
   });
 
   it('prefers explicit backend binary override', () => {
-    process.env.AIONUI_BACKEND_BIN = '/custom/aioncore';
+    process.env.TRACE_BACKEND_BIN = '/custom/aioncore';
     vi.mocked(existsSync).mockImplementation((path) => path === '/custom/aioncore');
 
     expect(resolveBinaryPath()).toBe('/custom/aioncore');

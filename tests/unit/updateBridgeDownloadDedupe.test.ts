@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2026 AionUi (aionui.com)
+ * Copyright 2026 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -38,7 +38,7 @@ vi.mock('@office-ai/platform', () => ({
 vi.mock('electron', () => ({
   app: {
     getVersion: vi.fn(() => '1.0.0'),
-    getPath: vi.fn(() => '/tmp/aionui-update-dedupe-test'),
+    getPath: vi.fn(() => '/tmp/trace-update-dedupe-test'),
     exit: vi.fn(),
     isPackaged: true,
   },
@@ -140,7 +140,7 @@ describe('updateBridge manual download dedupe', () => {
   });
 
   it('creates a new manual download after the prior matching task reaches a terminal state', async () => {
-    fs.mkdirSync('/tmp/aionui-update-dedupe-test', { recursive: true });
+    fs.mkdirSync('/tmp/trace-update-dedupe-test', { recursive: true });
     vi.stubGlobal(
       'fetch',
       vi.fn().mockResolvedValue({
@@ -184,7 +184,7 @@ describe('updateBridge manual download dedupe', () => {
   });
 
   it('cancels an active manual download by download id and clears its dedupe slot', async () => {
-    fs.mkdirSync('/tmp/aionui-update-dedupe-test', { recursive: true });
+    fs.mkdirSync('/tmp/trace-update-dedupe-test', { recursive: true });
     vi.stubGlobal(
       'fetch',
       vi.fn((_url: string, init?: RequestInit) => {

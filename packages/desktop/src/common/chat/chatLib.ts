@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -129,7 +129,7 @@ export type IMessageText = IMessage<
   }
 >;
 
-export type AgentErrorOwnership = 'aionui' | 'user_agent' | 'user_llm_provider' | 'unknown_upstream';
+export type AgentErrorOwnership = 'trace' | 'user_agent' | 'user_llm_provider' | 'unknown_upstream';
 
 export type AgentErrorResolutionKind =
   | 'retry'
@@ -438,11 +438,22 @@ const firstStringField = (
   return undefined;
 };
 
+export const normalizeTraceToolDisplayText = (text: string): string =>
+  text
+    .replace(/\bmcp__aionui-team-/g, 'trace/')
+    .replace(/\baionui-team\//g, 'trace/')
+    .replace(/\baionui-team\b/g, 'trace')
+    .replace(/\bmcp__trace-team-/g, 'trace/')
+    .replace(/\btrace-team\//g, 'trace/')
+    .replace(/\btrace-team\b/g, 'trace');
+
 const normalizeTextMessageContentObject = (
   data: RawTextMessageContent,
   options?: NormalizeTextMessageContentOptions
 ): IMessageText['content'] => {
-  const content = typeof data.content === 'string' ? data.content : String(data.content ?? '');
+  const content = normalizeTraceToolDisplayText(
+    typeof data.content === 'string' ? data.content : String(data.content ?? '')
+  );
   const senderName = firstStringField(data, ['senderName', 'sender_name', 'from_name']);
   const senderAgentType = firstStringField(data, ['senderAgentType', 'sender_backend', 'senderBackend']);
   const senderConversationId = firstStringField(data, [
@@ -480,7 +491,7 @@ export const normalizeTextMessageContent = (
     }
 
     return {
-      content: raw,
+      content: normalizeTraceToolDisplayText(raw),
       ...(options?.replace === true ? { replace: true } : {}),
     };
   }
@@ -490,13 +501,13 @@ export const normalizeTextMessageContent = (
   }
 
   return {
-    content: String(raw ?? ''),
+    content: normalizeTraceToolDisplayText(String(raw ?? '')),
     ...(options?.replace === true ? { replace: true } : {}),
   };
 };
 
 const AGENT_ERROR_OWNERSHIPS = new Set<AgentErrorOwnership>([
-  'aionui',
+  'trace',
   'user_agent',
   'user_llm_provider',
   'unknown_upstream',

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2026 AionUi (aionui.com)
+ * Copyright 2026 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 

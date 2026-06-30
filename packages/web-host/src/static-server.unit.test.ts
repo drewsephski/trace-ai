@@ -4,7 +4,7 @@ import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
 import type { AddressInfo } from 'node:net';
-import { startStaticServer, type StaticServerHandle } from './static-server.js';
+import { isPrivateNetworkAddress, startStaticServer, type StaticServerHandle } from './static-server.js';
 
 async function mkRendererFixture(): Promise<string> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'ws-static-'));
@@ -93,7 +93,7 @@ describe('static-server', () => {
       if (req.url === '/login' && req.method === 'POST') {
         res.writeHead(200, {
           'content-type': 'application/json',
-          'set-cookie': 'aionui-session=backend-token; Path=/; HttpOnly',
+          'set-cookie': 'trace-session=backend-token; Path=/; HttpOnly',
         });
         res.end(JSON.stringify({ success: true, proxied: true }));
         return;
@@ -109,7 +109,7 @@ describe('static-server', () => {
       body: JSON.stringify({ username: 'admin', password: 'anything' }),
     });
     expect(r.status).toBe(200);
-    expect(r.headers.get('set-cookie')).toMatch(/aionui-session=backend-token/);
+    expect(r.headers.get('set-cookie')).toMatch(/trace-session=backend-token/);
     const json = (await r.json()) as { proxied: boolean };
     expect(json.proxied).toBe(true);
   });
@@ -137,7 +137,7 @@ describe('static-server', () => {
       if (req.url === '/logout' && req.method === 'POST') {
         res.writeHead(200, {
           'content-type': 'application/json',
-          'set-cookie': 'aionui-session=; Path=/; Max-Age=0',
+          'set-cookie': 'trace-session=; Path=/; Max-Age=0',
         });
         res.end(JSON.stringify({ success: true, proxied: true }));
         return;
@@ -356,5 +356,25 @@ describe('static-server', () => {
     // may still be undefined on CI machines without a LAN interface
     expect(typeof h2.networkUrl === 'string' || h2.networkUrl === undefined).toBe(true);
     await h2.stop();
+  });
+
+  it('classifies direct remote clients as private-network only', () => {
+    expect(isPrivateNetworkAddress('127.0.0.1')).toBe(true);
+    expect(isPrivateNetworkAddress('::1')).toBe(true);
+    expect(isPrivateNetworkAddress('::ffff:127.0.0.1')).toBe(true);
+    expect(isPrivateNetworkAddress('10.10.0.12')).toBe(true);
+    expect(isPrivateNetworkAddress('172.16.0.1')).toBe(true);
+    expect(isPrivateNetworkAddress('172.31.255.254')).toBe(true);
+    expect(isPrivateNetworkAddress('192.168.1.20')).toBe(true);
+    expect(isPrivateNetworkAddress('169.254.10.20')).toBe(true);
+    expect(isPrivateNetworkAddress('100.64.1.1')).toBe(true);
+    expect(isPrivateNetworkAddress('fd00::1')).toBe(true);
+    expect(isPrivateNetworkAddress('fe80::1%en0')).toBe(true);
+
+    expect(isPrivateNetworkAddress('8.8.8.8')).toBe(false);
+    expect(isPrivateNetworkAddress('1.2.3.4')).toBe(false);
+    expect(isPrivateNetworkAddress('172.32.0.1')).toBe(false);
+    expect(isPrivateNetworkAddress('2001:4860:4860::8888')).toBe(false);
+    expect(isPrivateNetworkAddress(undefined)).toBe(false);
   });
 });

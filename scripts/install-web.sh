@@ -154,7 +154,7 @@ detect_platform_arch() {
     info "Detected platform: ${BOLD}${PLATFORM}-${ARCH}${NC}"
 
     # Build tarball filename
-    TARBALL_NAME="aionui-web-${VERSION}-${PLATFORM}-${ARCH}.tar.gz"
+    TARBALL_NAME="trace-web-${VERSION}-${PLATFORM}-${ARCH}.tar.gz"
     CHECKSUM_NAME="${TARBALL_NAME}.sha256"
 }
 
@@ -190,7 +190,7 @@ resolve_version() {
     fi
 
     # Rebuild tarball name (VERSION may have changed)
-    TARBALL_NAME="aionui-web-${VERSION}-${PLATFORM}-${ARCH}.tar.gz"
+    TARBALL_NAME="trace-web-${VERSION}-${PLATFORM}-${ARCH}.tar.gz"
     CHECKSUM_NAME="${TARBALL_NAME}.sha256"
 }
 
@@ -306,7 +306,7 @@ extract_tarball() {
     mkdir -p "$(dirname "$INSTALL_DIR")"
 
     # Extract tarball
-    # Tarball root directory is aionui-web/, rename after extraction to INSTALL_DIR
+    # Tarball root directory is trace-web/, rename after extraction to INSTALL_DIR
     local extract_temp="${TEMP_DIR}/extract"
     mkdir -p "$extract_temp"
 
@@ -314,16 +314,16 @@ extract_tarball() {
     tar -xzf "$TARBALL_PATH" -C "$extract_temp" || die "Failed to extract tarball"
 
     # Move to final installation location
-    if [[ -d "${extract_temp}/aionui-web" ]]; then
-        mv "${extract_temp}/aionui-web" "$INSTALL_DIR"
+    if [[ -d "${extract_temp}/trace-web" ]]; then
+        mv "${extract_temp}/trace-web" "$INSTALL_DIR"
     else
-        die "Tarball structure is invalid (missing aionui-web/ directory)"
+        die "Tarball structure is invalid (missing trace-web/ directory)"
     fi
 
     success "Extracted to $INSTALL_DIR"
 
     # Set executable permission on the bun-compiled standalone binary
-    chmod +x "${INSTALL_DIR}/aionui-web" 2>/dev/null || true
+    chmod +x "${INSTALL_DIR}/trace-web" 2>/dev/null || true
 
     # On macOS, strip the quarantine xattr Safari/Chrome/curl-downloaded files
     # inherit — otherwise Gatekeeper kills unsigned Mach-O binaries with a
@@ -334,8 +334,8 @@ extract_tarball() {
     fi
 
     # Verify installation
-    if [[ ! -x "${INSTALL_DIR}/aionui-web" ]]; then
-        die "Installation failed: ${INSTALL_DIR}/aionui-web not found or not executable"
+    if [[ ! -x "${INSTALL_DIR}/trace-web" ]]; then
+        die "Installation failed: ${INSTALL_DIR}/trace-web not found or not executable"
     fi
 
     success "Installation completed"
@@ -345,8 +345,8 @@ extract_tarball() {
 }
 
 create_symlink() {
-    local symlink_path="${BIN_DIR}/aionui-web"
-    local target_path="${INSTALL_DIR}/aionui-web"
+    local symlink_path="${BIN_DIR}/trace-web"
+    local target_path="${INSTALL_DIR}/trace-web"
 
     info "Creating symlink: ${BOLD}${symlink_path}${NC} -> ${target_path}"
 
@@ -432,26 +432,26 @@ print_summary() {
     echo ""
     echo -e "  ${BOLD}📍 Installation directory:${NC}  ${INSTALL_DIR}"
     if [[ "$CREATE_SYMLINK" == "1" ]]; then
-        echo -e "  ${BOLD}📍 Symlink:${NC}                ${BIN_DIR}/aionui-web"
+        echo -e "  ${BOLD}📍 Symlink:${NC}                ${BIN_DIR}/trace-web"
     fi
     echo ""
     echo -e "  ${BOLD}🚀 Usage:${NC}"
     echo ""
     if [[ "$CREATE_SYMLINK" == "1" && ":$PATH:" == *":${BIN_DIR}:"* ]]; then
         echo "    # Start Trace WebUI"
-        echo "    aionui-web start"
+        echo "    trace-web start"
         echo ""
         echo "    # Check version"
-        echo "    aionui-web version"
+        echo "    trace-web version"
     else
         echo "    # Start Trace WebUI (using full path)"
-        echo "    ${INSTALL_DIR}/aionui-web start"
+        echo "    ${INSTALL_DIR}/trace-web start"
         echo ""
         echo "    # Or add symlink to PATH:"
         if [[ "$CREATE_SYMLINK" == "1" ]]; then
             echo "    export PATH=\"${BIN_DIR}:\$PATH\""
         else
-            echo "    ln -s ${INSTALL_DIR}/aionui-web ~/.local/bin/aionui-web"
+            echo "    ln -s ${INSTALL_DIR}/trace-web ~/.local/bin/trace-web"
             echo "    export PATH=\"~/.local/bin:\$PATH\""
         fi
     fi
@@ -466,7 +466,7 @@ print_summary() {
     if [[ "$CREATE_SYMLINK" == "1" ]]; then
         echo ""
         echo "    # Remove symlink"
-        echo "    rm ${BIN_DIR}/aionui-web"
+        echo "    rm ${BIN_DIR}/trace-web"
     fi
     if [[ "$UPDATE_PATH" == "1" ]]; then
         echo ""

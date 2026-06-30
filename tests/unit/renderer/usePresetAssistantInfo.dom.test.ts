@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -204,7 +204,7 @@ describe('usePresetAssistantInfo', () => {
         id: 'assistant-local-avatar',
         source: 'user',
         name: 'Local Avatar',
-        avatar: '/Users/demo/.aionui/assistant-avatars/assistant-local-avatar.jpg',
+        avatar: '/Users/demo/.trace/assistant-avatars/assistant-local-avatar.jpg',
         backend: 'codex',
       },
     } as TChatConversation;
@@ -236,7 +236,7 @@ describe('usePresetAssistantInfo', () => {
         id: 'assistant-local-avatar',
         source: 'user',
         name: 'Local Avatar',
-        avatar: '/Users/demo/.aionui/assistant-avatars/assistant-local-avatar.jpg',
+        avatar: '/Users/demo/.trace/assistant-avatars/assistant-local-avatar.jpg',
         backend: 'codex',
       },
     } as TChatConversation;
@@ -550,7 +550,7 @@ function makeConversation(extra: Record<string, unknown>): TChatConversation {
     model: {},
     extra,
     status: 'finished',
-    source: 'aionui',
+    source: 'trace',
     created_at: 1,
     modified_at: 1,
     pinned: false,

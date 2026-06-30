@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -9,7 +9,7 @@ import { getWorkspacePathFromErrorDetails, normalizeWorkspacePathErrorCode } fro
 import { buildRawErrorSummary } from './errorDiagnostics';
 import type { AgentStreamErrorInfo } from '@/common/chat/chatLib';
 
-const AIONUI_TRANSPORT_ERROR_CODES = new Set([
+const TRACE_TRANSPORT_ERROR_CODES = new Set([
   'MCP_HTTP_RESPONSE_READ_FAILED',
   'MCP_TOOL_REMOTE_ERROR',
   'MCP_TOOL_RESPONSE_UNEXPECTED',
@@ -44,7 +44,7 @@ export const buildSendFailureError = (error: unknown, message: string): AgentStr
     return {
       message,
       code: workspacePathErrorCode,
-      ownership: 'aionui',
+      ownership: 'trace',
       detail: message,
       ...(workspacePath ? { workspacePath } : {}),
       retryable: false,
@@ -52,11 +52,11 @@ export const buildSendFailureError = (error: unknown, message: string): AgentStr
     };
   }
 
-  if (isBackendHttpError(error) && AIONUI_TRANSPORT_ERROR_CODES.has(error.code)) {
+  if (isBackendHttpError(error) && TRACE_TRANSPORT_ERROR_CODES.has(error.code)) {
     return {
       message,
       code: error.code,
-      ownership: 'aionui',
+      ownership: 'trace',
       detail: message,
       retryable: true,
       feedback_recommended: true,
@@ -67,7 +67,7 @@ export const buildSendFailureError = (error: unknown, message: string): AgentStr
     return {
       message,
       code: error.code,
-      ownership: 'aionui',
+      ownership: 'trace',
       detail: message,
       retryable: false,
       feedback_recommended: false,
@@ -100,8 +100,8 @@ export const buildSendFailureError = (error: unknown, message: string): AgentStr
   if (isConversationBusyError(error)) {
     return {
       message,
-      code: 'AIONUI_CONVERSATION_BUSY',
-      ownership: 'aionui',
+      code: 'TRACE_CONVERSATION_BUSY',
+      ownership: 'trace',
       detail: message,
       retryable: false,
       feedback_recommended: false,
@@ -115,8 +115,8 @@ export const buildSendFailureError = (error: unknown, message: string): AgentStr
   const rawError = buildRawErrorSummary(error);
   return {
     message,
-    code: 'AIONUI_INTERNAL_ERROR',
-    ownership: 'aionui',
+    code: 'TRACE_INTERNAL_ERROR',
+    ownership: 'trace',
     detail: message,
     retryable: true,
     feedback_recommended: true,

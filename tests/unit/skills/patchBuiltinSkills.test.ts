@@ -35,27 +35,27 @@ describe('patchBuiltinSkills', () => {
     await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
   });
 
-  it('renames AionUi skills, rewrites visible branding, and refreshes the skill scan', async () => {
+  it('patches recruiter skills and refreshes the skill scan', async () => {
     const dataDir = await createTempDataDir();
     await writeSkill(
       dataDir,
-      'aionui-config',
+      'trace-config',
       [
         '---',
-        'name: aionui-config',
-        'description: Configure AionUi itself.',
+        'name: trace-config',
+        'description: Configure Trace itself.',
         '---',
         '',
-        '# AionUi Config',
+        '# Trace Config',
         '',
-        'Use the aionui-config skill with AIONUI markers and ~/.aionui paths.',
+        'Use the trace-config skill with TRACE markers and ~/.trace paths.',
       ].join('\n')
     );
     await writeSkillFile(
       dataDir,
-      'aionui-config',
-      'scripts/aionui_api.py',
-      '"""AionUi helper."""\nprint("aionui-config AIONUI")\n'
+      'trace-config',
+      'scripts/trace_api.py',
+      '"""Trace helper."""\nprint("trace-config TRACE")\n'
     );
     await writeSkill(
       dataDir,
@@ -85,16 +85,12 @@ describe('patchBuiltinSkills', () => {
 
     await expect(patchBuiltinSkills(dataDir, { backendPort: 25808, fetchImpl })).resolves.toBe(true);
 
-    await expect(readFile(path.join(dataDir, 'builtin-skills', 'aionui-config', 'SKILL.md'), 'utf8')).rejects.toThrow();
     const traceSkill = await readFile(path.join(dataDir, 'builtin-skills', 'trace-config', 'SKILL.md'), 'utf8');
     expect(traceSkill).toContain('name: trace-config');
     expect(traceSkill).toContain('Configure Trace itself.');
     expect(traceSkill).toContain('# Trace Config');
     expect(traceSkill).toContain('trace-config skill');
     expect(traceSkill).toContain('TRACE markers and ~/.trace paths');
-    await expect(
-      readFile(path.join(dataDir, 'builtin-skills', 'trace-config', 'scripts', 'aionui_api.py'), 'utf8')
-    ).rejects.toThrow();
     const traceScript = await readFile(
       path.join(dataDir, 'builtin-skills', 'trace-config', 'scripts', 'trace_api.py'),
       'utf8'
@@ -149,7 +145,7 @@ describe('patchBuiltinSkills', () => {
       ].join('\n')
     );
 
-    await writeFile(path.join(dataDir, 'aionui-backend.db'), '');
+    await writeFile(path.join(dataDir, 'trace-backend.db'), '');
     const descriptions = new Map([
       ['x-recruiter', '用于在 X 发布招聘帖子。'],
       ['xiaohongshu-recruiter', '用于在小红书上发布高质量的 AI 相关岗位招聘帖子。'],
@@ -174,7 +170,7 @@ describe('patchBuiltinSkills', () => {
 
     await expect(patchBuiltinSkills(dataDir, { sqliteDriverFactory })).resolves.toBe(true);
 
-    expect(sqliteDriverFactory).toHaveBeenCalledWith(path.join(dataDir, 'aionui-backend.db'));
+    expect(sqliteDriverFactory).toHaveBeenCalledWith(path.join(dataDir, 'trace-backend.db'));
     expect(close).toHaveBeenCalled();
     expect(descriptions.get('x-recruiter')).toBe(
       'Publish recruiting posts on X (x.com). Includes copywriting rules, image generation prompts, and an automated posting script. Prefer this skill when publishing AI, design, or technical roles.'
@@ -182,66 +178,6 @@ describe('patchBuiltinSkills', () => {
     expect(descriptions.get('xiaohongshu-recruiter')).toBe(
       'Publish high-quality AI recruiting posts on Xiaohongshu. Includes automated geek-style cover and job-detail image generation plus a semi-automated publishing script. Use this skill when posting recruiting content or hiring Agent designers and other AI talent.'
     );
-  });
-
-  it('renames stale AionUi skill rows in the backend catalog', async () => {
-    const dataDir = await createTempDataDir();
-    await writeSkill(
-      dataDir,
-      'trace-config',
-      ['---', 'name: trace-config', 'description: Configure Trace itself.', '---', '', '# Trace Config'].join('\n')
-    );
-    await writeFile(path.join(dataDir, 'aionui-backend.db'), '');
-
-    const rows = new Map([
-      [
-        'aionui-config',
-        {
-          name: 'aionui-config',
-          description: 'Configure AionUi through the aionui-config skill.',
-          path: path.join(dataDir, 'builtin-skills', 'aionui-config'),
-        },
-      ],
-    ]);
-    const close = vi.fn();
-    const sqliteDriverFactory = vi.fn(() => ({
-      close,
-      pragma: vi.fn(),
-      prepare: vi.fn((sql: string) => ({
-        run: (...args: unknown[]) => {
-          if (sql.includes('SET name = ?')) {
-            const [toName, toPath, _updatedAt, fromName] = args as [string, string, number, string];
-            const row = rows.get(fromName);
-            if (!row) return { changes: 0 };
-            rows.delete(fromName);
-            rows.set(toName, { ...row, name: toName, path: toPath });
-            return { changes: 1 };
-          }
-          if (sql.includes('REPLACE(description')) {
-            let changes = 0;
-            for (const [name, row] of rows) {
-              const nextDescription = row.description.replaceAll('AionUi', 'Trace').replaceAll('aionui', 'trace');
-              const nextPath = row.path.replaceAll('AionUi', 'Trace').replaceAll('aionui', 'trace');
-              if (nextDescription !== row.description || nextPath !== row.path) {
-                rows.set(name, { ...row, description: nextDescription, path: nextPath });
-                changes += 1;
-              }
-            }
-            return { changes };
-          }
-          return { changes: 0 };
-        },
-      })),
-    }));
-
-    await expect(patchBuiltinSkills(dataDir, { sqliteDriverFactory })).resolves.toBe(true);
-
-    expect(rows.has('aionui-config')).toBe(false);
-    expect(rows.get('trace-config')).toEqual({
-      name: 'trace-config',
-      description: 'Configure Trace through the trace-config skill.',
-      path: path.join(dataDir, 'builtin-skills', 'trace-config'),
-    });
   });
 
   it('does nothing when built-in skills are already patched', async () => {

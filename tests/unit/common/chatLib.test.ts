@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -165,7 +165,7 @@ describe('normalizeAgentStreamError', () => {
     expect(
       normalizeAgentStreamError({
         message: 'Something went wrong, please try again.',
-        code: 'AIONUI_INTERNAL_ERROR',
+        code: 'TRACE_INTERNAL_ERROR',
         rawError: {
           name: 'Error',
           message: 'connect ECONNREFUSED',
@@ -176,7 +176,7 @@ describe('normalizeAgentStreamError', () => {
       })
     ).toEqual({
       message: 'Something went wrong, please try again.',
-      code: 'AIONUI_INTERNAL_ERROR',
+      code: 'TRACE_INTERNAL_ERROR',
       rawError: {
         name: 'Error',
         message: 'connect ECONNREFUSED',
@@ -191,7 +191,7 @@ describe('normalizeAgentStreamError', () => {
     expect(
       normalizeAgentStreamError({
         message: 'Something went wrong, please try again.',
-        code: 'AIONUI_INTERNAL_ERROR',
+        code: 'TRACE_INTERNAL_ERROR',
         rawError: {
           name: 'Error',
           message: 42,
@@ -201,7 +201,7 @@ describe('normalizeAgentStreamError', () => {
       })
     ).toEqual({
       message: 'Something went wrong, please try again.',
-      code: 'AIONUI_INTERNAL_ERROR',
+      code: 'TRACE_INTERNAL_ERROR',
       rawError: {
         name: 'Error',
       },
@@ -212,12 +212,12 @@ describe('normalizeAgentStreamError', () => {
     expect(
       normalizeAgentStreamError({
         message: 'Something went wrong, please try again.',
-        code: 'AIONUI_INTERNAL_ERROR',
+        code: 'TRACE_INTERNAL_ERROR',
         rawError: { unrelated: true },
       })
     ).toEqual({
       message: 'Something went wrong, please try again.',
-      code: 'AIONUI_INTERNAL_ERROR',
+      code: 'TRACE_INTERNAL_ERROR',
     });
   });
 });
@@ -284,6 +284,24 @@ describe('normalizeTextMessageContent', () => {
   it('keeps ordinary string text messages as plain content', () => {
     expect(normalizeTextMessageContent('hello')).toEqual({
       content: 'hello',
+    });
+  });
+
+  it('renames legacy team tool names in assistant text display', () => {
+    expect(
+      normalizeTextMessageContent(
+        [
+          'Tool: aionui-team/team_membersexecute',
+          'Tool: aionui-team/team_task_listexecute',
+          'Tool: mcp__aionui-team-team_list_assistants',
+        ].join('\n')
+      )
+    ).toEqual({
+      content: [
+        'Tool: trace/team_membersexecute',
+        'Tool: trace/team_task_listexecute',
+        'Tool: trace/team_list_assistants',
+      ].join('\n'),
     });
   });
 
@@ -422,14 +440,14 @@ describe('transformMessage', () => {
     const message: IResponseMessage = {
       type: 'tips',
       data: {
-        content: 'AionUI failed while sending the message',
+        content: 'Trace failed while sending the message',
         type: 'error',
         source: 'send_failed',
         code: 'INTERNAL_ERROR',
         error: {
-          message: 'AionUI failed while sending the message',
-          code: 'AIONUI_INTERNAL_ERROR',
-          ownership: 'aionui',
+          message: 'Trace failed while sending the message',
+          code: 'TRACE_INTERNAL_ERROR',
+          ownership: 'trace',
           detail: 'Failed to write Codex sandbox config',
           retryable: true,
           feedback_recommended: true,
@@ -447,9 +465,9 @@ describe('transformMessage', () => {
 
     expect(transformed.type).toBe('tips');
     expect(transformed.content.error).toEqual({
-      message: 'AionUI failed while sending the message',
-      code: 'AIONUI_INTERNAL_ERROR',
-      ownership: 'aionui',
+      message: 'Trace failed while sending the message',
+      code: 'TRACE_INTERNAL_ERROR',
+      ownership: 'trace',
       detail: 'Failed to write Codex sandbox config',
       retryable: true,
       feedback_recommended: true,

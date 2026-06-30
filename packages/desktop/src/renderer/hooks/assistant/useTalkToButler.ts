@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { mutate as swrMutate } from 'swr';
 
 /** Backend manifest id of the built-in Trace Butler assistant. */
-const BUTLER_ASSISTANT_ID = 'aionui-assistant';
+const BUTLER_ASSISTANT_ID = 'trace-assistant';
 
 export type TalkToButlerArgs = {
   /** Prompt pre-filled into the home chat input. */

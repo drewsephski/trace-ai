@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -73,6 +73,55 @@ vi.mock('@/renderer/pages/conversation/Preview/hooks/useScrollSyncHelpers', () =
   useContainerScroll: vi.fn(),
   useContainerScrollTarget: vi.fn(),
 }));
+
+vi.mock('streamdown', () => {
+  const renderMarkdown = (
+    markdown: string,
+    components?: {
+      a?: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => React.ReactNode;
+      img?: (props: React.ImgHTMLAttributes<HTMLImageElement>) => React.ReactNode;
+    }
+  ) => {
+    const imageMatch = markdown.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imageMatch) {
+      return (
+        components?.img?.({ alt: imageMatch[1], src: imageMatch[2] }) ?? <img alt={imageMatch[1]} src={imageMatch[2]} />
+      );
+    }
+
+    const linkMatch = markdown.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      return (
+        components?.a?.({ href: linkMatch[2], children: linkMatch[1] }) ?? <a href={linkMatch[2]}>{linkMatch[1]}</a>
+      );
+    }
+
+    if (markdown.startsWith('# ')) {
+      return <h1>{markdown.slice(2)}</h1>;
+    }
+
+    return <>{markdown}</>;
+  };
+
+  return {
+    Streamdown: ({
+      children,
+      components,
+    }: {
+      children?: React.ReactNode;
+      components?: {
+        a?: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => React.ReactNode;
+        img?: (props: React.ImgHTMLAttributes<HTMLImageElement>) => React.ReactNode;
+      };
+    }) => <>{renderMarkdown(String(children ?? ''), components)}</>,
+    defaultRehypePlugins: {
+      katex: 'katex',
+      raw: 'raw',
+      sanitize: 'sanitize',
+    },
+    defaultRemarkPlugins: {},
+  };
+});
 
 vi.mock('@/renderer/components/Markdown/MermaidBlock', () => ({
   default: () => <div data-testid='mermaid-block' />,
@@ -230,10 +279,10 @@ describe('MarkdownViewer', () => {
   });
 
   it('keeps remote links as browser anchors', () => {
-    render(<MarkdownViewer content='[docs](https://aionui.com/docs)' />);
+    render(<MarkdownViewer content='[docs](https://trace.com/docs)' />);
 
     const link = screen.getByRole('link', { name: 'docs' });
-    expect(link).toHaveAttribute('href', 'https://aionui.com/docs');
+    expect(link).toHaveAttribute('href', 'https://trace.com/docs');
   });
 
   it('continues rendering local image markdown inline', async () => {

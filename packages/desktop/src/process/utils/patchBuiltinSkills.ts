@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2026 AionUi (aionui.com)
+ * Copyright 2026 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -37,12 +37,7 @@ type SqliteDriver = {
 
 type SqliteDriverFactory = (dbPath: string) => Promise<SqliteDriver> | SqliteDriver;
 
-const SKILL_RENAMES: SkillRename[] = [
-  { from: 'aionui-config', to: 'trace-config' },
-  { from: 'aionui-troubleshooting', to: 'trace-troubleshooting' },
-  { from: 'aionui-webui-public', to: 'trace-webui-public' },
-  { from: 'aionui-webui-setup', to: 'trace-webui-setup' },
-];
+const SKILL_RENAMES: SkillRename[] = [];
 
 const X_RECRUITER_DESCRIPTION =
   'Publish recruiting posts on X (x.com). Includes copywriting rules, image generation prompts, and an automated posting script. Prefer this skill when publishing AI, design, or technical roles.';
@@ -227,13 +222,7 @@ function replaceVisibleTraceBranding(content: string): string {
   for (const rename of SKILL_RENAMES) {
     next = next.replaceAll(rename.from, rename.to);
   }
-  return next
-    .replaceAll('AIONUI', 'TRACE')
-    .replaceAll('AionUI', 'Trace')
-    .replaceAll('AionUi', 'Trace')
-    .replaceAll('Aionui', 'Trace')
-    .replaceAll('aionui', 'trace')
-    .replaceAll('an Trace', 'a Trace');
+  return next.replaceAll('an Trace', 'a Trace');
 }
 
 async function pathExists(filePath: string): Promise<boolean> {
@@ -391,7 +380,7 @@ async function patchRecruiterCatalogDescriptions(
   logger: PatchLogger,
   sqliteDriverFactory: SqliteDriverFactory = createDefaultSqliteDriver
 ): Promise<boolean> {
-  const dbPath = path.join(dataDir, 'aionui-backend.db');
+  const dbPath = path.join(dataDir, 'trace-backend.db');
   if (!(await pathExists(dbPath))) return false;
 
   let db: SqliteDriver | null = null;
@@ -428,7 +417,9 @@ async function patchTraceSkillCatalog(
   logger: PatchLogger,
   sqliteDriverFactory: SqliteDriverFactory = createDefaultSqliteDriver
 ): Promise<boolean> {
-  const dbPath = path.join(dataDir, 'aionui-backend.db');
+  if (SKILL_RENAMES.length === 0) return false;
+
+  const dbPath = path.join(dataDir, 'trace-backend.db');
   if (!(await pathExists(dbPath))) return false;
 
   let db: SqliteDriver | null = null;
@@ -449,62 +440,7 @@ async function patchTraceSkillCatalog(
       const result = renameSkill.run(rename.to, path.join(dataDir, 'builtin-skills', rename.to), now, rename.from);
       changed = changed || result.changes > 0;
     }
-
-    const replaceBranding = db.prepare(`
-      UPDATE skills
-      SET
-        description = REPLACE(
-          REPLACE(
-            REPLACE(
-              REPLACE(
-                REPLACE(description, 'AIONUI', 'TRACE'),
-                'AionUI',
-                'Trace'
-              ),
-              'AionUi',
-              'Trace'
-            ),
-            'Aionui',
-            'Trace'
-          ),
-          'aionui',
-          'trace'
-        ),
-        path = REPLACE(
-          REPLACE(
-            REPLACE(
-              REPLACE(
-                REPLACE(path, 'AIONUI', 'TRACE'),
-                'AionUI',
-                'Trace'
-              ),
-              'AionUi',
-              'Trace'
-            ),
-            'Aionui',
-            'Trace'
-          ),
-          'aionui',
-          'trace'
-        ),
-        updated_at = ?
-      WHERE source = 'builtin'
-        AND (
-          description LIKE '%AIONUI%'
-          OR description LIKE '%AionUI%'
-          OR description LIKE '%AionUi%'
-          OR description LIKE '%Aionui%'
-          OR description LIKE '%aionui%'
-          OR path LIKE '%AIONUI%'
-          OR path LIKE '%AionUI%'
-          OR path LIKE '%AionUi%'
-          OR path LIKE '%Aionui%'
-          OR path LIKE '%aionui%'
-        )
-    `);
-    const brandingResult = replaceBranding.run(now);
-
-    return changed || brandingResult.changes > 0;
+    return changed;
   } catch (error) {
     logger.warn('[Trace] Built-in skill files patched, but Trace catalog rebrand failed:', error);
     return false;

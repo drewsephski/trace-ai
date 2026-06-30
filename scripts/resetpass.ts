@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  *
  * Pure Node/Bun CLI — resets the WebUI admin password for the standalone
@@ -28,7 +28,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { startBackend, stopBackend } from '@aionui/web-host';
+import { startBackend, stopBackend } from '@trace/web-host';
 
 const BACKEND_BINARY = process.platform === 'win32' ? 'aioncore.exe' : 'aioncore';
 
@@ -66,18 +66,14 @@ function getFlag(name: string): string | undefined {
  * See the comment there for why the default is `~/.trace-web*` (not `~/.trace*`).
  */
 function resolveWorkDir(): string {
-  const override = getFlag('--data-dir') ?? process.env.TRACE_DATA_DIR ?? process.env.AIONUI_DATA_DIR;
+  const override = getFlag('--data-dir') ?? process.env.TRACE_DATA_DIR;
   if (override && override.trim().length > 0) {
     const resolved = path.resolve(override);
     fs.mkdirSync(resolved, { recursive: true });
     return resolved;
   }
   const suffix =
-    process.env.NODE_ENV === 'production'
-      ? ''
-      : process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1'
-        ? '-dev-2'
-        : '-dev';
+    process.env.NODE_ENV === 'production' ? '' : process.env.TRACE_MULTI_INSTANCE === '1' ? '-dev-2' : '-dev';
   const dir = path.join(os.homedir(), `.trace-web${suffix}`);
   fs.mkdirSync(dir, { recursive: true });
   return dir;
@@ -85,12 +81,8 @@ function resolveWorkDir(): string {
 
 function resolveBackendBinary(): string {
   if (process.env.TRACE_BACKEND_BIN) return process.env.TRACE_BACKEND_BIN;
-  if (process.env.AIONUI_BACKEND_BIN) return process.env.AIONUI_BACKEND_BIN;
 
-  const bundledBase =
-    process.env.TRACE_BACKEND_BUNDLED_DIR ??
-    process.env.AIONUI_BACKEND_BUNDLED_DIR ??
-    path.join(repoRoot, 'resources', 'bundled-aioncore');
+  const bundledBase = process.env.TRACE_BACKEND_BUNDLED_DIR ?? path.join(repoRoot, 'resources', 'bundled-aioncore');
   const runtimeKey = `${process.platform}-${process.arch}`;
   const bundled = path.join(bundledBase, runtimeKey, BACKEND_BINARY);
   if (fs.existsSync(bundled)) return bundled;
@@ -114,10 +106,10 @@ function resolveBackendBinary(): string {
 function resolveWebUIProbePort(): number {
   const cli = getFlag('--port');
   if (cli && /^\d+$/.test(cli)) return Number(cli);
-  const env = process.env.TRACE_PORT ?? process.env.AIONUI_PORT ?? process.env.PORT;
+  const env = process.env.TRACE_PORT ?? process.env.PORT;
   if (env && /^\d+$/.test(env)) return Number(env);
   if (process.env.NODE_ENV === 'production') return 25808;
-  if (process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1') return 25810;
+  if (process.env.TRACE_MULTI_INSTANCE === '1') return 25810;
   return 25809;
 }
 
@@ -199,7 +191,7 @@ async function main(): Promise<void> {
 
   // Slow path: no webui running. Spawn a short-lived backend against the same
   // data-dir, reset, stop.
-  const logDir = process.env.TRACE_LOG_DIR ?? process.env.AIONUI_LOG_DIR ?? path.join(workDir, 'logs');
+  const logDir = process.env.TRACE_LOG_DIR ?? path.join(workDir, 'logs');
   fs.mkdirSync(logDir, { recursive: true });
 
   const backendBin = resolveBackendBinary();

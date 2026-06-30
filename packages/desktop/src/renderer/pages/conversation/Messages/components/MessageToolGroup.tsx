@@ -1,10 +1,11 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import { ipcBridge } from '@/common';
+import { normalizeTraceToolDisplayText } from '@/common/chat/chatLib';
 import type { IMessageToolGroup } from '@/common/chat/chatLib';
 import { iconColors } from '@/renderer/styles/colors';
 import { Alert, Button, Image, Message, Radio, Tag, Tooltip } from '@arco-design/web-react';
@@ -556,7 +557,7 @@ const MessageToolGroup: React.FC<IMessageToolGroupProps> = ({ message }) => {
               content={
                 <div>
                   <Tag className={'mr-4px'}>
-                    {name}
+                    {normalizeTraceToolDisplayText(name)}
                     {status === 'Canceled' ? `(${t('messages.canceledExecution')})` : ''}
                   </Tag>
                 </div>

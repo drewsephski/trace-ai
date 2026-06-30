@@ -1,16 +1,16 @@
 #!/usr/bin/env bun
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  *
  * Pure Bun CLI — launches the WebUI (backend + static server + auth) without
  * starting Electron. Replaces the former `electron-vite dev -- --webui` flow.
  *
  * Env vars:
- *   TRACE_PORT            : static server port (default 33000)
- *   TRACE_HOST            : listen host; set to 0.0.0.0 to imply --remote
- *   TRACE_ALLOW_REMOTE    : "1"/"true" to expose to LAN
+ *   TRACE_PORT            : static server port (default 25808 in production)
+ *   TRACE_HOST            : listen host; set to 0.0.0.0 to imply private-network --remote
+ *   TRACE_ALLOW_REMOTE    : "1"/"true" to expose to private LAN/VPN clients
  *   TRACE_DATA_DIR        : override userData path (default standalone Trace WebUI path)
  *   TRACE_LOG_DIR         : override log dir (default <dataDir>/logs)
  *   TRACE_STATIC_DIR      : override static dir (default out/renderer)
@@ -18,7 +18,6 @@
  *   TRACE_BACKEND_BUNDLED_DIR : dir containing bundled-aioncore/<plat-arch>/binary
  *   TRACE_OPEN_BROWSER    : "1"/"true" to force open, "0"/"false" to disable
  *
- * Legacy AIONUI_* names are still accepted for compatibility.
  */
 
 import { execSync } from 'child_process';
@@ -26,13 +25,13 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { startWebHost } from '@aionui/web-host';
+import { startWebHost } from '@trace/web-host';
 import { openBrowserUrl, shouldAutoOpenBrowser } from '../packages/web-cli/src/browser.js';
 
 // Aligned with packages/desktop/src/common/config/constants.ts WEBUI_DEFAULT_PORT.
 const DEFAULT_PORT = (() => {
   if (process.env.NODE_ENV === 'production') return 25808;
-  if (process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1') return 25810;
+  if (process.env.TRACE_MULTI_INSTANCE === '1') return 25810;
   return 25809;
 })();
 const BACKEND_BINARY = process.platform === 'win32' ? 'aioncore.exe' : 'aioncore';
@@ -62,10 +61,10 @@ const getFlag = (name: string): string | undefined => {
  *                           ~/.trace-web-dev     (dev, default)
  *                           ~/.trace-web-dev-2   (dev + TRACE_MULTI_INSTANCE=1)
  *
- * Why a dedicated `-web` name, not the same `~/.aionui[-dev]` that Electron
+ * Why a dedicated `-web` name, not the same `~/.trace[-dev]` that Electron
  * uses: on macOS, Electron's getDataPath() (packages/desktop/src/process/utils/
- * utils.ts) creates `~/.aionui-dev` as a **symlink** to
- * `~/Library/Application Support/Trace-Dev/aionui` so CLI tools (claude,
+ * utils.ts) creates `~/.trace-dev` as a **symlink** to
+ * `~/Library/Application Support/Trace-Dev/trace` so CLI tools (claude,
  * gemini, qwen…) don't choke on the literal space in "Application Support".
  * If standalone webui runs first on a clean machine, it would create the
  * symlink location as a **real directory** instead. When Electron is later
@@ -76,23 +75,19 @@ const getFlag = (name: string): string | undefined => {
  * symlink needs.
  *
  * If the user wants the two to share data they opt-in explicitly via
- *   --data-dir ~/.aionui-dev                     (or equivalent on other OSes)
+ *   --data-dir ~/.trace-dev                     (or equivalent on other OSes)
  * which is safe because by that point Electron has created the symlink and
  * `bun run webui` just follows it.
  */
 function resolveBackendDataDir(): string {
-  const override = getFlag('--data-dir') ?? process.env.TRACE_DATA_DIR ?? process.env.AIONUI_DATA_DIR;
+  const override = getFlag('--data-dir') ?? process.env.TRACE_DATA_DIR;
   if (override && override.trim().length > 0) {
     const resolved = path.resolve(override);
     fs.mkdirSync(resolved, { recursive: true });
     return resolved;
   }
   const suffix =
-    process.env.NODE_ENV === 'production'
-      ? ''
-      : process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1'
-        ? '-dev-2'
-        : '-dev';
+    process.env.NODE_ENV === 'production' ? '' : process.env.TRACE_MULTI_INSTANCE === '1' ? '-dev-2' : '-dev';
   const dir = path.join(os.homedir(), `.trace-web${suffix}`);
   fs.mkdirSync(dir, { recursive: true });
   return dir;
@@ -106,26 +101,20 @@ function parseBoolean(v: string | undefined): boolean {
 function resolvePort(): number {
   const cli = getFlag('--port');
   if (cli && /^\d+$/.test(cli)) return Number(cli);
-  const env = process.env.TRACE_PORT ?? process.env.AIONUI_PORT ?? process.env.PORT;
+  const env = process.env.TRACE_PORT ?? process.env.PORT;
   if (env && /^\d+$/.test(env)) return Number(env);
   return DEFAULT_PORT;
 }
 
 function resolveAllowRemote(): boolean {
   if (has('--remote')) return true;
-  const host = (process.env.TRACE_HOST ?? process.env.AIONUI_HOST)?.trim();
+  const host = process.env.TRACE_HOST?.trim();
   if (host && ['0.0.0.0', '::', '::0'].includes(host)) return true;
-  return parseBoolean(
-    process.env.TRACE_ALLOW_REMOTE ??
-      process.env.TRACE_REMOTE ??
-      process.env.AIONUI_ALLOW_REMOTE ??
-      process.env.AIONUI_REMOTE
-  );
+  return parseBoolean(process.env.TRACE_ALLOW_REMOTE ?? process.env.TRACE_REMOTE);
 }
 
 function resolveStaticDir(): string {
   if (process.env.TRACE_STATIC_DIR) return process.env.TRACE_STATIC_DIR;
-  if (process.env.AIONUI_STATIC_DIR) return process.env.AIONUI_STATIC_DIR;
   const candidate = path.join(repoRoot, 'out', 'renderer');
   if (fs.existsSync(path.join(candidate, 'index.html'))) return candidate;
   throw new Error(`Renderer assets not found at ${candidate}. Run "bun run package" first, or set TRACE_STATIC_DIR.`);
@@ -140,8 +129,8 @@ function resolveStaticDir(): string {
  */
 function runPackageIfNeeded(): void {
   if (has('--no-build')) return;
-  if (parseBoolean(process.env.TRACE_NO_BUILD ?? process.env.AIONUI_NO_BUILD)) return;
-  if (process.env.TRACE_STATIC_DIR || process.env.AIONUI_STATIC_DIR) return;
+  if (parseBoolean(process.env.TRACE_NO_BUILD)) return;
+  if (process.env.TRACE_STATIC_DIR) return;
   console.log('[webui] running "bun run package" to refresh out/renderer (pass --no-build to skip)...');
   const start = Date.now();
   execSync('bun run package', { cwd: repoRoot, stdio: 'inherit' });
@@ -150,12 +139,8 @@ function runPackageIfNeeded(): void {
 
 function resolveBackendBinary(): string {
   if (process.env.TRACE_BACKEND_BIN) return process.env.TRACE_BACKEND_BIN;
-  if (process.env.AIONUI_BACKEND_BIN) return process.env.AIONUI_BACKEND_BIN;
 
-  const bundledBase =
-    process.env.TRACE_BACKEND_BUNDLED_DIR ??
-    process.env.AIONUI_BACKEND_BUNDLED_DIR ??
-    path.join(repoRoot, 'resources', 'bundled-aioncore');
+  const bundledBase = process.env.TRACE_BACKEND_BUNDLED_DIR ?? path.join(repoRoot, 'resources', 'bundled-aioncore');
   const runtimeKey = `${process.platform}-${process.arch}`;
   const bundled = path.join(bundledBase, runtimeKey, BACKEND_BINARY);
   if (fs.existsSync(bundled)) return bundled;
@@ -232,12 +217,20 @@ async function main(): Promise<void> {
   const workDir = resolveBackendDataDir();
   const staticDir = resolveStaticDir();
   const backendBin = resolveBackendBinary();
-  const logDir = process.env.TRACE_LOG_DIR ?? process.env.AIONUI_LOG_DIR ?? path.join(workDir, 'logs');
+  const logDir = process.env.TRACE_LOG_DIR ?? path.join(workDir, 'logs');
 
   console.log('[webui] work dir   :', workDir);
   console.log('[webui] static dir :', staticDir);
   console.log('[webui] backend bin:', backendBin);
   console.log(`[webui] launching  : port=${port} allowRemote=${allowRemote}`);
+  if (allowRemote) {
+    console.warn(
+      '[webui] remote mode is private-network experimental; do not expose this port directly to the public internet.'
+    );
+    console.warn(
+      '[webui] for public access, keep WebUI on loopback behind an authenticated HTTPS proxy, VPN, or SSH tunnel.'
+    );
+  }
 
   const handle = await startWebHost({
     app: {

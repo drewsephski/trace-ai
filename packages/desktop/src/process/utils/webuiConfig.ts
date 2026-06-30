@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -10,7 +10,7 @@ import * as path from 'path';
 import { networkInterfaces } from 'os';
 import { getSystemDir } from './initStorage';
 import { httpRequest } from '@/common/adapter/httpBridge';
-import { startWebHost, type WebHostHandle } from '@aionui/web-host';
+import { startWebHost, type WebHostHandle } from '@trace/web-host';
 import { getDataPath } from './utils';
 
 const WEBUI_CONFIG_FILE = 'webui.config.json';
@@ -130,7 +130,7 @@ export const saveUserWebUIConfig = async (config: WebUIUserConfig): Promise<void
 //   production -> 25808, dev -> 25809, multi-instance dev -> 25810
 const DEFAULT_WEBUI_PORT = (() => {
   if (process.env.NODE_ENV === 'production') return 25808;
-  if (process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1') return 25810;
+  if (process.env.TRACE_MULTI_INSTANCE === '1') return 25810;
   return 25809;
 })();
 
@@ -141,7 +141,7 @@ export const resolveWebUIPort = (
   const cliPort = parsePortValue(getSwitchValue('port') ?? getSwitchValue('webui-port'));
   if (cliPort) return cliPort;
 
-  const envPort = parsePortValue(process.env.TRACE_PORT ?? process.env.AIONUI_PORT ?? process.env.PORT);
+  const envPort = parsePortValue(process.env.TRACE_PORT ?? process.env.PORT);
   if (envPort) return envPort;
 
   const configPort = parsePortValue(config.port);
@@ -151,13 +151,8 @@ export const resolveWebUIPort = (
 };
 
 export const resolveRemoteAccess = (config: WebUIUserConfig, isRemoteMode: boolean): boolean => {
-  const envRemote = parseBooleanEnv(
-    process.env.TRACE_ALLOW_REMOTE ||
-      process.env.TRACE_REMOTE ||
-      process.env.AIONUI_ALLOW_REMOTE ||
-      process.env.AIONUI_REMOTE
-  );
-  const hostHint = (process.env.TRACE_HOST ?? process.env.AIONUI_HOST)?.trim();
+  const envRemote = parseBooleanEnv(process.env.TRACE_ALLOW_REMOTE || process.env.TRACE_REMOTE);
+  const hostHint = process.env.TRACE_HOST?.trim();
   const hostRequestsRemote = hostHint ? ['0.0.0.0', '::', '::0'].includes(hostHint) : false;
   const configRemote = config.allowRemote === true;
 

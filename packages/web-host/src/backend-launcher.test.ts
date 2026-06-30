@@ -157,9 +157,9 @@ describe('buildSpawnArgs', () => {
     expect(args).not.toContain('--dump-prompts');
   });
 
-  it('respects AIONUI_LOG_LEVEL override', () => {
-    const prev = process.env.AIONUI_LOG_LEVEL;
-    process.env.AIONUI_LOG_LEVEL = 'trace';
+  it('respects TRACE_LOG_LEVEL override', () => {
+    const prev = process.env.TRACE_LOG_LEVEL;
+    process.env.TRACE_LOG_LEVEL = 'trace';
     try {
       const args = buildSpawnArgs({
         port: 1,
@@ -170,22 +170,22 @@ describe('buildSpawnArgs', () => {
       });
       expect(args).toContain('trace');
     } finally {
-      if (prev === undefined) delete process.env.AIONUI_LOG_LEVEL;
-      else process.env.AIONUI_LOG_LEVEL = prev;
+      if (prev === undefined) delete process.env.TRACE_LOG_LEVEL;
+      else process.env.TRACE_LOG_LEVEL = prev;
     }
   });
 });
 
 describe('buildSpawnEnv', () => {
-  it('merges process.env with AIONUI_* dir vars', () => {
+  it('merges process.env with TRACE_* dir vars', () => {
     const env = buildSpawnEnv({
       cacheDir: '/c',
       workDir: '/w',
       logDir: '/l',
     });
-    expect(env.AIONUI_CACHE_DIR).toBe('/c');
-    expect(env.AIONUI_WORK_DIR).toBe('/w');
-    expect(env.AIONUI_LOG_DIR).toBe('/l');
+    expect(env.TRACE_CACHE_DIR).toBe('/c');
+    expect(env.TRACE_WORK_DIR).toBe('/w');
+    expect(env.TRACE_LOG_DIR).toBe('/l');
     expect(env.PATH).toBe(process.env.PATH); // inherits
   });
 });
@@ -358,9 +358,9 @@ describe('BackendLifecycleManager.start (success path)', () => {
         '--local',
       ]);
       const opts = spawnCall[2] as { env: NodeJS.ProcessEnv };
-      expect(opts.env.AIONUI_CACHE_DIR).toBe('/c');
-      expect(opts.env.AIONUI_WORK_DIR).toBe('/w');
-      expect(opts.env.AIONUI_LOG_DIR).toBe('/l');
+      expect(opts.env.TRACE_CACHE_DIR).toBe('/c');
+      expect(opts.env.TRACE_WORK_DIR).toBe('/w');
+      expect(opts.env.TRACE_LOG_DIR).toBe('/l');
       expect((spawnCall[2] as { detached?: boolean }).detached).toBe(process.platform !== 'win32');
 
       expect(fetchSpy).toHaveBeenCalled();
@@ -394,7 +394,7 @@ describe('BackendLifecycleManager.start (health timeout)', () => {
     child.stderr?.emit(
       'data',
       Buffer.from(
-        'BOOTSTRAP_DATA_INIT_FAILED stage=database.open databasePath=/db/path/aionui-backend.db: failed to initialize application data\n'
+        'BOOTSTRAP_DATA_INIT_FAILED stage=database.open databasePath=/db/path/trace-backend.db: failed to initialize application data\n'
       )
     );
     child.emit('exit', 1, null);
@@ -429,7 +429,7 @@ describe('BackendLifecycleManager.start (health timeout)', () => {
     child.stderr?.emit(
       'data',
       Buffer.from(
-        'BOOTSTRAP_DATA_INIT_FAILED stage=database.migration databasePath=/db/path/aionui-backend.db: failed to initialize application data\n'
+        'BOOTSTRAP_DATA_INIT_FAILED stage=database.migration databasePath=/db/path/trace-backend.db: failed to initialize application data\n'
       )
     );
     child.emit('close', 1, null);

@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -337,7 +337,7 @@ function collectBuiltinAgentIdOverrides(
 /**
  * Replay user-picked legacy backend choices onto `assistant_overrides`
  * via `PUT /api/assistants/{id}`. The backend accepts only `agent_id`
- * on built-in rows (see `aionui-assistant/src/service.rs`). 404 is treated as
+ * on built-in rows (see `trace-assistant/src/service.rs`). 404 is treated as
  * skip for the same reason as {@link applyBuiltinOverrides}: the built-in was
  * retired between versions and the user preference is moot.
  */
@@ -548,11 +548,11 @@ async function uploadLegacyAssistantRules(legacyAssistantIds: Set<string>): Prom
  * `false` so the caller can log the partial state, but next launch
  * naturally retries the remaining work.
  *
- * Honors `AIONUI_SKIP_ELECTRON_MIGRATION=1` so E2E fixtures can seed via
+ * Honors `TRACE_SKIP_ELECTRON_MIGRATION=1` so E2E fixtures can seed via
  * `POST /api/assistants/import` directly.
  */
 export async function migrateAssistantsToBackend(configFile: ConfigFile): Promise<boolean> {
-  if (process.env.AIONUI_SKIP_ELECTRON_MIGRATION === '1') {
+  if (process.env.TRACE_SKIP_ELECTRON_MIGRATION === '1') {
     console.log('[Trace] Assistant migration skipped (env flag set)');
     return false;
   }

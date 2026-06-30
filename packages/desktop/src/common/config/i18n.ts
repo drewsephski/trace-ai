@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -11,8 +11,15 @@
 import i18nConfig from '@/common/config/i18n-config.json';
 
 export const SUPPORTED_LANGUAGES = i18nConfig.supportedLanguages;
+export const LAUNCH_SUPPORTED_LANGUAGES = i18nConfig.launchSupportedLanguages;
+export const TRANSLATION_BACKLOG_LANGUAGES = i18nConfig.translationBacklogLanguages;
 export const DEFAULT_LANGUAGE = i18nConfig.fallbackLanguage;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
+export type LaunchSupportedLanguage = (typeof LAUNCH_SUPPORTED_LANGUAGES)[number];
+
+export function isLaunchSupportedLanguage(language: string): language is LaunchSupportedLanguage {
+  return LAUNCH_SUPPORTED_LANGUAGES.includes(language as LaunchSupportedLanguage);
+}
 
 /**
  * Normalize a language code to a supported BCP 47 tag.

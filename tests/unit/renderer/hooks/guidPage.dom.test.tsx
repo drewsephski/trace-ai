@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -490,7 +490,7 @@ describe('GuidPage', () => {
 
   it('keeps the last user-selected provider when applying an aionrs assistant default model', async () => {
     localStorage.setItem(
-      'aionui_last_chat_provider_model',
+      'trace_last_chat_provider_model',
       JSON.stringify({ providerId: 'provider-b', modelName: 'last-model' })
     );
     swrMock.useSWRMock.mockReturnValue({ data: assistantDetailFixture });

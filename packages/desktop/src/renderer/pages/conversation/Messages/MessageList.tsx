@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -108,7 +108,7 @@ const getUnhandledMessageType = (_message: never): string => 'unknown';
 // Image preview context
 export const ImagePreviewContext = createContext<{ inPreviewGroup: boolean }>({ inPreviewGroup: false });
 
-const MESSAGE_ROW_WIDTH_CLASS = 'w-[calc(100%-24px)] md:w-[calc(100%-clamp(80px,10vw,240px))] max-w-none mx-auto';
+const MESSAGE_ROW_WIDTH_CLASS = 'w-[calc(100%-24px)] md:w-[calc(100%-48px)] xl:w-[calc(100%-64px)] max-w-none mx-auto';
 
 const MessageListSkeleton: React.FC = () => {
   const rows = [

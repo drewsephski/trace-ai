@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -141,8 +141,16 @@ describe('Layout sider brand Home button', () => {
     // No actionable role/label in chat routes.
     expect(screen.queryByLabelText(BACK_KEY)).toBeNull();
     const wordmark = screen.getByAltText('Trace');
+    expect(screen.getByTestId('layout-sider-brand-icon')).toHaveClass('layout-sider-brand--dark');
     fireEvent.click(wordmark);
     expect(navigate).not.toHaveBeenCalled();
+  });
+
+  it('keeps the settings route brand wordmark on the dark contrast background', () => {
+    currentPathname = '/settings/about';
+    renderLayout();
+
+    expect(screen.getByLabelText(BACK_KEY)).toHaveClass('layout-sider-brand--dark');
   });
 
   it('does not navigate when the wordmark is clicked in a non-settings route', () => {
@@ -167,7 +175,7 @@ describe('Layout sider brand Home button', () => {
   it('opens the update notification directly for tray update checks', () => {
     platformMocks.isElectronDesktopMock.mockReturnValue(true);
     const openListener = vi.fn();
-    window.addEventListener('aionui-open-update-modal', openListener);
+    window.addEventListener('trace-open-update-modal', openListener);
 
     try {
       renderLayout();
@@ -179,7 +187,7 @@ describe('Layout sider brand Home button', () => {
       const event = openListener.mock.calls[0][0] as CustomEvent;
       expect(event.detail).toEqual({ source: 'tray' });
     } finally {
-      window.removeEventListener('aionui-open-update-modal', openListener);
+      window.removeEventListener('trace-open-update-modal', openListener);
     }
   });
 });

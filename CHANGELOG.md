@@ -43,7 +43,7 @@
 
 ---
 
-## [2.1.25](https://github.com/iOfficeAI/AionUi/compare/v2.1.24...v2.1.25) (2026-06-26)
+## [2.1.25](https://github.com/iOfficeAI/Trace/compare/v2.1.24...v2.1.25) (2026-06-26)
 
 ### Desktop
 
@@ -86,11 +86,11 @@
 - **agent:** expose runtime catalogs from metadata (#523)
 - **assistant:** expose auto-inject skills and preserve assistant rules (#525)
 - repair invalid UTF-8 agent metadata cache fields (#526)
-- **skills:** sync AionUi Butler skills + rule with current backend (#520)
+- **skills:** sync Trace Butler skills + rule with current backend (#520)
 
 ---
 
-## [2.1.24](https://github.com/iOfficeAI/AionUi/compare/v2.1.23...v2.1.24) (2026-06-25)
+## [2.1.24](https://github.com/iOfficeAI/Trace/compare/v2.1.23...v2.1.24) (2026-06-25)
 
 ### Desktop
 
@@ -123,7 +123,7 @@
 
 ---
 
-## [2.1.23](https://github.com/iOfficeAI/AionUi/compare/v2.1.22...v2.1.23) (2026-06-23)
+## [2.1.23](https://github.com/iOfficeAI/Trace/compare/v2.1.22...v2.1.23) (2026-06-23)
 
 ### Desktop
 
@@ -145,13 +145,13 @@
 
 ---
 
-## [2.1.22](https://github.com/iOfficeAI/AionUi/compare/v2.1.21...v2.1.22) (2026-06-22)
+## [2.1.22](https://github.com/iOfficeAI/Trace/compare/v2.1.21...v2.1.22) (2026-06-22)
 
 ### Desktop
 
 #### Features
 
-- **acp:** preserve redacted raw error in AIONUI_INTERNAL_ERROR fallback (#3393)
+- **acp:** preserve redacted raw error in TRACE_INTERNAL_ERROR fallback (#3393)
 
 #### Bug Fixes
 
@@ -173,7 +173,7 @@
 
 ---
 
-## [2.1.21](https://github.com/iOfficeAI/AionUi/compare/v2.1.20...v2.1.21) (2026-06-18)
+## [2.1.21](https://github.com/iOfficeAI/Trace/compare/v2.1.20...v2.1.21) (2026-06-18)
 
 ### Desktop
 
@@ -204,7 +204,7 @@
 
 ---
 
-## [2.1.20](https://github.com/iOfficeAI/AionUi/compare/v2.1.19...v2.1.20) (2026-06-17)
+## [2.1.20](https://github.com/iOfficeAI/Trace/compare/v2.1.19...v2.1.20) (2026-06-17)
 
 ### Desktop
 
@@ -223,8 +223,8 @@
 
 #### Features
 
-- **assistant:** add built-in AionUi self-management assistant ([#474](https://github.com/iOfficeAI/AionCore/issues/474))
-- **assistant:** expand AionUi assistant into a butler with remote-access ([#481](https://github.com/iOfficeAI/AionCore/issues/481))
+- **assistant:** add built-in Trace self-management assistant ([#474](https://github.com/iOfficeAI/AionCore/issues/474))
+- **assistant:** expand Trace assistant into a butler with remote-access ([#481](https://github.com/iOfficeAI/AionCore/issues/481))
 - enforce TeamRun ownership for agent turns ([#483](https://github.com/iOfficeAI/AionCore/issues/483))
 - **team:** support queued team_send_message semantics ([#479](https://github.com/iOfficeAI/AionCore/issues/479))
 
@@ -236,7 +236,7 @@
 
 ---
 
-## [2.1.19](https://github.com/iOfficeAI/AionUi/compare/v2.1.18...v2.1.19) (2026-06-15)
+## [2.1.19](https://github.com/iOfficeAI/Trace/compare/v2.1.18...v2.1.19) (2026-06-15)
 
 ### Desktop
 
@@ -279,7 +279,7 @@
 
 ---
 
-## [2.1.18](https://github.com/iOfficeAI/AionUi/compare/v2.1.17...v2.1.18) (2026-06-12)
+## [2.1.18](https://github.com/iOfficeAI/Trace/compare/v2.1.17...v2.1.18) (2026-06-12)
 
 ### Desktop
 
@@ -326,7 +326,7 @@
 
 ---
 
-## [2.1.17](https://github.com/iOfficeAI/AionUi/compare/v2.1.16...v2.1.17) (2026-06-11)
+## [2.1.17](https://github.com/iOfficeAI/Trace/compare/v2.1.16...v2.1.17) (2026-06-11)
 
 ### Desktop
 
@@ -354,12 +354,12 @@
 
 - **auth:** allow same-origin framing on office preview proxy routes ([#454](https://github.com/iOfficeAI/AionCore/issues/454))
 - **file:** strip Windows verbatim prefix from /api/fs/browse paths ([#453](https://github.com/iOfficeAI/AionCore/issues/453))
-- **stt:** STT compatibility fixes for Groq Whisper and AionUI web frontend ([#400](https://github.com/iOfficeAI/AionCore/issues/400))
+- **stt:** STT compatibility fixes for Groq Whisper and Trace web frontend ([#400](https://github.com/iOfficeAI/AionCore/issues/400))
 - **stt:** treat blank base_url as unset and log malformed config ([#448](https://github.com/iOfficeAI/AionCore/issues/448))
 
 ---
 
-## [2.1.16](https://github.com/iOfficeAI/AionUi/compare/v2.1.15...v2.1.16) (2026-06-10)
+## [2.1.16](https://github.com/iOfficeAI/Trace/compare/v2.1.15...v2.1.16) (2026-06-10)
 
 ### Desktop
 
@@ -380,7 +380,7 @@
 
 ---
 
-## [2.1.15](https://github.com/iOfficeAI/AionUi/compare/v2.1.14...v2.1.15) (2026-06-09)
+## [2.1.15](https://github.com/iOfficeAI/Trace/compare/v2.1.14...v2.1.15) (2026-06-09)
 
 ### Desktop
 
@@ -412,7 +412,7 @@
 
 ---
 
-## [2.1.14](https://github.com/iOfficeAI/AionUi/compare/v2.1.13...v2.1.14) (2026-06-08)
+## [2.1.14](https://github.com/iOfficeAI/Trace/compare/v2.1.13...v2.1.14) (2026-06-08)
 
 ### Desktop
 
@@ -438,7 +438,7 @@
 
 ---
 
-## [2.1.13](https://github.com/iOfficeAI/AionUi/compare/v2.1.12...v2.1.13) (2026-06-07)
+## [2.1.13](https://github.com/iOfficeAI/Trace/compare/v2.1.12...v2.1.13) (2026-06-07)
 
 ### Desktop
 
@@ -479,7 +479,7 @@
 
 ---
 
-## [2.1.12](https://github.com/iOfficeAI/AionUi/compare/v2.1.11...v2.1.12) (2026-06-05)
+## [2.1.12](https://github.com/iOfficeAI/Trace/compare/v2.1.11...v2.1.12) (2026-06-05)
 
 ### Desktop
 
@@ -508,7 +508,7 @@
 
 ---
 
-## [2.1.11](https://github.com/iOfficeAI/AionUi/compare/v2.1.10...v2.1.11) (2026-06-04)
+## [2.1.11](https://github.com/iOfficeAI/Trace/compare/v2.1.10...v2.1.11) (2026-06-04)
 
 ### Desktop
 
@@ -538,7 +538,7 @@
 
 ---
 
-## [2.1.10](https://github.com/iOfficeAI/AionUi/compare/v2.1.9...v2.1.10) (2026-06-02)
+## [2.1.10](https://github.com/iOfficeAI/Trace/compare/v2.1.9...v2.1.10) (2026-06-02)
 
 ### Desktop
 
@@ -558,14 +558,14 @@
 
 #### Bug Fixes
 
-- **aionui-ai-agent:** classify aionrs API connection errors ([#389](https://github.com/iOfficeAI/AionCore/issues/389))
+- **trace-ai-agent:** classify aionrs API connection errors ([#389](https://github.com/iOfficeAI/AionCore/issues/389))
 - classify missing MCP launcher runtimes ([#387](https://github.com/iOfficeAI/AionCore/issues/387))
 - enforce workspace path whitespace errors across create and runtime ([#381](https://github.com/iOfficeAI/AionCore/issues/381))
 - **startup:** add startup phase diagnostics ([#388](https://github.com/iOfficeAI/AionCore/issues/388))
 
 ---
 
-## [2.1.9](https://github.com/iOfficeAI/AionUi/compare/v2.1.8...v2.1.9) (2026-06-01)
+## [2.1.9](https://github.com/iOfficeAI/Trace/compare/v2.1.8...v2.1.9) (2026-06-01)
 
 ### Desktop
 
@@ -587,12 +587,12 @@
 - **agent:** classify Bedrock 'model identifier is invalid' as model-not-found (AIO-12) ([#377](https://github.com/iOfficeAI/AionCore/issues/377))
 - **agent:** preserve process-group cleanup after leader exit ([#369](https://github.com/iOfficeAI/AionCore/issues/369))
 - **agent:** tighten send_error classifier (AIO-87, AIO-89, AIO-90) ([#375](https://github.com/iOfficeAI/AionCore/issues/375))
-- **aionui-ai-agent:** strip HTML body from sanitized error detail (AIO-13) ([#380](https://github.com/iOfficeAI/AionCore/issues/380))
+- **trace-ai-agent:** strip HTML body from sanitized error detail (AIO-13) ([#380](https://github.com/iOfficeAI/AionCore/issues/380))
 - recover deleted conversation workspaces ([#379](https://github.com/iOfficeAI/AionCore/issues/379))
 
 ---
 
-## [2.1.8](https://github.com/iOfficeAI/AionUi/compare/v2.1.7...v2.1.8) (2026-05-30)
+## [2.1.8](https://github.com/iOfficeAI/Trace/compare/v2.1.7...v2.1.8) (2026-05-30)
 
 ### Desktop
 
@@ -610,7 +610,7 @@
 
 ---
 
-## [2.1.7](https://github.com/iOfficeAI/AionUi/compare/v2.1.6...v2.1.7) (2026-05-29)
+## [2.1.7](https://github.com/iOfficeAI/Trace/compare/v2.1.6...v2.1.7) (2026-05-29)
 
 ### Desktop
 
@@ -644,7 +644,7 @@
 
 ---
 
-## [2.1.6](https://github.com/iOfficeAI/AionUi/compare/v2.1.5...v2.1.6) (2026-05-28)
+## [2.1.6](https://github.com/iOfficeAI/Trace/compare/v2.1.5...v2.1.6) (2026-05-28)
 
 ### Desktop
 
@@ -669,7 +669,7 @@
 
 ---
 
-## [2.1.5](https://github.com/iOfficeAI/AionUi/compare/v2.1.4...v2.1.5) (2026-05-27)
+## [2.1.5](https://github.com/iOfficeAI/Trace/compare/v2.1.4...v2.1.5) (2026-05-27)
 
 ### Desktop
 
@@ -713,7 +713,7 @@
 
 ---
 
-## [2.1.4](https://github.com/iOfficeAI/AionUi/compare/v2.1.3...v2.1.4) (2026-05-27)
+## [2.1.4](https://github.com/iOfficeAI/Trace/compare/v2.1.3...v2.1.4) (2026-05-27)
 
 ### Desktop
 

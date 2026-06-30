@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -240,7 +240,7 @@ const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({
         ) : (
           // 预览模式：Streamdown 原生渲染 / Preview mode: native Streamdown
           <div
-            className='aionui-markdown'
+            className='trace-markdown'
             style={{
               wordWrap: 'break-word',
               overflowWrap: 'break-word',

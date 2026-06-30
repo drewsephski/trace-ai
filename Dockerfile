@@ -37,7 +37,7 @@ RUN bun install --production --ignore-scripts
 
 ENV PORT=3000
 ENV NODE_ENV=production
-ENV ALLOW_REMOTE=true
+ENV TRACE_ALLOW_REMOTE=false
 ENV DATA_DIR=/data
 
 # SQLite data volume — mount with: -v $(pwd)/data:/data

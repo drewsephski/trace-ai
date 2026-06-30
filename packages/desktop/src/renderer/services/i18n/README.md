@@ -1,26 +1,56 @@
-# 多语言支持 (i18n)
+# Internationalization (i18n)
 
-本项目使用 i18next 和 react-i18next 实现多语言支持。
+Trace uses i18next and react-i18next for desktop UI localization.
 
-## 支持的语言
+## Source Of Truth
 
-- 中文 (zh-CN) - 默认语言
-- 英文 (en-US)
+`packages/desktop/src/common/config/i18n-config.json` is the source of truth for:
 
-## 文件结构
+- `referenceLanguage`: the locale used to generate typed keys.
+- `fallbackLanguage`: the locale used when a requested language is unsupported.
+- `supportedLanguages`: locales loaded by the desktop runtime.
+- `launchSupportedLanguages`: locales presented as public-launch supported.
+- `translationBacklogLanguages`: locale folders that may exist in the repo but are not launch-supported.
+
+Current launch-supported locales:
+
+- English (`en-US`)
+- Japanese (`ja-JP`)
+- Korean (`ko-KR`)
+- Turkish (`tr-TR`)
+- Russian (`ru-RU`)
+- Ukrainian (`uk-UA`)
+- Brazilian Portuguese (`pt-BR`)
+- German (`de-DE`)
+
+Known locale backlog:
+
+- Simplified Chinese (`zh-CN`)
+- Traditional Chinese (`zh-TW`)
+
+The Chinese locale folders are retained as historical translation work, but they are intentionally excluded from
+`supportedLanguages` and `launchSupportedLanguages`. Requests for `zh`, `zh-CN`, or `zh-TW` currently fall back to
+`en-US` until those translations are brought back to parity and wired into the runtime imports.
+
+## File Structure
 
 ```
-src/renderer/i18n/
-├── index.ts              # i18next 配置文件
-├── locales/
-│   ├── zh-CN.json        # 中文语言包
-│   └── en-US.json        # 英文语言包
-└── README.md             # 说明文档
+packages/desktop/src/common/config/i18n-config.json
+packages/desktop/src/common/config/i18n.ts
+packages/desktop/src/renderer/services/i18n/
+├── index.ts
+├── i18n-keys.d.ts
+└── locales/
+    ├── en-US/
+    │   ├── common.json
+    │   ├── conversation.json
+    │   └── ...
+    └── ...
 ```
 
-## 使用方法
+## Usage
 
-### 在组件中使用翻译
+### Components
 
 ```tsx
 import { useTranslation } from 'react-i18next';
@@ -37,62 +67,40 @@ const MyComponent = () => {
 };
 ```
 
-### 切换语言
+### Language Switching
 
 ```tsx
-import { useTranslation } from 'react-i18next';
+import { changeLanguage } from '@/renderer/services/i18n';
 
-const LanguageSwitcher = () => {
-  const { i18n } = useTranslation();
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
-
-  return (
-    <div>
-      <button onClick={() => changeLanguage('zh-CN')}>中文</button>
-      <button onClick={() => changeLanguage('en-US')}>English</button>
-    </div>
-  );
+const switchToGerman = () => {
+  void changeLanguage('de-DE');
 };
 ```
 
-## 添加新的翻译
+## Adding Or Restoring A Locale
 
-1. 在 `src/renderer/i18n/locales/zh-CN.json` 中添加中文翻译
-2. 在 `src/renderer/i18n/locales/en-US.json` 中添加对应的英文翻译
-3. 在组件中使用 `t('key')` 来获取翻译
+1. Read `packages/desktop/src/common/config/i18n-config.json`.
+2. Add or restore every module listed in `modules` for the locale.
+3. Add static imports in both renderer and main-process i18n entry points.
+4. Add the locale to `supportedLanguages` only when it is ready to ship.
+5. Add the locale to `launchSupportedLanguages` only when it is part of the public support commitment.
+6. Remove it from `translationBacklogLanguages` when it is no longer a known gap.
+7. Run `bun run i18n:types`, then `node scripts/check-i18n.js`.
 
-### 翻译键的命名规范
+## Key Naming
 
-- 使用点号分隔的层级结构
-- 使用小写字母和下划线
-- 按功能模块分组
+- Use camelCase for keys.
+- Group related keys inside the feature module.
+- Put reusable labels and actions in `common.json`.
+- Do not add user-visible hardcoded strings in renderer code.
 
-例如：
+Example:
 
 ```json
 {
-  "common": {
-    "send": "发送",
-    "cancel": "取消"
-  },
+  "send": "Send",
   "conversation": {
-    "welcome": {
-      "title": "今天有什么安排？"
-    }
+    "welcomeTitle": "What are you working on?"
   }
 }
 ```
-
-## 语言切换器
-
-项目在顶部导航栏中集成了语言切换器，用户可以随时切换界面语言。语言选择会保存在 localStorage 中，下次访问时会自动应用上次选择的语言。
-
-## 注意事项
-
-1. 所有用户可见的文本都应该使用翻译函数
-2. 翻译键应该具有描述性，便于维护
-3. 新增翻译时，确保中英文都有对应的翻译
-4. 避免在代码中硬编码文本内容

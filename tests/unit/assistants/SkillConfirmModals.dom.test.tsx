@@ -1,7 +1,7 @@
 import React from 'react';
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  *
  * Unit tests for SkillConfirmModals component (A10 in N4a).
@@ -17,9 +17,10 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('@arco-design/web-react', async () => {
-  const actual = await vi.importActual('@arco-design/web-react');
   return {
-    ...actual,
+    ConfigProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    Modal: ({ children, visible }: { children: React.ReactNode; visible?: boolean }) =>
+      visible ? <div role='dialog'>{children}</div> : null,
     Message: {
       useMessage: () => [{ success: vi.fn(), error: vi.fn() }],
     },

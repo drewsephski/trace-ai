@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  *
  * N4c V2: usePreviewHistory hook export-shape smoke test.
@@ -13,7 +13,31 @@
  * to e2e. This is recorded in N4c-final.md Deviations.
  */
 
-import { describe, it, expect } from 'vitest';
+import React from 'react';
+import { describe, it, expect, vi } from 'vitest';
+
+vi.mock('@/common', () => ({
+  ipcBridge: {
+    previewHistory: {
+      getContent: { invoke: vi.fn() },
+      list: { invoke: vi.fn() },
+      save: { invoke: vi.fn() },
+    },
+  },
+}));
+
+vi.mock('@arco-design/web-react', () => ({
+  Message: {
+    useMessage: () => [
+      { error: vi.fn(), info: vi.fn(), success: vi.fn() },
+      React.createElement('div', { key: 'message-context' }),
+    ],
+  },
+}));
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
 
 describe('usePreviewHistory module shape', () => {
   it('module loads and exposes usePreviewHistory', async () => {

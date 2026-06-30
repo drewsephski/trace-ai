@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -229,7 +229,7 @@ const Layout: React.FC<{
 
     // Handle check update request from tray / 托盘请求检查更新
     const handleCheckUpdate = () => {
-      window.dispatchEvent(new CustomEvent('aionui-open-update-modal', { detail: { source: 'tray' } }));
+      window.dispatchEvent(new CustomEvent('trace-open-update-modal', { detail: { source: 'tray' } }));
     };
 
     // Listen for tray events / 监听托盘事件
@@ -353,7 +353,7 @@ const Layout: React.FC<{
                 {isSettingsRoute ? (
                   <Tooltip content={t('common.back', { defaultValue: 'Back to Chat' })} position='bottom'>
                     <div
-                      className='collapsed-hidden cursor-pointer'
+                      className='layout-sider-brand layout-sider-brand--dark collapsed-hidden cursor-pointer'
                       role='button'
                       tabIndex={0}
                       aria-label={t('common.back', { defaultValue: 'Back to Chat' })}
@@ -374,7 +374,11 @@ const Layout: React.FC<{
                     </div>
                   </Tooltip>
                 ) : (
-                  <div data-testid='layout-sider-brand-icon' className='collapsed-hidden' onClick={onClick}>
+                  <div
+                    data-testid='layout-sider-brand-icon'
+                    className='layout-sider-brand layout-sider-brand--dark collapsed-hidden'
+                    onClick={onClick}
+                  >
                     <img src={traceWordmark} alt='Trace' className='block h-25px w-86px object-contain' />
                   </div>
                 )}

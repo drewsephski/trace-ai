@@ -1,6 +1,8 @@
-# AionUi Headless Server Deployment Guide
+# Trace Headless Server Deployment Guide
 
-Deploy AionUi WebUI on headless Linux servers — cloud VMs, Kubernetes Pods, and containers — with proxy auto-fallback support.
+Deploy Trace WebUI on headless Linux servers — cloud VMs, Kubernetes Pods, and containers — with proxy auto-fallback support.
+
+> Security scope: WebUI is private-network experimental for remote access. Keep it bound to loopback for public deployments and put an authenticated HTTPS reverse proxy, VPN, or SSH tunnel in front of it. Do not open the WebUI port directly to the public internet.
 
 **Translations**: [中文版](#中文版--chinese-version) below.
 
@@ -21,7 +23,7 @@ Deploy AionUi WebUI on headless Linux servers — cloud VMs, Kubernetes Pods, an
 
 - Linux x86_64 (Ubuntu 20.04+ / Debian 11+ recommended)
 - At least 2GB RAM
-- AionUi `.deb` package from [Releases](https://github.com/iOfficeAI/AionUi/releases)
+- Trace `.deb` package from [Releases](https://github.com/iOfficeAI/Trace/releases)
 
 ---
 
@@ -29,10 +31,10 @@ Deploy AionUi WebUI on headless Linux servers — cloud VMs, Kubernetes Pods, an
 
 ```bash
 # Download the latest .deb package
-wget https://github.com/iOfficeAI/AionUi/releases/latest/download/AionUi-linux-amd64.deb
+wget https://github.com/iOfficeAI/Trace/releases/latest/download/Trace-linux-amd64.deb
 
 # Install
-sudo dpkg -i AionUi-linux-amd64.deb
+sudo dpkg -i Trace-linux-amd64.deb
 sudo apt-get install -f  # Fix missing dependencies
 ```
 
@@ -42,7 +44,7 @@ sudo apt-get install -f  # Fix missing dependencies
 
 ## Virtual Display (Xvfb)
 
-AionUi is an Electron app and requires a display server. On headless servers (no monitor), use Xvfb to create a virtual display:
+Trace is an Electron app and requires a display server. On headless servers (no monitor), use Xvfb to create a virtual display:
 
 ```bash
 sudo apt-get install -y xvfb
@@ -56,35 +58,35 @@ Xvfb is used automatically by the startup script below via `xvfb-run`.
 
 Since many cloud/container environments lack systemd, use the following nohup-based script.
 
-Create `/opt/AionUi/start-aionui.sh`:
+Create `/opt/Trace/start-trace.sh`:
 
 ```bash
 #!/bin/bash
-# AionUi WebUI headless startup script
-# Usage: ./start-aionui.sh [start|stop|restart|status]
+# Trace WebUI headless startup script
+# Usage: ./start-trace.sh [start|stop|restart|status]
 
-PIDFILE="/var/run/aionui.pid"
-LOGFILE="/var/log/aionui.log"
+PIDFILE="/var/run/trace.pid"
+LOGFILE="/var/log/trace.log"
 WORKDIR="$HOME"  # Change to your workspace directory
 
 start() {
     if [ -f "$PIDFILE" ] && kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi is already running (PID: $(cat $PIDFILE))"
+        echo "Trace is already running (PID: $(cat $PIDFILE))"
         return 1
     fi
-    echo "Starting AionUi WebUI..."
+    echo "Starting Trace WebUI..."
     cd "$WORKDIR"
 
     nohup xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
-        /usr/bin/AionUi --webui --remote --no-sandbox \
+        /usr/bin/Trace --webui --no-sandbox \
         > "$LOGFILE" 2>&1 &
     echo $! > "$PIDFILE"
     sleep 3
     if kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi started successfully (PID: $(cat $PIDFILE))"
-        echo "WebUI: http://$(hostname -I | awk '{print $1}'):25808"
+        echo "Trace started successfully (PID: $(cat $PIDFILE))"
+        echo "WebUI: http://127.0.0.1:25808"
     else
-        echo "AionUi failed to start. Check log: $LOGFILE"
+        echo "Trace failed to start. Check log: $LOGFILE"
         rm -f "$PIDFILE"
         return 1
     fi
@@ -92,17 +94,17 @@ start() {
 
 stop() {
     if [ ! -f "$PIDFILE" ]; then
-        echo "AionUi is not running (no PID file)"
+        echo "Trace is not running (no PID file)"
         return 1
     fi
     PID=$(cat "$PIDFILE")
-    echo "Stopping AionUi (PID: $PID)..."
+    echo "Stopping Trace (PID: $PID)..."
     kill "$PID" 2>/dev/null
     sleep 2
     kill -9 "$PID" 2>/dev/null
-    pkill -f "AionUi --webui" 2>/dev/null
+    pkill -f "Trace --webui" 2>/dev/null
     rm -f "$PIDFILE"
-    echo "AionUi stopped."
+    echo "Trace stopped."
 }
 
 restart() {
@@ -113,10 +115,10 @@ restart() {
 
 status() {
     if [ -f "$PIDFILE" ] && kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi is running (PID: $(cat $PIDFILE))"
+        echo "Trace is running (PID: $(cat $PIDFILE))"
         ss -tlnp | grep 25808
     else
-        echo "AionUi is not running."
+        echo "Trace is not running."
         rm -f "$PIDFILE" 2>/dev/null
     fi
 }
@@ -131,45 +133,41 @@ esac
 ```
 
 ```bash
-chmod +x /opt/AionUi/start-aionui.sh
+chmod +x /opt/Trace/start-trace.sh
 ```
 
-> **Tip**: `WORKDIR` determines the directory AionUi can access for file operations. Set it to your project workspace.
+> **Tip**: `WORKDIR` determines the directory Trace can access for file operations. Set it to your project workspace.
 
 ---
 
 ## Remote Access
 
-AionUi WebUI listens on port **25808**. Choose a method based on your network setup:
+Trace WebUI listens on port **25808** on loopback by default. Choose a method based on your network setup:
 
-### Option A: Direct Access (Public IP)
-
-Open port 25808 in your cloud provider's security group or firewall, then access via `http://YOUR_SERVER_IP:25808`.
-
-### Option B: ngrok Tunnel (NAT / K8s / No Public IP)
-
-```bash
-pip3 install pyngrok
-ngrok config add-authtoken YOUR_TOKEN
-
-# Start tunnel
-nohup ngrok http 25808 --log=stdout > /var/log/ngrok.log 2>&1 &
-
-# Get public URL
-curl -s http://127.0.0.1:4040/api/tunnels | python3 -c "
-import sys, json
-[print(t['public_url']) for t in json.load(sys.stdin)['tunnels']]
-"
-```
-
-> Note: ngrok free tier generates a new URL on each restart. You can claim a free static domain at [ngrok dashboard](https://dashboard.ngrok.com/).
-
-### Option C: SSH Tunnel (From Your Local Machine)
+### Option A: SSH Tunnel (Recommended)
 
 ```bash
 ssh -L 25808:127.0.0.1:25808 user@YOUR_SERVER_IP
 # Then access: http://localhost:25808
 ```
+
+### Option B: Private LAN / VPN Access
+
+Only use `--remote` on a trusted private network or VPN. Remote mode binds all interfaces, but the listener rejects direct public internet clients; keep firewall rules restricted to your private CIDR ranges.
+
+```bash
+/usr/bin/Trace --webui --remote --no-sandbox
+```
+
+### Option C: Public HTTPS Reverse Proxy
+
+For public access, keep Trace bound to loopback and terminate HTTPS plus authentication in a reverse proxy or access gateway. The proxy should forward to `http://127.0.0.1:25808`.
+
+```bash
+/usr/bin/Trace --webui --no-sandbox
+```
+
+Avoid unauthenticated public tunnels such as default ngrok URLs for WebUI. If you use a tunnel provider, require its access-control layer before traffic reaches WebUI.
 
 ---
 
@@ -187,11 +185,11 @@ ssh -R 7897:127.0.0.1:7897 user@YOUR_SERVER_IP
 
 > Replace `7897` with your actual proxy port. The tunnel is active as long as the SSH session is open.
 
-### Step 2: PAC File for AionUi (Electron / Chromium Layer)
+### Step 2: PAC File for Trace (Electron / Chromium Layer)
 
 Using `--proxy-server` is fragile — when the proxy goes down, **all** requests fail including the WebUI itself. Instead, use a **PAC (Proxy Auto-Configuration) file** that provides automatic fallback.
 
-Create `/opt/AionUi/proxy.pac`:
+Create `/opt/Trace/proxy.pac`:
 
 ```javascript
 function FindProxyForURL(url, host) {
@@ -215,8 +213,8 @@ Then update the `nohup xvfb-run ...` line in your startup script:
 
 ```bash
     nohup xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
-        /usr/bin/AionUi --webui --remote --no-sandbox \
-        --proxy-pac-url="file:///opt/AionUi/proxy.pac" \
+        /usr/bin/Trace --webui --no-sandbox \
+        --proxy-pac-url="file:///opt/Trace/proxy.pac" \
         > "$LOGFILE" 2>&1 &
 ```
 
@@ -253,27 +251,27 @@ PROMPT_COMMAND="_auto_proxy;${PROMPT_COMMAND}"
 - SSH tunnel disconnected → proxy env vars cleared, commands use direct connection
 - No manual intervention or terminal restart needed
 
-### Step 4: AionUi Internal Proxy (Gemini API)
+### Step 4: Trace Internal Proxy (Gemini API)
 
-For Gemini API calls, configure the proxy inside AionUi WebUI:
+For Gemini API calls, configure the proxy inside Trace WebUI:
 
 **Settings → Gemini Settings → Proxy** → `http://127.0.0.1:7897`
 
-> This proxy is handled by AionUi's Node.js layer (separate from the Chromium layer). When the SSH tunnel is down, Gemini API calls will fail, but the WebUI and other APIs remain functional.
+> This proxy is handled by Trace's Node.js layer (separate from the Chromium layer). When the SSH tunnel is down, Gemini API calls will fail, but the WebUI and other APIs remain functional.
 
 ---
 
 ## Troubleshooting
 
-| Issue                                     | Solution                                                     |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| `dpkg` dependency errors in containers    | `dpkg --force-all -i AionUi-linux-amd64.deb`                 |
-| AionUi can only access `/tmp`             | Set `WORKDIR` in the startup script to your workspace path   |
-| WebUI not accessible remotely             | Check firewall rules, or use ngrok / SSH tunnel              |
-| All requests fail when proxy is down      | Use PAC file (`--proxy-pac-url`) instead of `--proxy-server` |
-| `curl` fails after SSH tunnel disconnects | Add `PROMPT_COMMAND` auto-detect to `~/.bashrc` (see Step 3) |
-| Port 25808 already in use                 | `kill $(lsof -t -i:25808)` then restart                      |
-| Xvfb errors                               | `apt-get install -y xvfb libxkbcommon-x11-0`                 |
+| Issue                                     | Solution                                                                     |
+| ----------------------------------------- | ---------------------------------------------------------------------------- |
+| `dpkg` dependency errors in containers    | `dpkg --force-all -i Trace-linux-amd64.deb`                                  |
+| Trace can only access `/tmp`              | Set `WORKDIR` in the startup script to your workspace path                   |
+| WebUI not accessible remotely             | Use an SSH tunnel, VPN, private-LAN `--remote`, or authenticated HTTPS proxy |
+| All requests fail when proxy is down      | Use PAC file (`--proxy-pac-url`) instead of `--proxy-server`                 |
+| `curl` fails after SSH tunnel disconnects | Add `PROMPT_COMMAND` auto-detect to `~/.bashrc` (see Step 3)                 |
+| Port 25808 already in use                 | `kill $(lsof -t -i:25808)` then restart                                      |
+| Xvfb errors                               | `apt-get install -y xvfb libxkbcommon-x11-0`                                 |
 
 ---
 
@@ -283,14 +281,14 @@ For Gemini API calls, configure the proxy inside AionUi WebUI:
 ┌──────────────────────────────────────────────────┐
 │  Headless Linux Server / Container               │
 │                                                  │
-│  start-aionui.sh                                 │
+│  start-trace.sh                                 │
 │       │                                          │
 │       ▼                                          │
 │  xvfb-run (virtual display)                      │
 │       │                                          │
 │       ▼                                          │
 │  ┌────────────────────────────┐                  │
-│  │  AionUi (Electron)        │                   │
+│  │  Trace (Electron)        │                   │
 │  │  ├─ Chromium (port 25808) │                   │
 │  │  │  └─ proxy.pac          │──► PAC decides:   │
 │  │  │     per-request        │   PROXY or DIRECT │
@@ -304,9 +302,9 @@ For Gemini API calls, configure the proxy inside AionUi WebUI:
 │  │ (when available)        │                     │
 │  └─────────────────────────┘                     │
 │           │                                      │
-│  ┌────────┴───────┐                              │
-│  │  ngrok tunnel  │ (optional, for public URL)   │
-│  └────────────────┘                              │
+│  ┌────────┴──────────────────────┐               │
+│  │ authenticated proxy / tunnel  │ (optional)    │
+│  └───────────────────────────────┘               │
 └──────────────────────────────────────────────────┘
 ```
 
@@ -316,24 +314,26 @@ For Gemini API calls, configure the proxy inside AionUi WebUI:
 
 # 中文版 / Chinese Version
 
-# AionUi 无头服务器部署指南
+# Trace 无头服务器部署指南
 
-在无图形界面的 Linux 服务器（云主机、K8s Pod、容器）上部署 AionUi WebUI，支持代理自动回退。
+在无图形界面的 Linux 服务器（云主机、K8s Pod、容器）上部署 Trace WebUI，支持代理自动回退。
+
+> 安全范围：WebUI 远程访问目前按私有网络实验功能处理。公网部署时保持监听 loopback，并在前面使用带认证的 HTTPS 反向代理、VPN 或 SSH 隧道。不要把 WebUI 端口直接开放到公网。
 
 ## 前置条件
 
 - Linux x86_64（推荐 Ubuntu 20.04+ / Debian 11+）
 - 至少 2GB 内存
-- AionUi `.deb` 安装包（[下载地址](https://github.com/iOfficeAI/AionUi/releases)）
+- Trace `.deb` 安装包（[下载地址](https://github.com/iOfficeAI/Trace/releases)）
 
 ## 安装
 
 ```bash
 # 下载最新 .deb 包
-wget https://github.com/iOfficeAI/AionUi/releases/latest/download/AionUi-linux-amd64.deb
+wget https://github.com/iOfficeAI/Trace/releases/latest/download/Trace-linux-amd64.deb
 
 # 安装
-sudo dpkg -i AionUi-linux-amd64.deb
+sudo dpkg -i Trace-linux-amd64.deb
 sudo apt-get install -f  # 修复依赖
 ```
 
@@ -341,7 +341,7 @@ sudo apt-get install -f  # 修复依赖
 
 ## 虚拟显示 (Xvfb)
 
-AionUi 是 Electron 应用，需要显示服务。无头服务器需安装 Xvfb：
+Trace 是 Electron 应用，需要显示服务。无头服务器需安装 Xvfb：
 
 ```bash
 sudo apt-get install -y xvfb
@@ -351,35 +351,35 @@ sudo apt-get install -y xvfb
 
 许多云/容器环境没有 systemd，使用以下基于 nohup 的管理脚本。
 
-创建 `/opt/AionUi/start-aionui.sh`：
+创建 `/opt/Trace/start-trace.sh`：
 
 ```bash
 #!/bin/bash
-# AionUi WebUI 无头启动脚本
-# 用法: ./start-aionui.sh [start|stop|restart|status]
+# Trace WebUI 无头启动脚本
+# 用法: ./start-trace.sh [start|stop|restart|status]
 
-PIDFILE="/var/run/aionui.pid"
-LOGFILE="/var/log/aionui.log"
+PIDFILE="/var/run/trace.pid"
+LOGFILE="/var/log/trace.log"
 WORKDIR="$HOME"  # 改为你的工作目录
 
 start() {
     if [ -f "$PIDFILE" ] && kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi 已在运行 (PID: $(cat $PIDFILE))"
+        echo "Trace 已在运行 (PID: $(cat $PIDFILE))"
         return 1
     fi
-    echo "正在启动 AionUi WebUI..."
+    echo "正在启动 Trace WebUI..."
     cd "$WORKDIR"
 
     nohup xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
-        /usr/bin/AionUi --webui --remote --no-sandbox \
+        /usr/bin/Trace --webui --no-sandbox \
         > "$LOGFILE" 2>&1 &
     echo $! > "$PIDFILE"
     sleep 3
     if kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi 启动成功 (PID: $(cat $PIDFILE))"
-        echo "WebUI: http://$(hostname -I | awk '{print $1}'):25808"
+        echo "Trace 启动成功 (PID: $(cat $PIDFILE))"
+        echo "WebUI: http://127.0.0.1:25808"
     else
-        echo "AionUi 启动失败，请查看日志: $LOGFILE"
+        echo "Trace 启动失败，请查看日志: $LOGFILE"
         rm -f "$PIDFILE"
         return 1
     fi
@@ -387,27 +387,27 @@ start() {
 
 stop() {
     if [ ! -f "$PIDFILE" ]; then
-        echo "AionUi 未在运行"
+        echo "Trace 未在运行"
         return 1
     fi
     PID=$(cat "$PIDFILE")
-    echo "正在停止 AionUi (PID: $PID)..."
+    echo "正在停止 Trace (PID: $PID)..."
     kill "$PID" 2>/dev/null
     sleep 2
     kill -9 "$PID" 2>/dev/null
-    pkill -f "AionUi --webui" 2>/dev/null
+    pkill -f "Trace --webui" 2>/dev/null
     rm -f "$PIDFILE"
-    echo "AionUi 已停止。"
+    echo "Trace 已停止。"
 }
 
 restart() { stop; sleep 1; start; }
 
 status() {
     if [ -f "$PIDFILE" ] && kill -0 "$(cat $PIDFILE)" 2>/dev/null; then
-        echo "AionUi 运行中 (PID: $(cat $PIDFILE))"
+        echo "Trace 运行中 (PID: $(cat $PIDFILE))"
         ss -tlnp | grep 25808
     else
-        echo "AionUi 未在运行。"
+        echo "Trace 未在运行。"
         rm -f "$PIDFILE" 2>/dev/null
     fi
 }
@@ -420,13 +420,15 @@ esac
 
 ## 远程访问
 
-AionUi WebUI 监听端口 **25808**，根据网络环境选择访问方式：
+Trace WebUI 默认只在 loopback 上监听端口 **25808**，根据网络环境选择访问方式：
 
-| 方式       | 适用场景              | 命令                                       |
-| ---------- | --------------------- | ------------------------------------------ |
-| 直接访问   | 有公网 IP             | 安全组开放 25808 端口                      |
-| ngrok 穿透 | NAT / K8s / 无公网 IP | `ngrok http 25808`                         |
-| SSH 隧道   | 仅个人使用            | `ssh -L 25808:127.0.0.1:25808 user@server` |
+| 方式           | 适用场景           | 命令                                         |
+| -------------- | ------------------ | -------------------------------------------- |
+| SSH 隧道       | 推荐的个人远程访问 | `ssh -L 25808:127.0.0.1:25808 user@server`   |
+| 私有 LAN/VPN   | 可信私网或 VPN     | `Trace --webui --remote --no-sandbox`        |
+| HTTPS 反向代理 | 公网访问           | WebUI 保持 loopback，代理层负责 HTTPS 和认证 |
+
+不要使用未加认证的公网隧道或直接开放 25808 端口。若使用隧道服务，必须启用隧道服务自身的访问控制。
 
 ## 代理自动回退
 
@@ -438,11 +440,11 @@ AionUi WebUI 监听端口 **25808**，根据网络环境选择访问方式：
 ssh -R 7897:127.0.0.1:7897 user@YOUR_SERVER
 ```
 
-### 第二步：PAC 代理文件（AionUi Electron 层）
+### 第二步：PAC 代理文件（Trace Electron 层）
 
 `--proxy-server` 的问题：代理一断，**所有请求**全挂。改用 PAC 文件实现自动回退。
 
-创建 `/opt/AionUi/proxy.pac`：
+创建 `/opt/Trace/proxy.pac`：
 
 ```javascript
 function FindProxyForURL(url, host) {
@@ -460,7 +462,7 @@ function FindProxyForURL(url, host) {
 }
 ```
 
-启动脚本中添加参数：`--proxy-pac-url="file:///opt/AionUi/proxy.pac"`
+启动脚本中添加参数：`--proxy-pac-url="file:///opt/Trace/proxy.pac"`
 
 **原理**：Chromium 原生支持 PAC，`PROXY ...; DIRECT` 表示先尝试代理，失败自动直连，每个请求实时判断。
 
@@ -486,7 +488,7 @@ PROMPT_COMMAND="_auto_proxy;${PROMPT_COMMAND}"
 
 **原理**：`PROMPT_COMMAND` 在每次命令提示符前执行，自动检测代理端口是否可达，实时切换。
 
-### 第四步：AionUi 内置代理（Gemini API）
+### 第四步：Trace 内置代理（Gemini API）
 
 在 WebUI 中设置：**Settings → Gemini Settings → Proxy** → `http://127.0.0.1:7897`
 
@@ -494,11 +496,11 @@ PROMPT_COMMAND="_auto_proxy;${PROMPT_COMMAND}"
 
 ## 常见问题
 
-| 问题                   | 解决方案                              |
-| ---------------------- | ------------------------------------- |
-| 容器内 dpkg 依赖报错   | `dpkg --force-all -i` 强制安装        |
-| AionUi 只能访问 /tmp   | 修改启动脚本中的 `WORKDIR`            |
-| 远程无法访问 WebUI     | 检查防火墙/安全组，或使用 ngrok       |
-| 代理断开后所有请求失败 | 用 PAC 文件替代 `--proxy-server`      |
-| SSH 断开后 curl 失败   | bashrc 添加 `PROMPT_COMMAND` 自动检测 |
-| 端口 25808 被占用      | `kill $(lsof -t -i:25808)` 后重启     |
+| 问题                   | 解决方案                                                      |
+| ---------------------- | ------------------------------------------------------------- |
+| 容器内 dpkg 依赖报错   | `dpkg --force-all -i` 强制安装                                |
+| Trace 只能访问 /tmp    | 修改启动脚本中的 `WORKDIR`                                    |
+| 远程无法访问 WebUI     | 使用 SSH 隧道、VPN、私网 `--remote` 或带认证的 HTTPS 反向代理 |
+| 代理断开后所有请求失败 | 用 PAC 文件替代 `--proxy-server`                              |
+| SSH 断开后 curl 失败   | bashrc 添加 `PROMPT_COMMAND` 自动检测                         |
+| 端口 25808 被占用      | `kill $(lsof -t -i:25808)` 后重启                             |

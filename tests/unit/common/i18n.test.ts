@@ -1,11 +1,18 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
 import { describe, it, expect } from 'vitest';
-import { normalizeLanguageCode, DEFAULT_LANGUAGE } from '@/common/config/i18n';
+import {
+  normalizeLanguageCode,
+  DEFAULT_LANGUAGE,
+  SUPPORTED_LANGUAGES,
+  LAUNCH_SUPPORTED_LANGUAGES,
+  TRANSLATION_BACKLOG_LANGUAGES,
+  isLaunchSupportedLanguage,
+} from '@/common/config/i18n';
 
 describe('i18n', () => {
   describe('normalizeLanguageCode', () => {
@@ -40,6 +47,26 @@ describe('i18n', () => {
       expect(normalizeLanguageCode('zh')).toBe(DEFAULT_LANGUAGE);
       expect(normalizeLanguageCode('zh-CN')).toBe(DEFAULT_LANGUAGE);
       expect(normalizeLanguageCode('')).toBe(DEFAULT_LANGUAGE);
+    });
+  });
+
+  describe('launch locale scope', () => {
+    it('keeps the public launch locale list aligned with runtime-supported locales', () => {
+      expect(LAUNCH_SUPPORTED_LANGUAGES).toEqual(SUPPORTED_LANGUAGES);
+    });
+
+    it('keeps legacy Chinese locale folders out of launch support until they are complete', () => {
+      expect(TRANSLATION_BACKLOG_LANGUAGES).toContain('zh-CN');
+      expect(TRANSLATION_BACKLOG_LANGUAGES).toContain('zh-TW');
+      expect(isLaunchSupportedLanguage('zh-CN')).toBe(false);
+      expect(isLaunchSupportedLanguage('zh-TW')).toBe(false);
+      expect(normalizeLanguageCode('zh-CN')).toBe(DEFAULT_LANGUAGE);
+    });
+
+    it('identifies configured launch-supported languages', () => {
+      expect(isLaunchSupportedLanguage('en-US')).toBe(true);
+      expect(isLaunchSupportedLanguage('de-DE')).toBe(true);
+      expect(isLaunchSupportedLanguage('fr-FR')).toBe(false);
     });
   });
 });

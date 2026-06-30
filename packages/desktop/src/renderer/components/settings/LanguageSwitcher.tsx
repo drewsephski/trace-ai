@@ -3,6 +3,18 @@ import type { SelectHandle } from '@arco-design/web-react/es/Select/interface';
 import React, { useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { changeLanguage } from '@/renderer/services/i18n';
+import { LAUNCH_SUPPORTED_LANGUAGES } from '@/common/config/i18n';
+
+const LANGUAGE_LABELS: Record<string, string> = {
+  'en-US': 'English',
+  'ja-JP': '日本語',
+  'ko-KR': '한국어',
+  'tr-TR': 'Türkçe',
+  'ru-RU': 'Русский',
+  'uk-UA': 'Українська',
+  'pt-BR': 'Português (BR)',
+  'de-DE': 'Deutsch',
+};
 
 const LanguageSwitcher: React.FC = () => {
   const { i18n } = useTranslation();
@@ -29,14 +41,11 @@ const LanguageSwitcher: React.FC = () => {
   return (
     <div className='flex items-center gap-8px'>
       <AionSelect ref={selectRef} className='w-160px' value={i18n.language} onChange={handleLanguageChange}>
-        <AionSelect.Option value='en-US'>English</AionSelect.Option>
-        <AionSelect.Option value='ja-JP'>日本語</AionSelect.Option>
-        <AionSelect.Option value='ko-KR'>한국어</AionSelect.Option>
-        <AionSelect.Option value='tr-TR'>Türkçe</AionSelect.Option>
-        <AionSelect.Option value='ru-RU'>Русский</AionSelect.Option>
-        <AionSelect.Option value='uk-UA'>Українська</AionSelect.Option>
-        <AionSelect.Option value='pt-BR'>Português (BR)</AionSelect.Option>
-        <AionSelect.Option value='de-DE'>Deutsch</AionSelect.Option>
+        {LAUNCH_SUPPORTED_LANGUAGES.map((language) => (
+          <AionSelect.Option key={language} value={language}>
+            {LANGUAGE_LABELS[language] ?? language}
+          </AionSelect.Option>
+        ))}
       </AionSelect>
     </div>
   );

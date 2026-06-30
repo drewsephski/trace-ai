@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -18,7 +18,6 @@ import { getPlatformServices } from '@/common/platform';
  */
 export function getEnvAwareName(baseName: string): string {
   if (getPlatformServices().paths.isPackaged() === true) return baseName;
-  const suffix =
-    process.env.TRACE_MULTI_INSTANCE === '1' || process.env.AIONUI_MULTI_INSTANCE === '1' ? '-dev-2' : '-dev';
+  const suffix = process.env.TRACE_MULTI_INSTANCE === '1' ? '-dev-2' : '-dev';
   return `${baseName}${suffix}`;
 }

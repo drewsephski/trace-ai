@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -34,7 +34,7 @@ describe('CdnGenericProvider', () => {
     const provider = new CdnGenericProvider(
       {
         provider: 'custom',
-        url: 'https://static.aionui.com/releases',
+        url: 'https://static.trace.com/releases',
       },
       {} as AppUpdater,
       makeRuntimeOptions()
@@ -44,15 +44,15 @@ describe('CdnGenericProvider', () => {
       version: '2.1.14',
       files: [
         {
-          url: 'AionUi-2.1.14-mac-arm64.dmg',
+          url: 'Trace-2.1.14-mac-arm64.dmg',
           sha512: 'sha512-value',
         },
       ],
-      path: 'AionUi-2.1.14-mac-arm64.dmg',
+      path: 'Trace-2.1.14-mac-arm64.dmg',
       sha512: 'sha512-value',
       releaseDate: '2026-06-08T00:00:00.000Z',
     } satisfies UpdateInfo);
 
-    expect(files[0]?.url.href).toBe('https://static.aionui.com/releases/2.1.14/AionUi-2.1.14-mac-arm64.dmg');
+    expect(files[0]?.url.href).toBe('https://static.trace.com/releases/2.1.14/Trace-2.1.14-mac-arm64.dmg');
   });
 });

@@ -37,4 +37,28 @@ describe('normalizeToolCall', () => {
       conversationId: 'conversation-1',
     });
   });
+
+  it('renames legacy team namespaces in acp tool call titles', () => {
+    const result = normalizeAcpToolCall({
+      id: 'message-2',
+      conversation_id: 'conversation-1',
+      type: 'acp_tool_call',
+      content: {
+        update: {
+          sessionUpdate: 'tool_call',
+          tool_call_id: 'tool-2',
+          status: 'completed',
+          title: 'aionui-team/team_membersexecute',
+          kind: 'execute',
+        },
+      },
+    } as unknown as IMessageAcpToolCall);
+
+    expect(result).toMatchObject({
+      key: 'tool-2',
+      name: 'trace/team_membersexecute',
+      status: 'completed',
+      description: 'execute',
+    });
+  });
 });

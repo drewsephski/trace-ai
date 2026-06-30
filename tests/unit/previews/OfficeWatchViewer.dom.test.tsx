@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  *
  * N4c V8: OfficeWatchViewer export-shape smoke test.
@@ -17,7 +17,45 @@
  * is recorded in N4c-final.md Deviations.
  */
 
-import { afterEach, beforeEach, describe, it, expect } from 'vitest';
+import React from 'react';
+import { afterEach, beforeEach, describe, it, expect, vi } from 'vitest';
+
+const officeBridge = {
+  start: { invoke: vi.fn() },
+  stop: { invoke: vi.fn() },
+  status: { on: vi.fn(() => vi.fn()) },
+};
+
+vi.mock('@/common', () => ({
+  ipcBridge: {
+    excelPreview: officeBridge,
+    pptPreview: officeBridge,
+    wordPreview: officeBridge,
+  },
+}));
+
+vi.mock('@/common/adapter/httpBridge', () => ({
+  getBaseUrl: () => '',
+  isBackendHttpError: () => false,
+}));
+
+vi.mock('@/renderer/components/media/WebviewHost', () => ({
+  default: ({ url }: { url: string }) => <div data-testid='webview-host'>{url}</div>,
+}));
+
+vi.mock('@/renderer/utils/platform', () => ({
+  isElectronDesktop: () => Boolean((window as Window & { electronAPI?: unknown }).electronAPI),
+  openExternalUrl: vi.fn(),
+}));
+
+vi.mock('@arco-design/web-react', () => ({
+  Button: ({ children }: { children: React.ReactNode }) => <button type='button'>{children}</button>,
+  Spin: () => <div data-testid='spin' />,
+}));
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+}));
 
 describe('OfficeWatchViewer module shape', () => {
   it('module loads and exposes a default export', async () => {
@@ -101,7 +139,7 @@ describe('resolveOfficeWatchUrl (Electron mode)', () => {
 
 /**
  * Web (server) deployments must not point users at a desktop install link:
- * officecli has to be installed on the machine running AionUi, so the error
+ * officecli has to be installed on the machine running Trace, so the error
  * panel shows a copyable server-side command instead (issue #3212 follow-up).
  */
 describe('resolveOfficeErrorActions', () => {

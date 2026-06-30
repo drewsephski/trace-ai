@@ -1,6 +1,6 @@
 /**
  * @license
- * Copyright 2025 AionUi (aionui.com)
+ * Copyright 2025 Trace (trace.com)
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -15,19 +15,19 @@
  */
 export const STORAGE_KEYS = {
   /** Workspace tree collapse state / 工作空间目录树折叠状态 */
-  WORKSPACE_TREE_COLLAPSE: 'aionui_workspace_collapse_state',
+  WORKSPACE_TREE_COLLAPSE: 'trace_workspace_collapse_state',
 
   /** Sidebar collapse state / 侧边栏折叠状态 */
-  SIDEBAR_COLLAPSE: 'aionui_sider_collapsed',
+  SIDEBAR_COLLAPSE: 'trace_sider_collapsed',
 
   /** Theme preference / 主题偏好 */
-  THEME: 'aionui_theme',
+  THEME: 'trace_theme',
 
   /** Language preference / 语言偏好 */
-  LANGUAGE: 'aionui_language',
+  LANGUAGE: 'trace_language',
 
   /** Last provider-backed chat model selected by the user / 用户上次选择的聊天模型提供商 */
-  LAST_CHAT_PROVIDER_MODEL: 'aionui_last_chat_provider_model',
+  LAST_CHAT_PROVIDER_MODEL: 'trace_last_chat_provider_model',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

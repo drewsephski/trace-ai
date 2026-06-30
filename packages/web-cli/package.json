@@ -1,10 +1,10 @@
 {
-  "name": "@aionui/web-cli",
+  "name": "@trace/web-cli",
   "version": "1.9.26",
   "private": true,
   "description": "Trace WebUI CLI - standalone web runtime (no Electron)",
   "bin": {
-    "aionui-web": "./bin/aionui-web.js"
+    "trace-web": "./bin/trace-web.js"
   },
   "type": "module",
   "exports": {
@@ -16,8 +16,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@aionui/shared-scripts": "workspace:*",
-    "@aionui/web-host": "workspace:*"
+    "@trace/shared-scripts": "workspace:*",
+    "@trace/web-host": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
