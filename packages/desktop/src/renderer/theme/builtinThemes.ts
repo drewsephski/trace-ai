@@ -21,6 +21,9 @@ import helloKittyCss from '@renderer/pages/settings/AppearanceSettings/presets/h
 import retroWindowsCss from '@renderer/pages/settings/AppearanceSettings/presets/retro-windows.css?raw';
 import retromaY2kCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-y2k.css?raw';
 import retromaObsidianBookCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book.css?raw';
+import retromaObsidianBook2Css from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book-2.css?raw';
+import retromaObsidianBookDarkCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-obsidian-book-2-1-dark.css?raw';
+import retromaNocturneParchmentCss from '@renderer/pages/settings/AppearanceSettings/presets/retroma-nocturne-parchment.css?raw';
 import discourseHorizonCss from '@renderer/pages/settings/AppearanceSettings/presets/discourse-horizon.css?raw';
 import glitteringInputFieldCss from '@renderer/pages/settings/AppearanceSettings/presets/glittering-input-field.css?raw';
 
@@ -51,7 +54,7 @@ export const BUILTIN_THEMES: Theme[] = [
   decorative('misaka-mikoto-theme', 'Misaka Mikoto Theme', 'light', misakaMikotoCss, misakaMikotoCover),
   decorative('hello-kitty', 'Hello Kitty', 'light', helloKittyCss, helloKittyCover),
   decorative('retro-windows', 'Retro Windows', 'light', retroWindowsCss, retroWindowsCover),
-  decorative('retroma-y2k-jp-v42-pure', 'Y2K电子账本 by 椰树女王', 'light', retromaY2kCss, y2kJpCover),
+  decorative('retroma-y2k-jp-v42-pure', 'Y2K Ledger', 'light', retromaY2kCss, y2kJpCover),
   decorative(
     'retroma-obsidian-book',
     'Retroma Obsidian Book',
@@ -59,6 +62,9 @@ export const BUILTIN_THEMES: Theme[] = [
     retromaObsidianBookCss,
     retromaObsidianBookCover
   ),
+  decorative('retroma-obsidian-book-slate', 'Retroma Obsidian Slate', 'dark', retromaObsidianBook2Css),
+  decorative('retroma-obsidian-book-night', 'Retroma Obsidian Night', 'dark', retromaObsidianBookDarkCss),
+  decorative('retroma-nocturne-parchment', 'Retroma Nocturne Parchment', 'dark', retromaNocturneParchmentCss),
   decorative('discourse-horizon', 'Discourse Horizon', 'light', discourseHorizonCss),
   decorative('glittering-input-field', 'Glittering Input Field', 'light', glitteringInputFieldCss),
 ];

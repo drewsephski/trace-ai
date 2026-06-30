@@ -57,8 +57,6 @@ import '@arco-design/web-react/es/_util/react-19-adapter';
 import '@arco-design/web-react/dist/css/arco.css';
 import enUS from '@arco-design/web-react/es/locale/en-US';
 import jaJP from '@arco-design/web-react/es/locale/ja-JP';
-import zhCN from '@arco-design/web-react/es/locale/zh-CN';
-import zhTW from '@arco-design/web-react/es/locale/zh-TW';
 import koKR from '@arco-design/web-react/es/locale/ko-KR';
 import { useTranslation } from 'react-i18next';
 
@@ -86,6 +84,7 @@ import { bootstrapRendererConfig } from '@renderer/services/bootstrapRenderer';
 
 // Components and utilities
 import Layout from './components/layout/Layout';
+import DrewLaunchNote from './components/layout/DrewLaunchNote';
 import Router from './components/layout/Router';
 import Sider from './components/layout/Sider';
 import { useAuth } from './hooks/context/AuthContext';
@@ -124,8 +123,6 @@ const koKRComplete = {
 };
 
 const arcoLocales: Record<string, typeof enUS> = {
-  'zh-CN': zhCN,
-  'zh-TW': zhTW,
   'ja-JP': jaJP,
   'ko-KR': koKRComplete,
   'en-US': enUS,
@@ -285,13 +282,16 @@ const Main = () => {
   }
 
   return (
-    <Router
-      layout={
-        <ConversationHistoryProvider>
-          <Layout sider={<Sider />} />
-        </ConversationHistoryProvider>
-      }
-    />
+    <>
+      <DrewLaunchNote />
+      <Router
+        layout={
+          <ConversationHistoryProvider>
+            <Layout sider={<Sider />} />
+          </ConversationHistoryProvider>
+        }
+      />
+    </>
   );
 };
 

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 244 78" role="img" aria-labelledby="title desc">
+  <title id="title">Trace wordmark</title>
+  <desc id="desc">Trace wordmark with a small green signal point.</desc>
+  <defs>
+    <linearGradient id="word" x1="0" x2="220" y1="18" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.72" stop-color="#e8eee9" />
+      <stop offset="1" stop-color="#b9c4be" />
+    </linearGradient>
+    <radialGradient id="point" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#8dffb5" />
+      <stop offset="0.64" stop-color="#3dd68c" />
+      <stop offset="1" stop-color="#143423" />
+    </radialGradient>
+    <filter id="glow" x="-180%" y="-180%" width="460%" height="460%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur" />
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="0 0 0 0 0.24 0 0 0 0 0.84 0 0 0 0 0.55 0 0 0 0.62 0"
+        result="coloredBlur"
+      />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <text
+    x="0"
+    y="59"
+    font-family="Avenir Next, Inter, Arial, sans-serif"
+    font-size="76"
+    font-weight="700"
+    letter-spacing="-4.5"
+    fill="url(#word)"
+  >
+    trace
+  </text>
+  <circle cx="232" cy="19" r="5.6" fill="url(#point)" filter="url(#glow)" />
+</svg>

@@ -1,0 +1,29 @@
+{
+  "name": "@trace/landing",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Marketing landing page for trace.builders",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "@tabler/icons-react": "^3.44.0",
+    "clsx": "^2.1.1",
+    "motion": "^12.42.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^5.0.4",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^5.8.3",
+    "vite": "^6.4.1"
+  }
+}

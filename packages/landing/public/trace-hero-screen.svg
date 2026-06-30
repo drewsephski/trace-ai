@@ -1,0 +1,139 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1935 1071" role="img" aria-labelledby="title desc">
+  <title id="title">Trace agent workspace preview</title>
+  <desc id="desc">A simplified Trace workspace with agent activity, approval controls, and project files.</desc>
+  <defs>
+    <linearGradient id="appBg" x1="0" x2="1935" y1="0" y2="1071" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f9fafb" />
+      <stop offset="1" stop-color="#eef2f6" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="1" stop-color="#f6f8fb" />
+    </linearGradient>
+    <linearGradient id="green" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#3dd68c" />
+      <stop offset="1" stop-color="#38bdf8" />
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#24313a" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <rect width="1935" height="1071" rx="34" fill="url(#appBg)" />
+
+  <g transform="translate(28 28)">
+    <circle cx="24" cy="23" r="12" fill="#ff5f57" />
+    <circle cx="58" cy="23" r="12" fill="#febc2e" />
+    <circle cx="92" cy="23" r="12" fill="#28c840" />
+  </g>
+
+  <rect x="0" y="76" width="286" height="995" fill="#eef1f4" />
+  <g transform="translate(32 122)">
+    <rect x="0" y="0" width="46" height="46" rx="12" fill="#0d1110" />
+    <path d="M12 14h22v7h-8v17h-6V21h-8z" fill="#f2f7f3" />
+    <path d="M12 14h22" stroke="#65ef9b" stroke-width="3" stroke-linecap="round" />
+    <text x="60" y="32" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" fill="#111827">Trace</text>
+  </g>
+
+  <g transform="translate(28 214)" font-family="Inter, Arial, sans-serif" font-size="19" fill="#334155">
+    <rect x="0" y="0" width="230" height="44" rx="10" fill="#dfe5ec" />
+    <text x="52" y="29" font-weight="700">Workspace</text>
+    <text x="52" y="88">Agents</text>
+    <text x="52" y="144">Chat</text>
+    <text x="52" y="200">Files</text>
+    <text x="52" y="256">Approvals</text>
+    <text x="52" y="312">Settings</text>
+    <circle cx="22" cy="22" r="9" fill="#3dd68c" />
+    <circle cx="22" cy="80" r="9" fill="#94a3b8" />
+    <circle cx="22" cy="136" r="9" fill="#94a3b8" />
+    <circle cx="22" cy="192" r="9" fill="#94a3b8" />
+    <circle cx="22" cy="248" r="9" fill="#94a3b8" />
+    <circle cx="22" cy="304" r="9" fill="#94a3b8" />
+  </g>
+
+  <g transform="translate(326 122)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="906" height="828" rx="24" fill="url(#panel)" stroke="#d8dee8" />
+    <text x="36" y="58" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#111827">Agent run</text>
+    <rect x="36" y="92" width="180" height="38" rx="19" fill="#ecfdf4" />
+    <circle cx="62" cy="111" r="8" fill="#22c55e" />
+    <text x="82" y="118" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="700" fill="#166534">Codex active</text>
+
+    <g transform="translate(36 168)">
+      <rect width="834" height="156" rx="18" fill="#f1f5f9" />
+      <text x="28" y="44" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#1f2937">Plan</text>
+      <rect x="28" y="74" width="446" height="14" rx="7" fill="#cbd5e1" />
+      <rect x="28" y="106" width="326" height="14" rx="7" fill="#d7dee8" />
+      <rect x="662" y="60" width="122" height="46" rx="12" fill="#101417" />
+      <text x="692" y="90" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#ffffff">Review</text>
+    </g>
+
+    <g transform="translate(36 360)">
+      <rect width="834" height="260" rx="18" fill="#ffffff" stroke="#dbe3ec" />
+      <text x="28" y="48" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#1f2937">Proposed changes</text>
+      <g transform="translate(28 84)">
+        <rect width="778" height="42" rx="10" fill="#f8fafc" />
+        <circle cx="22" cy="21" r="7" fill="#3dd68c" />
+        <rect x="48" y="14" width="244" height="14" rx="7" fill="#94a3b8" />
+        <rect x="610" y="10" width="92" height="22" rx="11" fill="#e7f8ef" />
+        <text x="630" y="27" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#15803d">safe</text>
+      </g>
+      <g transform="translate(28 140)">
+        <rect width="778" height="42" rx="10" fill="#f8fafc" />
+        <circle cx="22" cy="21" r="7" fill="#38bdf8" />
+        <rect x="48" y="14" width="334" height="14" rx="7" fill="#94a3b8" />
+        <rect x="610" y="10" width="116" height="22" rx="11" fill="#eef6ff" />
+        <text x="630" y="27" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#0369a1">pending</text>
+      </g>
+      <g transform="translate(28 196)">
+        <rect width="778" height="42" rx="10" fill="#f8fafc" />
+        <circle cx="22" cy="21" r="7" fill="#f59e0b" />
+        <rect x="48" y="14" width="286" height="14" rx="7" fill="#94a3b8" />
+        <rect x="610" y="10" width="100" height="22" rx="11" fill="#fff7ed" />
+        <text x="630" y="27" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="800" fill="#b45309">shell</text>
+      </g>
+    </g>
+
+    <g transform="translate(36 666)">
+      <rect width="834" height="94" rx="22" fill="#ffffff" stroke="#cfd8e3" />
+      <text x="34" y="58" font-family="Inter, Arial, sans-serif" font-size="22" fill="#64748b">Ask an agent, attach files, approve work...</text>
+      <rect x="682" y="22" width="118" height="50" rx="16" fill="url(#green)" />
+      <text x="716" y="55" font-family="Inter, Arial, sans-serif" font-size="19" font-weight="900" fill="#062014">Send</text>
+    </g>
+  </g>
+
+  <g transform="translate(1274 122)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="612" height="828" rx="24" fill="url(#panel)" stroke="#d8dee8" />
+    <text x="32" y="58" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#111827">Project</text>
+    <rect x="32" y="94" width="548" height="56" rx="16" fill="#f8fafc" stroke="#e2e8f0" />
+    <text x="62" y="130" font-family="Inter, Arial, sans-serif" font-size="20" fill="#64748b">Search files...</text>
+
+    <g transform="translate(32 194)" font-family="Inter, Arial, sans-serif">
+      <text x="0" y="0" font-size="18" font-weight="800" fill="#475569">TRACE</text>
+      <g transform="translate(0 36)">
+        <circle cx="12" cy="-6" r="7" fill="#3dd68c" />
+        <rect x="34" y="-16" width="198" height="18" rx="9" fill="#64748b" />
+      </g>
+      <g transform="translate(0 92)">
+        <circle cx="12" cy="-6" r="7" fill="#38bdf8" />
+        <rect x="34" y="-16" width="286" height="18" rx="9" fill="#94a3b8" />
+      </g>
+      <g transform="translate(0 148)">
+        <circle cx="12" cy="-6" r="7" fill="#f59e0b" />
+        <rect x="34" y="-16" width="244" height="18" rx="9" fill="#94a3b8" />
+      </g>
+      <g transform="translate(0 204)">
+        <circle cx="12" cy="-6" r="7" fill="#3dd68c" />
+        <rect x="34" y="-16" width="332" height="18" rx="9" fill="#94a3b8" />
+      </g>
+    </g>
+
+    <g transform="translate(32 520)">
+      <rect width="548" height="180" rx="22" fill="#0f1417" />
+      <text x="30" y="48" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" fill="#f8fafc">Approval required</text>
+      <rect x="30" y="78" width="356" height="14" rx="7" fill="#4b5563" />
+      <rect x="30" y="112" width="236" height="14" rx="7" fill="#374151" />
+      <rect x="366" y="110" width="138" height="42" rx="13" fill="#3dd68c" />
+      <text x="395" y="137" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="900" fill="#052014">Approve</text>
+    </g>
+  </g>
+</svg>

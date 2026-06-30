@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">Trace icon</title>
+  <desc id="desc">A dark rounded icon with a refined Trace wordmark and a small green trace signal.</desc>
+  <defs>
+    <linearGradient id="tile" x1="128" x2="896" y1="72" y2="952" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#171a1c" />
+      <stop offset="0.58" stop-color="#090b0c" />
+      <stop offset="1" stop-color="#050606" />
+    </linearGradient>
+    <linearGradient id="edge" x1="112" x2="912" y1="70" y2="954" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#323a39" />
+      <stop offset="0.42" stop-color="#141817" />
+      <stop offset="1" stop-color="#020303" />
+    </linearGradient>
+    <linearGradient id="word" x1="216" x2="808" y1="392" y2="632" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset="0.62" stop-color="#e7eee9" />
+      <stop offset="1" stop-color="#aeb8b3" />
+    </linearGradient>
+    <filter id="shadow" x="-12%" y="-12%" width="124%" height="124%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#000000" flood-opacity="0.42" />
+    </filter>
+    <radialGradient id="point" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#8dffb5" />
+      <stop offset="0.62" stop-color="#3dd68c" />
+      <stop offset="1" stop-color="#123321" />
+    </radialGradient>
+    <filter id="glow" x="-180%" y="-180%" width="460%" height="460%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur" />
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="0 0 0 0 0.24 0 0 0 0 0.84 0 0 0 0 0.55 0 0 0 0.65 0"
+        result="coloredBlur"
+      />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="24" y="24" width="976" height="976" rx="222" fill="url(#edge)" />
+  <rect x="50" y="50" width="924" height="924" rx="196" fill="url(#tile)" />
+  <path
+    d="M114 222C186 122 304 80 476 80H736C858 80 944 168 944 290V506C840 450 708 421 548 421H386C260 421 176 360 114 222Z"
+    fill="#ffffff"
+    opacity="0.038"
+  />
+  <path
+    d="M102 793C234 716 394 677 582 677H944V784C944 876 868 952 776 952H264C198 952 139 914 112 856Z"
+    fill="#000000"
+    opacity="0.22"
+  />
+
+  <g filter="url(#shadow)">
+    <text
+      x="512"
+      y="581"
+      text-anchor="middle"
+      font-family="Avenir Next, Inter, Arial, sans-serif"
+      font-size="188"
+      font-weight="700"
+      letter-spacing="-10"
+      fill="url(#word)"
+    >
+      trace
+    </text>
+  </g>
+
+  <circle cx="806" cy="407" r="27" fill="url(#point)" filter="url(#glow)" />
+</svg>

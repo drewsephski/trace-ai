@@ -11,7 +11,6 @@ describe('i18n', () => {
   describe('normalizeLanguageCode', () => {
     it('passes through exact supported tags', () => {
       expect(normalizeLanguageCode('en-US')).toBe('en-US');
-      expect(normalizeLanguageCode('zh-CN')).toBe('zh-CN');
       expect(normalizeLanguageCode('de-DE')).toBe('de-DE');
     });
 
@@ -21,7 +20,6 @@ describe('i18n', () => {
     });
 
     it('resolves base language codes to their supported region', () => {
-      expect(normalizeLanguageCode('zh')).toBe('zh-CN');
       expect(normalizeLanguageCode('ja')).toBe('ja-JP');
       expect(normalizeLanguageCode('ko')).toBe('ko-KR');
       expect(normalizeLanguageCode('tr')).toBe('tr-TR');
@@ -39,6 +37,8 @@ describe('i18n', () => {
     it('falls back to the default language for unsupported codes', () => {
       expect(normalizeLanguageCode('fr')).toBe(DEFAULT_LANGUAGE);
       expect(normalizeLanguageCode('es')).toBe(DEFAULT_LANGUAGE);
+      expect(normalizeLanguageCode('zh')).toBe(DEFAULT_LANGUAGE);
+      expect(normalizeLanguageCode('zh-CN')).toBe(DEFAULT_LANGUAGE);
       expect(normalizeLanguageCode('')).toBe(DEFAULT_LANGUAGE);
     });
   });

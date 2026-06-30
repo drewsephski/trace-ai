@@ -240,6 +240,8 @@ export type I18nKey =
   | 'common.deleteFailed'
   | 'common.deleteSuccess'
   | 'common.download'
+  | 'common.drewLaunchNote.message'
+  | 'common.drewLaunchNote.title'
   | 'common.edit'
   | 'common.error'
   | 'common.error_details'

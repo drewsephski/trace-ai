@@ -74,12 +74,12 @@
   "backendStartup": {
     "incompatibleRuntime": {
       "title": "Эта система не поддерживается встроенным backend",
-      "description": "Trace открылся, но локальный backend AionCore не может работать в этой версии Linux. Обновитесь до поддерживаемого дистрибутива Linux и перезапустите Trace.",
+      "description": "Trace открылся, но локальный backend Trace Core не может работать в этой версии Linux. Обновитесь до поддерживаемого дистрибутива Linux и перезапустите Trace.",
       "requiredVersions": "Требуемые символы среды выполнения: {{versions}}"
     },
     "incompleteInstallation": {
       "title": "Установка Trace неполная",
-      "description": "В этой установке отсутствуют обязательные локальные ресурсы, поэтому AionCore не может запуститься. Загрузите и переустановите последнюю версию Trace. Если проблема повторится после переустановки, проверьте, не поместило ли защитное или антивирусное ПО AionCore в карантин.",
+      "description": "В этой установке отсутствуют обязательные локальные ресурсы, поэтому Trace Core не может запуститься. Загрузите и переустановите последнюю версию Trace. Если проблема повторится после переустановки, проверьте, не поместило ли защитное или антивирусное ПО Trace Core в карантин.",
       "downloadLatest": "Скачать последнюю версию",
       "sendDiagnostics": "Отправить диагностику",
       "diagnosticsSent": "Диагностика отправлена",
@@ -93,7 +93,7 @@
     },
     "dataMigration": {
       "title": "Local data migration failed",
-      "description": "Trace opened, but AionCore stopped while initializing local data. Reinstalling Trace may not fix this. Send a diagnostics report or contact support so the local database migration can be inspected.",
+      "description": "Trace opened, but Trace Core stopped while initializing local data. Reinstalling Trace may not fix this. Send a diagnostics report or contact support so the local database migration can be inspected.",
       "sendDiagnostics": "Send diagnostics",
       "diagnosticsSent": "Diagnostics sent",
       "diagnosticsReportSuccess": "Diagnostics report sent",
@@ -101,7 +101,7 @@
     },
     "localDataRepair": {
       "title": "Local data repair failed",
-      "description": "Trace opened, but AionCore stopped while repairing local agent cache data. Reinstalling Trace may not fix this. Send a diagnostics report or contact support so the local database can be inspected.",
+      "description": "Trace opened, but Trace Core stopped while repairing local agent cache data. Reinstalling Trace may not fix this. Send a diagnostics report or contact support so the local database can be inspected.",
       "sendDiagnostics": "Send diagnostics",
       "diagnosticsSent": "Diagnostics sent",
       "diagnosticsReportSuccess": "Diagnostics report sent",
@@ -128,5 +128,9 @@
   "unit": {
     "minute_short": "мин",
     "second_short": "с"
+  },
+  "drewLaunchNote": {
+    "title": "A special note from Drew",
+    "message": "I appreciate you for using Trace."
   }
 }

@@ -107,7 +107,7 @@
       "selectFolder": "Вибрати папку",
       "clearFolder": "Очистити",
       "model": "Модель",
-      "aionrsModelRequired": "Виберіть модель для Aion CLI",
+      "aionrsModelRequired": "Виберіть модель для Trace CLI",
       "aionrsNoProvider": "Немає доступних моделей"
     },
     "freq": {
