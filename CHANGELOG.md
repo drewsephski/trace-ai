@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.1.28](https://github.com/drewsephski/trace-ai/compare/v2.1.27...v2.1.28) (2026-06-30)
+
+### Desktop
+
+#### Bug Fixes
+
+- **settings:** rename the Capabilities sidebar label to Skills
+
+#### Refactoring
+
+- Simplify shared Trace UI components
+
+#### Styling
+
+- **web:** apply repository formatter
+- Refresh theme previews and brand surfaces
+
+#### Build
+
+- Add landing page package dependencies
+
+---
+
 ## [2.1.27](https://github.com/drewsephski/trace-ai/compare/v2.1.26...v2.1.27) (2026-06-29)
 
 ### Desktop
