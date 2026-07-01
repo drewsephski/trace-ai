@@ -3,13 +3,14 @@ export const githubRepo = 'https://github.com/drewsephski/trace-ai';
 export const releasePage = `${githubRepo}/releases`;
 export const releaseBase = `${releasePage}/download/v${releaseVersion}`;
 export const macDownloadHref = `${releaseBase}/Trace-${releaseVersion}-mac-arm64.dmg`;
+export const downloadPageHref = '/download';
 
 export const navLinks = [
-  { name: 'Features', href: '#features' },
-  { name: 'Workflow', href: '#how-it-works' },
-  { name: 'Agents', href: '#agents' },
-  { name: 'Local-first', href: '#local-first' },
-  { name: 'Download', href: '#download' },
+  { name: 'Features', href: '/#features' },
+  { name: 'Workflow', href: '/#how-it-works' },
+  { name: 'Agents', href: '/#agents' },
+  { name: 'Local-first', href: '/#local-first' },
+  { name: 'Download', href: downloadPageHref },
 ] as const;
 
 export const heroWords = ['run', 'review', 'extend', 'automate'] as const;
@@ -248,7 +249,7 @@ export const downloadOptions = [
       'Release notes and assets',
     ],
     cta: 'Download Trace',
-    href: macDownloadHref,
+    href: downloadPageHref,
     popular: true,
   },
   {
@@ -269,12 +270,75 @@ export const downloadOptions = [
   },
 ] as const;
 
+export const desktopDownloadGroups = [
+  {
+    platform: 'macOS',
+    summary: 'DMG installers for Apple desktop machines.',
+    options: [
+      {
+        name: 'Apple Silicon',
+        detail: 'M1, M2, M3, M4, and newer Macs',
+        arch: 'arm64',
+        format: 'DMG',
+        href: macDownloadHref,
+      },
+      {
+        name: 'Intel Mac',
+        detail: 'Older Intel-based Macs',
+        arch: 'x64',
+        format: 'DMG',
+        href: `${releaseBase}/Trace-${releaseVersion}-mac-x64.dmg`,
+      },
+    ],
+  },
+  {
+    platform: 'Windows',
+    summary: 'NSIS installers for Windows desktops and workstations.',
+    options: [
+      {
+        name: 'Windows x64',
+        detail: 'Most Intel and AMD Windows PCs',
+        arch: 'x64',
+        format: 'EXE',
+        href: `${releaseBase}/Trace-${releaseVersion}-win-x64.exe`,
+      },
+      {
+        name: 'Windows ARM64',
+        detail: 'ARM-based Windows devices',
+        arch: 'arm64',
+        format: 'EXE',
+        href: `${releaseBase}/Trace-${releaseVersion}-win-arm64.exe`,
+      },
+    ],
+  },
+  {
+    platform: 'Linux',
+    summary: 'Debian packages for Linux desktops and servers.',
+    options: [
+      {
+        name: 'Linux x64',
+        detail: 'Debian, Ubuntu, and compatible x64 systems',
+        arch: 'x64',
+        format: 'DEB',
+        href: `${releaseBase}/Trace-${releaseVersion}-linux-x64.deb`,
+      },
+      {
+        name: 'Linux ARM64',
+        detail: 'Debian, Ubuntu, and compatible ARM64 systems',
+        arch: 'arm64',
+        format: 'DEB',
+        href: `${releaseBase}/Trace-${releaseVersion}-linux-arm64.deb`,
+      },
+    ],
+  },
+] as const;
+
 export const footerLinks = {
   Product: [
-    { name: 'Features', href: '#features' },
-    { name: 'Workflow', href: '#how-it-works' },
-    { name: 'Agents', href: '#agents' },
-    { name: 'Download', href: '#download' },
+    { name: 'Features', href: '/#features' },
+    { name: 'Workflow', href: '/#how-it-works' },
+    { name: 'Agents', href: '/#agents' },
+    { name: 'Download', href: downloadPageHref },
   ],
   Developers: [
     { name: 'GitHub', href: githubRepo },

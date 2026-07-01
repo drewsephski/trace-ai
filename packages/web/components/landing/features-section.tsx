@@ -45,9 +45,9 @@ function DeployVisual() {
   );
 }
 
-function AIVisual() {
-  const roundCoordinate = (value: number) => Number(value.toFixed(3));
+const roundCoordinate = (value: number) => Number(value.toFixed(3));
 
+function AIVisual() {
   return (
     <svg viewBox='0 0 200 160' className='w-full h-full'>
       {/* Central node */}

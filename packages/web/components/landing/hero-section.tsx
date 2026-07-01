@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Github } from 'lucide-react';
 import { AnimatedSphere } from './animated-sphere';
-import { githubRepo, heroStats, heroWords, macDownloadHref, releaseVersion } from '@/lib/landing-content';
+import { downloadPageHref, githubRepo, heroStats, heroWords, releaseVersion } from '@/lib/landing-content';
 
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -109,7 +109,7 @@ export function HeroSection() {
               size='lg'
               className='bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group'
             >
-              <a href={macDownloadHref}>
+              <a href={downloadPageHref}>
                 Download Trace
                 <ArrowRight className='w-4 h-4 transition-transform group-hover:translate-x-1' />
               </a>

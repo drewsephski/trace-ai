@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
-import { githubRepo, macDownloadHref, navLinks } from '@/lib/landing-content';
+import { downloadPageHref, githubRepo, navLinks } from '@/lib/landing-content';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -55,10 +55,9 @@ export function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                className='text-sm text-foreground/70 hover:text-foreground transition-colors duration-300 relative group'
+                className='text-sm text-foreground/70 hover:text-foreground transition-all duration-300 rounded-full px-3 py-2 -mx-3 hover:bg-foreground/[0.04] hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:-translate-y-0.5'
               >
                 {link.name}
-                <span className='absolute -bottom-1 left-0 w-0 h-px bg-foreground transition-all duration-300 group-hover:w-full' />
               </a>
             ))}
           </div>
@@ -76,7 +75,7 @@ export function Navigation() {
               size='sm'
               className={`bg-foreground hover:bg-foreground/90 text-background rounded-full transition-all duration-500 ${isScrolled ? 'px-4 h-8 text-xs' : 'px-6'}`}
             >
-              <a href={macDownloadHref}>Download</a>
+              <a href={downloadPageHref}>Download</a>
             </Button>
           </div>
 
@@ -136,7 +135,7 @@ export function Navigation() {
               className='flex-1 bg-foreground text-background rounded-full h-14 text-base'
               onClick={() => setIsMobileMenuOpen(false)}
             >
-              <a href={macDownloadHref}>Download</a>
+              <a href={downloadPageHref}>Download</a>
             </Button>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Github } from 'lucide-react';
 import { AnimatedTetrahedron } from './animated-tetrahedron';
-import { githubRepo, macDownloadHref } from '@/lib/landing-content';
+import { downloadPageHref, githubRepo } from '@/lib/landing-content';
 
 export function CtaSection() {
   const [isVisible, setIsVisible] = useState(true);
@@ -69,7 +69,7 @@ export function CtaSection() {
                     size='lg'
                     className='bg-foreground hover:bg-foreground/90 text-background px-8 h-14 text-base rounded-full group'
                   >
-                    <a href={macDownloadHref}>
+                    <a href={downloadPageHref}>
                       Download Trace
                       <ArrowRight className='w-4 h-4 transition-transform group-hover:translate-x-1' />
                     </a>
