@@ -16,6 +16,7 @@ import {
   useAddOrUpdateMessage,
   useMessageLstCache,
   useMessageList,
+  useMessageListLoading,
   useReplaceWithAnchorWindow,
 } from '@/renderer/pages/conversation/Messages/hooks';
 
@@ -37,11 +38,15 @@ vi.mock('@/common', () => ({
 const CONVERSATION_ID = 'conversation-1';
 
 function createTextMessage(msgId: string, content: string): IMessageText {
+  return createTextMessageForConversation(CONVERSATION_ID, msgId, content);
+}
+
+function createTextMessageForConversation(conversationId: string, msgId: string, content: string): IMessageText {
   return {
     id: `text-${msgId}-${content}`,
     type: 'text',
     msg_id: msgId,
-    conversation_id: CONVERSATION_ID,
+    conversation_id: conversationId,
     position: 'left',
     content: {
       content,
@@ -127,6 +132,32 @@ function useAnchorMessageHarness() {
     replaceWithAnchorWindow: useReplaceWithAnchorWindow(),
     messages: useMessageList(),
   };
+}
+
+function useMessageCacheHarness(conversationId: string) {
+  useMessageLstCache(conversationId);
+  return {
+    loading: useMessageListLoading(),
+    messages: useMessageList(),
+  };
+}
+
+function createMessagePage(conversationId: string, content: string) {
+  return {
+    items: [createTextMessageForConversation(conversationId, `${conversationId}-message`, content)],
+    oldest_cursor: null,
+    newest_cursor: null,
+    has_more_before: false,
+    has_more_after: false,
+  };
+}
+
+function createDeferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((innerResolve) => {
+    resolve = innerResolve;
+  });
+  return { promise, resolve };
 }
 
 async function flushMessageQueue(): Promise<void> {
@@ -274,5 +305,38 @@ describe('message merging', () => {
       limit: 50,
       content_mode: 'compact',
     });
+  });
+
+  it('ignores a stale hydration response after navigating to another conversation', async () => {
+    const invoke = vi.mocked(ipcBridge.database.getConversationMessages.invoke);
+    const oldHydration = createDeferred<ReturnType<typeof createMessagePage>>();
+    const newHydration = createDeferred<ReturnType<typeof createMessagePage>>();
+    invoke.mockImplementation(({ conversation_id }) => {
+      if (conversation_id === 'old-conversation') return oldHydration.promise;
+      if (conversation_id === 'new-conversation') return newHydration.promise;
+      return Promise.reject(new Error(`Unexpected conversation ${conversation_id}`));
+    });
+
+    const { rerender, result } = renderHook(({ conversationId }) => useMessageCacheHarness(conversationId), {
+      initialProps: { conversationId: 'old-conversation' },
+      wrapper: CacheWrapper,
+    });
+
+    rerender({ conversationId: 'new-conversation' });
+
+    await act(async () => {
+      newHydration.resolve(createMessagePage('new-conversation', 'new message'));
+      await Promise.resolve();
+    });
+
+    expect(result.current.loading).toBe(false);
+    expect(result.current.messages.map((message) => message.conversation_id)).toEqual(['new-conversation']);
+
+    await act(async () => {
+      oldHydration.resolve(createMessagePage('old-conversation', 'old message'));
+      await Promise.resolve();
+    });
+
+    expect(result.current.messages.map((message) => message.conversation_id)).toEqual(['new-conversation']);
   });
 });

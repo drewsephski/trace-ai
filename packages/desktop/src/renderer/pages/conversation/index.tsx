@@ -17,6 +17,7 @@ const ChatConversationIndex: React.FC = () => {
   const { syncTitleFromHistory } = useAutoTitle();
   const previousConversationIdRef = useRef<string | undefined>(undefined);
   const notFoundHandledIdRef = useRef<string | undefined>(undefined);
+  const loadErrorHandledIdRef = useRef<string | undefined>(undefined);
   const defaultConversationTitle = t('conversation.welcome.newConversation');
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const ChatConversationIndex: React.FC = () => {
     previousConversationIdRef.current = id;
   }, [id, closePreview]);
 
-  const { data, isLoading, mutate } = useSWR(id ? `conversation/${id}` : null, () => {
+  const { data, error, isLoading, mutate } = useSWR(id ? `conversation/${id}` : null, () => {
     return getConversationOrNull(id!);
   });
 
@@ -62,11 +63,19 @@ const ChatConversationIndex: React.FC = () => {
   // browser history): show a toast and replace the route with home, so we
   // don't render an empty skeleton. Fire at most once per id.
   useEffect(() => {
-    if (!id || isLoading || data || notFoundHandledIdRef.current === id) return;
+    if (!id || isLoading || data || error || notFoundHandledIdRef.current === id) return;
     notFoundHandledIdRef.current = id;
     Message.warning(t('conversation.notFound'));
     navigate('/', { replace: true });
-  }, [id, isLoading, data, navigate, t]);
+  }, [id, isLoading, data, error, navigate, t]);
+
+  useEffect(() => {
+    if (!id || isLoading || !error || loadErrorHandledIdRef.current === id) return;
+    loadErrorHandledIdRef.current = id;
+    console.error('[conversation] Failed to load conversation route:', error);
+    Message.error(t('common.unknownError'));
+    navigate('/', { replace: true });
+  }, [id, isLoading, error, navigate, t]);
 
   if (isLoading) return <Spin loading></Spin>;
   return <ChatConversation conversation={data ?? undefined}></ChatConversation>;

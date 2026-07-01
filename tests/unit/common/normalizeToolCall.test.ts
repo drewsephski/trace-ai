@@ -38,7 +38,7 @@ describe('normalizeToolCall', () => {
     });
   });
 
-  it('renames legacy team namespaces in acp tool call titles', () => {
+  it('renames team namespaces in acp tool call titles', () => {
     const result = normalizeAcpToolCall({
       id: 'message-2',
       conversation_id: 'conversation-1',
@@ -48,7 +48,7 @@ describe('normalizeToolCall', () => {
           sessionUpdate: 'tool_call',
           tool_call_id: 'tool-2',
           status: 'completed',
-          title: 'aionui-team/team_membersexecute',
+          title: 'trace-team/team_membersexecute',
           kind: 'execute',
         },
       },

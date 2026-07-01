@@ -58,50 +58,18 @@
     }
   },
   "onboarding": {
-    "title": "Team setup tour",
-    "openTooltip": "Team setup tour",
-    "previous": "Previous",
-    "next": "Next",
-    "steps": {
-      "runtimes": "Runtimes",
-      "defaultAgent": "Default agent",
-      "runTour": "Run tour"
-    },
-    "runtime": {
-      "title": "Available agent runtimes",
-      "description": "{{count}} installed runtime(s) were found on this computer. Trace will use these to power assistants and team runs.",
-      "empty": "No agent runtimes detected yet",
-      "teamUnavailable": "No team mode"
-    },
-    "runtimeStatus": {
-      "missing": "Not installed",
-      "online": "Ready",
-      "offline": "Needs check",
-      "unavailable": "Unavailable"
-    },
-    "runtimeSource": {
-      "builtin": "Builtin",
-      "custom": "Custom",
-      "extension": "Extension",
-      "internal": "Internal",
-      "unknown": "Runtime"
-    },
-    "default": {
-      "title": "Choose your default team agent",
-      "description": "This default is used to preselect the team leader when you create a new team from this setup flow.",
-      "saved": "Default agent saved",
-      "saveAndContinue": "Save and continue"
-    },
+    "title": "Team setup",
+    "openTooltip": "Team setup",
     "run": {
-      "title": "Run the team tour",
-      "description": "Send a real prompt to this team. The leader can coordinate teammates or custom agents so you can see how the workflow behaves.",
-      "defaultPrompt": "Set up a reusable agent team for general software work. Use only user-configured runtimes; do not use Aion CLI or aionrs. Inspect the current team and available runtimes, then create these agents if missing: Frontend Engineer, Backend Engineer, QA Engineer, and Product Manager. Ping each agent once to confirm its role and readiness. If creation is blocked, say what is missing and how to finish setup in Trace. End with a short checklist of agents created and pinged.",
-      "currentTeamLabel": "Current team will run this prompt",
-      "defaultNote": "Your default agent choice is saved for new teams; this run uses the leader already configured on the current team.",
-      "promptRequired": "Enter a tour prompt first",
-      "started": "Tour prompt sent to the team",
-      "failed": "Failed to start the team tour",
-      "action": "Run tour prompt"
+      "title": "Run team setup",
+      "description": "Send a setup prompt to this team. The leader will coordinate only assistants that are backed by connected user runtimes.",
+      "defaultPrompt": "Set up this team using the connected runtimes available now. Add only missing role agents with a matching connected runtime: Frontend Engineer, Backend Engineer, QA Engineer, and Product Manager. Ping each agent you add. If a role cannot be added, list it under Skipped with the missing runtime.",
+      "currentTeamLabel": "Current team will run this setup prompt",
+      "defaultNote": "This run uses the leader already configured on the current team.",
+      "promptRequired": "Enter a setup prompt first",
+      "started": "Setup prompt sent to the team",
+      "failed": "Failed to start team setup",
+      "action": "Run setup prompt"
     }
   }
 }

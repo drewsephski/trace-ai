@@ -810,45 +810,57 @@ export const useMessageLstCache = (key: string) => {
   const update = useUpdateMessageList();
   const setLoading = useUpdateMessageListLoading();
   const setPagination = useUpdateMessagePaginationState();
-  const loadMessages = useCallback(async (): Promise<TMessage[]> => {
-    const result = await loadLatestConversationMessages(key, {
-      limit: DEFAULT_MESSAGE_PAGE_LIMIT,
-      contentMode: 'compact',
-    });
-    const messages = result?.items?.map(normalizeDbMessage);
-    if (messages && Array.isArray(messages)) {
-      update((currentList) => mergeLoadedPageWithCurrent(key, messages, currentList));
-      setPagination({
-        oldestCursor: result.oldest_cursor ?? undefined,
-        newestCursor: result.newest_cursor ?? undefined,
-        hasMoreBefore: result.has_more_before,
-        hasMoreAfter: result.has_more_after,
-        isLoadingBefore: false,
-        isLoadingAnchor: false,
-      });
-      return messages;
-    }
-    return [];
-  }, [key, setPagination, update]);
+  const hydrationRequestIdRef = useRef(0);
 
   useEffect(() => {
     if (!key) return;
     let cancelled = false;
+    const requestId = hydrationRequestIdRef.current + 1;
+    hydrationRequestIdRef.current = requestId;
     setLoading(true);
     setPagination({ ...EMPTY_MESSAGE_PAGINATION_STATE });
-    void loadMessages()
+    void loadLatestConversationMessages(key, {
+      limit: DEFAULT_MESSAGE_PAGE_LIMIT,
+      contentMode: 'compact',
+    })
+      .then((result) => {
+        if (cancelled || hydrationRequestIdRef.current !== requestId) {
+          return;
+        }
+
+        const messages = result?.items?.map(normalizeDbMessage);
+        if (!messages || !Array.isArray(messages)) {
+          return;
+        }
+
+        update((currentList) => mergeLoadedPageWithCurrent(key, messages, currentList));
+        setPagination({
+          oldestCursor: result.oldest_cursor ?? undefined,
+          newestCursor: result.newest_cursor ?? undefined,
+          hasMoreBefore: result.has_more_before,
+          hasMoreAfter: result.has_more_after,
+          isLoadingBefore: false,
+          isLoadingAnchor: false,
+        });
+      })
       .catch((error) => {
+        if (cancelled || hydrationRequestIdRef.current !== requestId) {
+          return;
+        }
         console.error('[useMessageLstCache] Failed to load messages from database:', error);
       })
       .finally(() => {
-        if (!cancelled) {
+        if (!cancelled && hydrationRequestIdRef.current === requestId) {
           setLoading(false);
         }
       });
     return () => {
       cancelled = true;
+      if (hydrationRequestIdRef.current === requestId) {
+        hydrationRequestIdRef.current += 1;
+      }
     };
-  }, [key, loadMessages, setLoading, setPagination]);
+  }, [key, setLoading, setPagination, update]);
 
   useEffect(() => {
     if (!key) {

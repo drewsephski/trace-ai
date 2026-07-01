@@ -60,50 +60,18 @@
     }
   },
   "onboarding": {
-    "title": "團隊設定導覽",
-    "openTooltip": "團隊設定導覽",
-    "previous": "上一步",
-    "next": "下一步",
-    "steps": {
-      "runtimes": "執行環境",
-      "defaultAgent": "預設 Agent",
-      "runTour": "執行導覽"
-    },
-    "runtime": {
-      "title": "可用的 Agent 執行環境",
-      "description": "在這台電腦上找到 {{count}} 個已安裝執行環境。Trace 會用它們驅動助手和團隊任務。",
-      "empty": "尚未偵測到 Agent 執行環境",
-      "teamUnavailable": "不支援團隊模式"
-    },
-    "runtimeStatus": {
-      "missing": "未安裝",
-      "online": "可用",
-      "offline": "需要檢查",
-      "unavailable": "不可用"
-    },
-    "runtimeSource": {
-      "builtin": "內建",
-      "custom": "自訂",
-      "extension": "擴充",
-      "internal": "內部",
-      "unknown": "執行環境"
-    },
-    "default": {
-      "title": "選擇預設團隊 Agent",
-      "description": "該預設值會在你透過此設定流程建立新團隊時預選團隊 Leader。",
-      "saved": "預設 Agent 已儲存",
-      "saveAndContinue": "儲存並繼續"
-    },
+    "title": "團隊設定",
+    "openTooltip": "團隊設定",
     "run": {
-      "title": "執行團隊導覽",
-      "description": "向目前團隊傳送一條真實 prompt。Leader 可以協調團隊成員或自訂 Agent，讓你看到完整流程。",
-      "defaultPrompt": "為通用軟體工作設定一個可重複使用的 Agent 團隊。只使用使用者已設定的執行環境，不要使用 Aion CLI 或 aionrs。檢查目前團隊和可用執行環境，然後在缺少時建立這些 Agent：前端工程師、後端工程師、QA 工程師和產品經理。逐一 ping 每個 Agent，確認它的角色和就緒狀態。如果建立被阻塞，請說明缺少什麼以及如何在 Trace 中完成設定。最後用簡短清單列出已建立和已 ping 的 Agent。",
-      "currentTeamLabel": "目前團隊將執行這條 prompt",
-      "defaultNote": "你的預設 Agent 選擇會用於新團隊；這次執行會使用目前團隊已設定的 Leader。",
-      "promptRequired": "請先輸入導覽 prompt",
-      "started": "導覽 prompt 已傳送給團隊",
-      "failed": "啟動團隊導覽失敗",
-      "action": "執行導覽 prompt"
+      "title": "執行團隊設定",
+      "description": "向目前團隊傳送一條設定 prompt。Leader 只會協調由使用者已連接執行環境支援的助手。",
+      "defaultPrompt": "使用目前已連接的執行環境設定這個團隊。只新增有匹配已連接執行環境的缺少角色 Agent：前端工程師、後端工程師、QA 工程師和產品經理。Ping 每個已新增的 Agent。如果某個角色無法新增，請在「已跳過」下列出缺少的執行環境。",
+      "currentTeamLabel": "目前團隊將執行這條設定 prompt",
+      "defaultNote": "本次執行會使用目前團隊已設定的負責人。",
+      "promptRequired": "請先輸入設定 prompt",
+      "started": "設定 prompt 已傳送給團隊",
+      "failed": "啟動團隊設定失敗",
+      "action": "執行設定 prompt"
     }
   }
 }

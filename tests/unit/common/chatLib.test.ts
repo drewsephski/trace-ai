@@ -287,13 +287,13 @@ describe('normalizeTextMessageContent', () => {
     });
   });
 
-  it('renames legacy team tool names in assistant text display', () => {
+  it('renames team tool names in assistant text display', () => {
     expect(
       normalizeTextMessageContent(
         [
-          'Tool: aionui-team/team_membersexecute',
-          'Tool: aionui-team/team_task_listexecute',
-          'Tool: mcp__aionui-team-team_list_assistants',
+          'Tool: trace-team/team_membersexecute',
+          'Tool: trace-team/team_task_listexecute',
+          'Tool: mcp__trace-team-team_list_assistants',
         ].join('\n')
       )
     ).toEqual({

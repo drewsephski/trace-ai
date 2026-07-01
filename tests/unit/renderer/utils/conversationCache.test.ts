@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BackendHttpError } from '@/common/adapter/httpBridge';
 import { ipcBridge } from '@/common';
 import type { TChatConversation } from '@/common/config/storage';
@@ -36,6 +36,10 @@ const mockConversation = {
 describe('conversationCache', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   describe('getConversationOrNull', () => {
@@ -75,6 +79,20 @@ describe('conversationCache', () => {
       vi.mocked(ipcBridge.conversation.get.invoke).mockRejectedValue(error);
 
       await expect(getConversationOrNull('conv-1')).rejects.toBe(error);
+    });
+
+    it('rejects when the backend lookup does not resolve before the timeout', async () => {
+      vi.useFakeTimers();
+      vi.mocked(ipcBridge.conversation.get.invoke).mockReturnValue(new Promise(() => {}));
+
+      const lookup = getConversationOrNull('slow', { timeoutMs: 10 });
+      const expectation = expect(lookup).rejects.toMatchObject({
+        name: 'TimeoutError',
+        message: 'conversation slow lookup timed out after 10ms',
+      });
+
+      await vi.advanceTimersByTimeAsync(10);
+      await expectation;
     });
   });
 

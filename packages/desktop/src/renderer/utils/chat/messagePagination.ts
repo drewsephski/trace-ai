@@ -20,19 +20,43 @@ export type LoadConversationMessagePageOptions = {
 
 export const DEFAULT_MESSAGE_PAGE_LIMIT = 50;
 export const MAX_MESSAGE_PAGE_LIMIT = 200;
+export const MESSAGE_PAGE_LOAD_TIMEOUT_MS = 20000;
+
+const createTimeoutError = (operation: string, timeoutMs: number): Error => {
+  const error = new Error(`${operation} timed out after ${timeoutMs}ms`);
+  error.name = 'TimeoutError';
+  return error;
+};
+
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number, operation: string): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(createTimeoutError(operation, timeoutMs)), timeoutMs);
+  });
+
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
+  }
+}
 
 export async function loadConversationMessagePage(
   conversationId: string,
   options: LoadConversationMessagePageOptions = {}
 ): Promise<MessageCursorPage<TMessage>> {
-  return ipcBridge.database.getConversationMessages.invoke({
-    conversation_id: conversationId,
-    limit: options.limit ?? DEFAULT_MESSAGE_PAGE_LIMIT,
-    ...(options.before ? { before: options.before } : {}),
-    ...(options.after ? { after: options.after } : {}),
-    ...(options.anchorMessageId ? { anchor_message_id: options.anchorMessageId } : {}),
-    content_mode: options.contentMode ?? 'compact',
-  });
+  return withTimeout(
+    ipcBridge.database.getConversationMessages.invoke({
+      conversation_id: conversationId,
+      limit: options.limit ?? DEFAULT_MESSAGE_PAGE_LIMIT,
+      ...(options.before ? { before: options.before } : {}),
+      ...(options.after ? { after: options.after } : {}),
+      ...(options.anchorMessageId ? { anchor_message_id: options.anchorMessageId } : {}),
+      content_mode: options.contentMode ?? 'compact',
+    }),
+    MESSAGE_PAGE_LOAD_TIMEOUT_MS,
+    `conversation ${conversationId} messages lookup`
+  );
 }
 
 export function loadLatestConversationMessages(

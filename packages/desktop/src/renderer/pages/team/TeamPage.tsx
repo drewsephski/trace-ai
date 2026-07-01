@@ -440,12 +440,12 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
         workspacePreferenceKey={team.id}
         onRenameTitle={onRenameTeam}
         headerExtra={
-          <Tooltip content={t('team.onboarding.openTooltip', { defaultValue: 'Team setup tour' })}>
+          <Tooltip content={t('team.onboarding.openTooltip', { defaultValue: 'Team setup' })}>
             <Button
               type='text'
               icon={<Help theme='outline' size='16' fill='currentColor' />}
               className='!h-30px !w-30px !min-w-30px !p-0 !rd-8px text-t-secondary hover:!bg-fill-2 hover:text-t-primary'
-              aria-label={t('team.onboarding.openTooltip', { defaultValue: 'Team setup tour' })}
+              aria-label={t('team.onboarding.openTooltip', { defaultValue: 'Team setup' })}
               onClick={() => setTeamOnboardingVisible(true)}
               data-testid='team-onboarding-open'
             />

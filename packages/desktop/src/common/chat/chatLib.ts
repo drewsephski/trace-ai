@@ -438,11 +438,19 @@ const firstStringField = (
   return undefined;
 };
 
-export const normalizeTraceToolDisplayText = (text: string): string =>
-  text
-    .replace(/\bmcp__aionui-team-/g, 'trace/')
-    .replace(/\baionui-team\//g, 'trace/')
-    .replace(/\baionui-team\b/g, 'trace')
+const stringifyTraceToolDisplayValue = (value: unknown): string => {
+  if (typeof value === 'string') return value;
+  if (value === null || value === undefined) return '';
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') return String(value);
+  try {
+    return JSON.stringify(value) ?? String(value);
+  } catch {
+    return String(value);
+  }
+};
+
+export const normalizeTraceToolDisplayText = (text: unknown): string =>
+  stringifyTraceToolDisplayValue(text)
     .replace(/\bmcp__trace-team-/g, 'trace/')
     .replace(/\btrace-team\//g, 'trace/')
     .replace(/\btrace-team\b/g, 'trace');

@@ -18,15 +18,17 @@ describe('team onboarding default preference', () => {
   it('uses a brief general team setup prompt for the onboarding tour', () => {
     const prompt = enUSTeamLocale.onboarding.run.defaultPrompt;
 
-    expect(prompt).toContain('Set up a reusable agent team');
-    expect(prompt).toContain('Use only user-configured runtimes');
-    expect(prompt).toContain('do not use Aion CLI or aionrs');
-    expect(prompt).toContain('create these agents if missing');
+    expect(prompt).toContain('Set up this team');
+    expect(prompt).toContain('connected runtimes available now');
+    expect(prompt).toContain('Add only missing role agents with a matching connected runtime');
     expect(prompt).toContain('Frontend Engineer');
     expect(prompt).toContain('Backend Engineer');
     expect(prompt).toContain('QA Engineer');
     expect(prompt).toContain('Product Manager');
-    expect(prompt).toContain('Ping each agent once');
+    expect(prompt).toContain('Ping each agent you add');
+    expect(prompt).toContain('Skipped');
+    expect(prompt).not.toContain('do not use Aion CLI or aionrs');
+    expect(prompt).not.toContain('spawned, pinged, and skipped');
     expect(prompt).not.toContain('settings modal');
     expect(prompt).not.toContain('tiny planning task');
   });

@@ -135,29 +135,27 @@ describe('TeamOnboardingModal', () => {
     window.localStorage.clear();
   });
 
-  it('shows a simple guided setup flow with runtime status', async () => {
+  it('shows the simplified setup prompt', async () => {
     render(<TeamOnboardingModal visible teamId='team-1' onClose={vi.fn()} onTeamRunAck={vi.fn()} />);
 
-    expect(screen.getByText('Runtimes')).toBeInTheDocument();
-    expect(screen.getByText('Default agent')).toBeInTheDocument();
-    expect(screen.getByText('Run tour')).toBeInTheDocument();
-    expect(screen.getByText('Available agent runtimes')).toBeInTheDocument();
-    expect(screen.getByText('Codex CLI')).toBeInTheDocument();
-    expect(screen.getAllByText('Ready').length).toBeGreaterThan(0);
+    expect(screen.getByRole('heading', { name: 'Team setup' })).toBeInTheDocument();
+    expect(screen.getByText('Run team setup')).toBeInTheDocument();
+    expect((screen.getByTestId('team-onboarding-tour-prompt') as HTMLTextAreaElement).value).toContain(
+      'Add only missing role agents with a matching connected runtime'
+    );
+    expect(screen.getByRole('button', { name: 'Run setup prompt' })).toBeInTheDocument();
     expect(screen.queryByTestId('team-onboarding-briefing')).not.toBeInTheDocument();
   });
 
   it('keeps the launch action blocked when the prompt is empty', async () => {
     render(<TeamOnboardingModal visible teamId='team-1' onClose={vi.fn()} onTeamRunAck={vi.fn()} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
-    fireEvent.click(await screen.findByRole('button', { name: 'Save and continue' }));
     fireEvent.change(screen.getByTestId('team-onboarding-tour-prompt'), {
       target: { value: '   ' },
     });
     fireEvent.click(screen.getByTestId('team-onboarding-run-tour'));
 
-    await waitFor(() => expect(messageWarningMock).toHaveBeenCalledWith('Enter a tour prompt first'));
+    await waitFor(() => expect(messageWarningMock).toHaveBeenCalledWith('Enter a setup prompt first'));
     expect(sendTeamMessageMock).not.toHaveBeenCalled();
   });
 });
