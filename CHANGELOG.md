@@ -1,5 +1,39 @@
 # Changelog
 
+## [2.1.30](https://github.com/drewsephski/trace-ai/compare/v2.1.29...v2.1.30) (2026-07-01)
+
+### Desktop
+
+#### Features
+
+- Add download page links to landing navigation
+
+#### Refactoring
+
+- Refactor Trace desktop settings and landing visuals
+- Refactor trace landing content and desktop styling
+
+### Core ([v0.1.40](https://github.com/iOfficeAI/AionCore/releases/tag/v0.1.40))
+
+#### Features
+
+- **team:** add run state snapshot endpoint (#549)
+
+#### Bug Fixes
+
+- **acp:** preserve selectors for partial config snapshots (#548)
+- **agent:** adapt aionrs compat API (#528)
+- **agent:** guard internal Aion CLI command overrides (#538)
+- **app:** reuse conversation service for channel messages (#531)
+- **assistant:** preserve builtin override selections (#535)
+- **cron:** restore create command heading (#547)
+- **cron:** run jobs through conversation service (#546)
+- **file:** trust local workspace roots for fs routes (#527)
+- **skills:** repair butler endpoint drift + add cron scheduling (#550)
+- **windows:** handle runtime process lifecycle
+
+---
+
 ## [2.1.29](https://github.com/drewsephski/trace-ai/compare/v2.1.28...v2.1.29) (2026-06-30)
 
 ### Desktop
