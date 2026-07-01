@@ -30,6 +30,11 @@
   "close": "Close",
   "retry": "重試",
   "reload": "重新載入",
+  "routeError": {
+    "title": "無法載入此頁面",
+    "description": "Trace 仍保持開啟，但此頁面遇到了渲染錯誤。請重試此頁面或返回首頁。",
+    "backHome": "返回首頁"
+  },
   "technical_details": "技術詳情",
   "error_details": "錯誤詳情",
   "troubleshooting": "疑難排解",

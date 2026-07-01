@@ -30,6 +30,11 @@
   "close": "Kapat",
   "retry": "Tekrar Dene",
   "reload": "Yenile",
+  "routeError": {
+    "title": "Bu sayfa yüklenemedi",
+    "description": "Trace açık kaldı, ancak bu sayfada bir render hatası oluştu. Sayfayı yeniden deneyin veya ana ekrana dönün.",
+    "backHome": "Ana ekrana dön"
+  },
   "technical_details": "Teknik Detaylar",
   "error_details": "Hata Detayları",
   "troubleshooting": "Sorun Giderme",

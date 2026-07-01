@@ -30,6 +30,11 @@
   "close": "閉じる",
   "retry": "再試行",
   "reload": "再読み込み",
+  "routeError": {
+    "title": "このページを読み込めませんでした",
+    "description": "Trace は開いたままですが、このページでレンダリングエラーが発生しました。再試行するか、ホームに戻ってください。",
+    "backHome": "ホームに戻る"
+  },
   "technical_details": "技術詳細",
   "error_details": "エラー詳細",
   "troubleshooting": "トラブルシューティング",

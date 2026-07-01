@@ -30,6 +30,11 @@
   "close": "Close",
   "retry": "Retry",
   "reload": "Reload",
+  "routeError": {
+    "title": "This page could not be loaded",
+    "description": "Trace kept the app open, but this page hit a rendering error. Retry the page or return home.",
+    "backHome": "Back home"
+  },
   "technical_details": "Technical Details",
   "error_details": "Error Details",
   "troubleshooting": "Troubleshooting",

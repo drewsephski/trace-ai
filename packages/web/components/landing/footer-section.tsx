@@ -2,7 +2,7 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import { AnimatedWave } from './animated-wave';
-import { footerLinks, githubRepo, releasePage } from '@/lib/landing-content';
+import { drewGithubProfile, footerLinks, githubRepo, releasePage } from '@/lib/landing-content';
 
 const socialLinks = [
   { name: 'GitHub', href: githubRepo },
@@ -72,7 +72,12 @@ export function FooterSection() {
 
         {/* Bottom Bar */}
         <div className='py-8 border-t border-foreground/10 flex flex-col md:flex-row items-center justify-between gap-4'>
-          <p className='text-sm text-muted-foreground'>2026 Trace. Apache-2.0.</p>
+          <div className='flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-sm text-muted-foreground'>
+            <p>2026 Trace. Apache-2.0.</p>
+            <a href={drewGithubProfile} className='hover:text-foreground transition-colors'>
+              Built by Drew
+            </a>
+          </div>
 
           <div className='flex items-center gap-4 text-sm text-muted-foreground'>
             <span className='flex items-center gap-2'>

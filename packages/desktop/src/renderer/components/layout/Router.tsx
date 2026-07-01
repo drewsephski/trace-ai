@@ -1,5 +1,7 @@
-import React, { Suspense } from 'react';
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Button } from '@arco-design/web-react';
+import React, { Suspense, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { HashRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AppLoader from '@renderer/components/layout/AppLoader';
 import { useAuth } from '@renderer/hooks/context/AuthContext';
 import { TEAM_MODE_ENABLED } from '@/common/config/constants';
@@ -21,10 +23,90 @@ const ScheduledTasksPage = React.lazy(() => import('@renderer/pages/cron/Schedul
 const TaskDetailPage = React.lazy(() => import('@renderer/pages/cron/ScheduledTasksPage/TaskDetailPage'));
 const TeamIndex = React.lazy(() => import('@renderer/pages/team'));
 
+type RouteErrorBoundaryInnerProps = {
+  children: React.ReactNode;
+  routeKey: string;
+  title: string;
+  description: string;
+  retryLabel: string;
+  backHomeLabel: string;
+  onBackHome: () => void;
+};
+
+type RouteErrorBoundaryInnerState = {
+  error: Error | null;
+};
+
+class RouteErrorBoundaryInner extends React.Component<RouteErrorBoundaryInnerProps, RouteErrorBoundaryInnerState> {
+  state: RouteErrorBoundaryInnerState = { error: null };
+
+  static getDerivedStateFromError(error: Error): RouteErrorBoundaryInnerState {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('[RouteErrorBoundary] Route render failed:', error, errorInfo);
+  }
+
+  componentDidUpdate(prevProps: RouteErrorBoundaryInnerProps): void {
+    if (this.state.error && prevProps.routeKey !== this.props.routeKey) {
+      this.setState({ error: null });
+    }
+  }
+
+  handleRetry = (): void => {
+    this.setState({ error: null });
+  };
+
+  render(): React.ReactNode {
+    if (!this.state.error) return this.props.children;
+
+    return (
+      <div className='flex size-full min-h-0 items-center justify-center bg-1 px-24px' role='alert'>
+        <div className='flex max-w-520px flex-col items-center gap-12px text-center'>
+          <div className='text-18px font-600 text-t-primary'>{this.props.title}</div>
+          <div className='text-13px leading-20px text-t-secondary'>{this.props.description}</div>
+          <div className='mt-8px flex items-center gap-8px'>
+            <Button onClick={this.handleRetry}>{this.props.retryLabel}</Button>
+            <Button type='primary' onClick={this.props.onBackHome}>
+              {this.props.backHomeLabel}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export const RouteErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const routeKey = `${location.pathname}${location.search}${location.hash}`;
+  const handleBackHome = useCallback(() => {
+    navigate('/guid', { replace: true });
+  }, [navigate]);
+
+  return (
+    <RouteErrorBoundaryInner
+      routeKey={routeKey}
+      title={t('common.routeError.title')}
+      description={t('common.routeError.description')}
+      retryLabel={t('common.retry')}
+      backHomeLabel={t('common.routeError.backHome')}
+      onBackHome={handleBackHome}
+    >
+      {children}
+    </RouteErrorBoundaryInner>
+  );
+};
+
 const withRouteFallback = (Component: React.LazyExoticComponent<React.ComponentType>) => (
-  <Suspense fallback={<AppLoader />}>
-    <Component />
-  </Suspense>
+  <RouteErrorBoundary>
+    <Suspense fallback={<AppLoader />}>
+      <Component />
+    </Suspense>
+  </RouteErrorBoundary>
 );
 
 const ProtectedLayout: React.FC<{ layout: React.ReactElement }> = ({ layout }) => {

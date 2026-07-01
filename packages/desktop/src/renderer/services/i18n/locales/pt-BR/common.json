@@ -30,6 +30,11 @@
   "close": "Fechar",
   "retry": "Tentar novamente",
   "reload": "Recarregar",
+  "routeError": {
+    "title": "Esta página não pôde ser carregada",
+    "description": "O Trace continuou aberto, mas esta página encontrou um erro de renderização. Tente novamente ou volte para o início.",
+    "backHome": "Voltar ao início"
+  },
   "technical_details": "Detalhes Técnicos",
   "error_details": "Detalhes do Erro",
   "troubleshooting": "Solução de Problemas",

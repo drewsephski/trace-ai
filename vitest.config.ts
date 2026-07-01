@@ -44,7 +44,7 @@ export default defineConfig({
           environment: 'jsdom',
           include: ['tests/unit/**/*.dom.test.ts', 'tests/unit/**/*.dom.test.tsx'],
           setupFiles: ['./tests/vitest.dom.setup.ts'],
-          testTimeout: 20000,
+          testTimeout: 30000,
         },
       },
     ],

@@ -54,10 +54,17 @@ vi.mock('@renderer/hooks/ui/useConversationShortcuts', () => ({ useConversationS
 vi.mock('@renderer/utils/platform', () => ({ isElectronDesktop: platformMocks.isElectronDesktopMock }));
 
 import Layout from '@renderer/components/layout/Layout';
+import { RouteErrorBoundary } from '@renderer/components/layout/Router';
 
 const renderLayout = () => render(<Layout sider={<div>sider</div>} />);
 
 const BACK_KEY = 'common.back';
+
+class ThrowingRoute extends React.Component {
+  render(): React.ReactNode {
+    throw new Error('route render failed');
+  }
+}
 
 describe('Layout sider brand Home button', () => {
   beforeEach(() => {
@@ -189,5 +196,32 @@ describe('Layout sider brand Home button', () => {
     } finally {
       window.removeEventListener('trace-open-update-modal', openListener);
     }
+  });
+});
+
+describe('RouteErrorBoundary', () => {
+  beforeEach(() => {
+    navigate.mockClear();
+    currentPathname = '/conversation/abc';
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('keeps the app shell recoverable when a route render crashes', () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    render(
+      <RouteErrorBoundary>
+        <ThrowingRoute />
+      </RouteErrorBoundary>
+    );
+
+    expect(screen.getByRole('alert')).toHaveTextContent('common.routeError.title');
+    expect(screen.getByRole('alert')).toHaveTextContent('common.routeError.description');
+
+    fireEvent.click(screen.getByText('common.routeError.backHome'));
+    expect(navigate).toHaveBeenCalledWith('/guid', { replace: true });
   });
 });
