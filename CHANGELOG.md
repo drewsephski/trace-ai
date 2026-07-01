@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.1.31](https://github.com/drewsephski/trace-ai/compare/v2.1.30...v2.1.31) (2026-07-01)
+
+### Desktop
+
+#### Bug Fixes
+
+- **teams:** prevent blank renderer crashes and recover stale team routes (#2)
+
+#### Features
+
+- Improve web metadata and social previews
+- Add landing icons
+- Add Product Hunt launch video assets
+
+---
+
 ## [2.1.30](https://github.com/drewsephski/trace-ai/compare/v2.1.29...v2.1.30) (2026-07-01)
 
 ### Desktop
