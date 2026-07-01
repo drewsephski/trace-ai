@@ -152,7 +152,7 @@ const MessageText: React.FC<{ message: IMessageText; showCopyRow?: boolean }> = 
   const copyButton = (
     <Tooltip content={t('common.copy', { defaultValue: 'Copy' })}>
       <div
-        className='p-4px rd-4px cursor-pointer hover:bg-3 transition-colors opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto'
+        className='message-copy-btn p-4px rd-4px cursor-pointer hover:bg-3 transition-colors opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto'
         onClick={handleCopy}
         style={{ lineHeight: 0 }}
       >
@@ -198,17 +198,10 @@ const MessageText: React.FC<{ message: IMessageText; showCopyRow?: boolean }> = 
         )}
         <div
           className={classNames('min-w-0 [&>p:first-child]:mt-0px [&>p:last-child]:mb-0px', {
-            'bg-aou-2 p-6px md:p-8px': isUserMessage || cronMeta,
-            'bg-3 p-6px md:p-8px': isTeammateMessage,
+            'message-bubble message-bubble--user': isUserMessage || cronMeta,
+            'message-bubble message-bubble--teammate': isTeammateMessage,
             'w-full': !(isUserMessage || cronMeta || isTeammateMessage),
           })}
-          style={{
-            ...(isUserMessage || cronMeta
-              ? { borderRadius: '8px 0 8px 8px', color: 'var(--text-primary)' }
-              : isTeammateMessage
-                ? { borderRadius: '0 8px 8px 8px' }
-                : undefined),
-          }}
         >
           {/* JSON 内容使用折叠组件 Use CollapsibleContent for JSON content */}
           {shouldRenderPlainText ? (
@@ -238,13 +231,13 @@ const MessageText: React.FC<{ message: IMessageText; showCopyRow?: boolean }> = 
             of the turn shows this row (showCopyRow); user messages always do. */}
         {!isMobile && showCopyRow && (
           <div
-            className={classNames('h-32px flex items-center mt-4px gap-8px', {
+            className={classNames('message-copy-row h-32px flex items-center mt-4px gap-8px', {
               'flex-row-reverse': isUserMessage,
             })}
           >
             {copyButton}
             {message.created_at && (
-              <span className='text-12px text-t-secondary opacity-0 group-hover:opacity-100 transition-opacity select-none'>
+              <span className='message-timestamp text-12px text-t-secondary opacity-0 group-hover:opacity-100 transition-opacity select-none'>
                 {formatMessageTime(message.created_at)}
               </span>
             )}

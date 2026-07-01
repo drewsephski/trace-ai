@@ -3,7 +3,9 @@ import { Robot } from '@icon-park/react';
 import { resolveAgentLogo, useAgentLogos } from '@renderer/utils/model/agentLogo';
 import { resolveAssistantAvatar } from '@renderer/utils/model/assistantAvatar';
 import { resolveAssistantName } from '@renderer/utils/model/assistantDisplay';
-import { assistantRuntimeKey, type Assistant } from '@/common/types/agent/assistantTypes';
+import { assistantRuntimeKey, type Assistant, type AssistantAgentSource } from '@/common/types/agent/assistantTypes';
+
+const INTERNAL_AION_RUNTIME_KEY = 'aionrs';
 
 /** Team leader selector entry derived from the unified assistant catalog. */
 export type TeamAssistantOption = {
@@ -11,6 +13,8 @@ export type TeamAssistantOption = {
   name: string;
   /** Execution backend (claude, gemini, qwen, …). */
   backend?: string;
+  /** Runtime source tier from the assistant catalog. */
+  agent_source?: AssistantAgentSource;
   /** Avatar token — a backend-resolved URL or an emoji. */
   icon?: string;
   /** Whether this assistant can currently be used in team mode. */
@@ -24,6 +28,7 @@ export function assistantToOption(assistant: Assistant, localeKey = 'en-US'): Te
     id: assistant.id,
     name: resolveAssistantName(assistant, localeKey, assistant.name),
     backend: assistantRuntimeKey(assistant),
+    agent_source: assistant.agent?.source,
     icon: assistant.avatar,
     team_capable: assistant.team_selectable,
     team_block_reason: assistant.team_block_reason,
@@ -41,9 +46,13 @@ export function assistantFromId(
   return allAssistants.find((assistant) => assistantKey(assistant) === assistantId);
 }
 
-/** Filter assistants to only those supported in team mode. */
+export function isInternalAionTeamAssistant(assistant: Pick<TeamAssistantOption, 'backend' | 'agent_source'>): boolean {
+  return assistant.backend === INTERNAL_AION_RUNTIME_KEY || assistant.agent_source === 'internal';
+}
+
+/** Filter assistants to only those supported in team setup surfaces. */
 export function filterTeamSupportedAssistants(assistants: TeamAssistantOption[]): TeamAssistantOption[] {
-  return assistants;
+  return assistants.filter((assistant) => !isInternalAionTeamAssistant(assistant));
 }
 
 export const AssistantOptionLabel: React.FC<{ assistant: TeamAssistantOption }> = ({ assistant }) => {

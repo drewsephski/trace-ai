@@ -21,6 +21,11 @@ import {
 } from './assistantSelectUtils';
 import type { TeamAssistantOption } from './assistantSelectUtils';
 import { resolveDefaultTeamAgentModel } from './teamCreateModelResolver';
+import {
+  chooseTeamOnboardingAssistantId,
+  getTeamOnboardingBrowserStorage,
+  readTeamOnboardingDefaultAssistantId,
+} from '../utils/teamOnboardingPreference';
 
 // [E2E SYNC] 修改此组件的 DOM 结构（class、标题、关闭按钮等）时，
 // 必须同步更新 tests/e2e/cases/teams/team-create.e2e.ts 和 team-whitelist.e2e.ts 中的 selector，
@@ -105,6 +110,15 @@ const TeamCreateModal: React.FC<Props> = ({ visible, onClose, onCreated }) => {
     () => filterTeamSupportedAssistants(presetAssistants.map((assistant) => assistantToOption(assistant, localeKey))),
     [presetAssistants, localeKey]
   );
+
+  useEffect(() => {
+    if (!visible || leaderAssistantId || allAssistants.length === 0) return;
+    const preferredAssistantId = readTeamOnboardingDefaultAssistantId(getTeamOnboardingBrowserStorage());
+    const assistantId = chooseTeamOnboardingAssistantId(allAssistants, preferredAssistantId);
+    if (assistantId) {
+      setLeaderAssistantId(assistantId);
+    }
+  }, [allAssistants, leaderAssistantId, visible]);
 
   const filteredAssistants = useMemo(() => {
     const q = search.trim().toLowerCase();

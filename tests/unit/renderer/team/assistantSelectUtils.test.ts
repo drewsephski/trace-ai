@@ -41,6 +41,31 @@ describe('assistantSelectUtils', () => {
     expect(option.team_capable).toBe(true);
     expect(option.team_block_reason).toBeUndefined();
   });
+
+  it('filters internal Aion assistants out of team setup options', () => {
+    const options = filterTeamSupportedAssistants([
+      assistantToOption(
+        makeAssistant({
+          id: 'bare-aionrs',
+          name: 'Aion CLI',
+          source: 'generated',
+          preset_agent_type: 'aionrs',
+          agent: { type: 'aionrs', source: 'internal' },
+        })
+      ),
+      assistantToOption(
+        makeAssistant({
+          id: 'bare-codex',
+          name: 'Codex CLI',
+          source: 'generated',
+          preset_agent_type: 'codex',
+          agent: { type: 'acp', source: 'builtin', acp_backend: 'codex' },
+        })
+      ),
+    ]);
+
+    expect(options.map((option) => option.id)).toEqual(['bare-codex']);
+  });
 });
 
 function makeAssistant(

@@ -1,5 +1,5 @@
-import { Message, Modal, Spin } from '@arco-design/web-react';
-import { CloseSmall, FullScreen, Left, OffScreen, Peoples, Right } from '@icon-park/react';
+import { Button, Message, Modal, Spin, Tooltip } from '@arco-design/web-react';
+import { CloseSmall, FullScreen, Help, Left, OffScreen, Peoples, Right } from '@icon-park/react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import useSWR, { useSWRConfig } from 'swr';
@@ -26,6 +26,7 @@ import { getConversationOrNull } from '@/renderer/pages/conversation/utils/conve
 import { warmupConversation } from '@/renderer/pages/conversation/utils/warmupConversation';
 import { writeLastProviderModelPreference } from '@/renderer/pages/conversation/utils/providerModelPreference';
 import { resolveTeamWorkspaceView } from './utils/teamWorkspaceView';
+import TeamOnboardingModal from './components/TeamOnboardingModal';
 
 type Props = {
   team: TTeam;
@@ -232,6 +233,7 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
   const [fullscreenSlotId, setFullscreenSlotId] = useState<string | null>(null);
+  const [teamOnboardingVisible, setTeamOnboardingVisible] = useState(false);
 
   const activeAssistant = assistants.find((assistant) => assistant.slot_id === activeSlotId);
   const leadAssistant = assistants.find((assistant) => assistant.role === 'leader');
@@ -419,6 +421,12 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
       allConversationIds={allConversationIds}
     >
       {messageContext}
+      <TeamOnboardingModal
+        visible={teamOnboardingVisible}
+        teamId={team.id}
+        onClose={() => setTeamOnboardingVisible(false)}
+        onTeamRunAck={teamRun.applyAck}
+      />
       <ChatLayout
         title={team.name}
         siderTitle={siderTitle}
@@ -431,6 +439,18 @@ const TeamPageContent: React.FC<TeamPageContentProps> = ({ team, onRenameTeam })
         isTemporaryWorkspace={isTeamWorkspaceTemporary}
         workspacePreferenceKey={team.id}
         onRenameTitle={onRenameTeam}
+        headerExtra={
+          <Tooltip content={t('team.onboarding.openTooltip', { defaultValue: 'Team setup tour' })}>
+            <Button
+              type='text'
+              icon={<Help theme='outline' size='16' fill='currentColor' />}
+              className='!h-30px !w-30px !min-w-30px !p-0 !rd-8px text-t-secondary hover:!bg-fill-2 hover:text-t-primary'
+              aria-label={t('team.onboarding.openTooltip', { defaultValue: 'Team setup tour' })}
+              onClick={() => setTeamOnboardingVisible(true)}
+              data-testid='team-onboarding-open'
+            />
+          </Tooltip>
+        }
         headerLeading={
           <span className='inline-flex w-16px h-16px items-center justify-center shrink-0 leading-none text-t-primary'>
             <Peoples theme='outline' size='16' fill='currentColor' style={{ lineHeight: 0 }} />

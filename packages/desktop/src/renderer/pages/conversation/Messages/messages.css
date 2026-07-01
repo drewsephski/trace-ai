@@ -1,3 +1,129 @@
+/* Transcript rhythm */
+.message-item + .message-item.justify-start,
+.message-item + .message-item.justify-end {
+  margin-top: 18px;
+}
+
+.message-item.justify-start + .message-item.justify-start,
+.message-item.justify-end + .message-item.justify-end {
+  margin-top: 6px;
+}
+
+/* Message bubbles */
+.message-bubble {
+  position: relative;
+  padding: 8px 12px;
+  color: var(--text-primary);
+}
+
+@media (min-width: 768px) {
+  .message-bubble {
+    padding: 10px 14px;
+  }
+}
+
+.message-bubble--user {
+  background: var(--aou-2);
+  border-radius: 16px 4px 16px 16px;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--color-text-1) 5%, transparent),
+    0 1px 1px color-mix(in srgb, var(--color-text-1) 3%, transparent);
+}
+
+.message-bubble--teammate {
+  background: var(--bg-3);
+  border: 1px solid var(--color-border-2);
+  border-radius: 4px 16px 16px 16px;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text-1) 3%, transparent);
+}
+
+/* Assistant replies read as document prose, not chat-bubble text. */
+.message-item[data-message-position='left'] .markdown-shadow,
+.message-item[data-message-position='left'] .markdown-shadow p,
+.message-item[data-message-position='left'] .markdown-shadow li {
+  line-height: 1.65 !important;
+}
+
+/* Copy / timestamp row */
+.message-copy-row {
+  transition: opacity 120ms ease;
+}
+
+.message-copy-btn {
+  border-radius: 6px;
+}
+
+.message-timestamp {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-copy-row,
+  .message-copy-btn,
+  .message-timestamp {
+    transition: none !important;
+  }
+}
+
+/* Scroll-to-bottom control */
+.message-list-bottom-fade {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--bg-1) 70%, transparent) 55%,
+    var(--bg-1) 100%
+  );
+}
+
+.scroll-to-bottom-btn {
+  background: color-mix(in srgb, var(--bg-1) 92%, transparent);
+  border: 1px solid var(--color-border-2);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--color-text-1) 8%, transparent);
+  color: var(--color-text-2);
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+  animation: scroll-btn-in 160ms ease;
+}
+
+@supports ((-webkit-backdrop-filter: blur(6px)) or (backdrop-filter: blur(6px))) {
+  .scroll-to-bottom-btn {
+    -webkit-backdrop-filter: saturate(120%) blur(6px);
+    backdrop-filter: saturate(120%) blur(6px);
+  }
+}
+
+.scroll-to-bottom-btn:hover {
+  background: color-mix(in srgb, var(--color-fill-2) 88%, transparent);
+  border-color: color-mix(in srgb, var(--aou-6-brand) 30%, var(--color-border-2));
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-text-1) 10%, transparent);
+}
+
+.scroll-to-bottom-btn:active {
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--color-text-1) 8%, transparent);
+}
+
+@keyframes scroll-btn-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-bottom-btn {
+    animation: none;
+    transition: none;
+  }
+}
+
 /* Mobile typography tuning: conversation readability */
 @media (max-width: 767px) {
   /* Message body — keep body type compact so messages don't dominate the screen */

@@ -644,16 +644,16 @@ const MessageList: React.FC<{ className?: string; emptySlot?: React.ReactNode }>
       {showScrollButton && (
         <>
           {/* Gradient mask */}
-          <div className='absolute bottom-0 left-0 right-0 h-100px pointer-events-none' />
+          <div className='message-list-bottom-fade absolute bottom-0 left-0 right-0 h-100px pointer-events-none' />
           {/* Scroll button */}
           <div className='absolute bottom-20px left-50% transform -translate-x-50% z-100'>
             <div
-              className='flex items-center justify-center w-40px h-40px rd-full bg-base shadow-lg cursor-pointer hover:bg-1 transition-all hover:scale-110 border-1 border-solid border-3'
+              className='scroll-to-bottom-btn flex items-center justify-center w-36px h-36px rd-full cursor-pointer'
               onClick={handleScrollButtonClick}
               title={t('messages.scrollToBottom')}
               style={{ lineHeight: 0 }}
             >
-              <Down theme='filled' size='20' fill={iconColors.secondary} style={{ display: 'block' }} />
+              <Down theme='filled' size='18' fill={iconColors.secondary} style={{ display: 'block' }} />
             </div>
           </div>
         </>

@@ -1,5 +1,27 @@
 /* Sendbox component styles */
 
+/* Subtle layered-surface highlight. */
+.sendbox-panel {
+  background-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-fill-1) 50%, transparent) 0%,
+    transparent 46%
+  );
+}
+
+.sendbox-panel--focused {
+  outline: 3px solid color-mix(in srgb, var(--aou-6-brand) 8%, transparent);
+  outline-offset: 1px;
+}
+
+.sendbox-panel--uploading {
+  border-style: dashed;
+}
+
+.sendbox-panel--dragging {
+  box-shadow: 0 0 0 4px color-mix(in srgb, rgb(var(--primary-3)) 18%, transparent);
+}
+
 /* Send button disabled state - override Arco Design default disabled styles */
 .send-button-custom:disabled,
 .send-button-custom.arco-btn:disabled,

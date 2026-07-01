@@ -82,11 +82,11 @@ describe('TeamCreateModal', () => {
     resolveDefaultTeamAgentModelMock.mockResolvedValue(undefined);
   });
 
-  it('keeps blocked assistants visible with a reason and prevents selecting them', () => {
+  it('keeps blocked assistants visible with a reason and ignores selecting them', async () => {
     render(<TeamCreateModal visible onClose={vi.fn()} onCreated={vi.fn()} />);
 
-    expect(screen.getByTestId('team-create-agent-option-bare-aionrs')).toBeInTheDocument();
-    expect(screen.getByText('Aion 命令行')).toBeInTheDocument();
+    expect(screen.queryByTestId('team-create-agent-option-bare-aionrs')).not.toBeInTheDocument();
+    expect(screen.queryByText('Aion 命令行')).not.toBeInTheDocument();
     expect(screen.queryByText('Aion CLI')).not.toBeInTheDocument();
     expect(screen.getByTestId('team-create-agent-option-blocked-reviewer')).toBeInTheDocument();
     expect(screen.getByTestId('team-create-agent-option-remote-runner')).toBeInTheDocument();
@@ -98,30 +98,34 @@ describe('TeamCreateModal', () => {
       target: { value: 'My Team' },
     });
     fireEvent.click(screen.getByTestId('team-create-agent-option-blocked-reviewer'));
+    fireEvent.click(createButton);
 
-    expect(createButton).toBeDisabled();
+    await waitFor(() => expect(createTeamInvokeMock).toHaveBeenCalledTimes(1));
+    expect(createTeamInvokeMock.mock.calls[0][0].assistants[0]).toMatchObject({
+      assistant_id: 'remote-runner',
+    });
   });
 
-  it('passes assistant identity through when creating a team with an assistant leader', async () => {
+  it('passes configured assistant identity through when creating a team with an assistant leader', async () => {
     render(<TeamCreateModal visible onClose={vi.fn()} onCreated={vi.fn()} />);
 
     fireEvent.change(screen.getByPlaceholderText('Team name'), {
       target: { value: 'Docs Team' },
     });
-    fireEvent.click(screen.getByTestId('team-create-agent-option-bare-aionrs'));
+    fireEvent.click(screen.getByTestId('team-create-agent-option-remote-runner'));
     fireEvent.click(screen.getByRole('button', { name: 'Create Team' }));
 
     await waitFor(() => expect(createTeamInvokeMock).toHaveBeenCalledTimes(1));
 
     const payload = createTeamInvokeMock.mock.calls[0][0];
     expect(resolveDefaultTeamAgentModelMock).toHaveBeenCalledWith({
-      assistant_id: 'bare-aionrs',
-      assistant_backend: 'aionrs',
+      assistant_id: 'remote-runner',
+      assistant_backend: 'remote',
     });
     expect(payload.assistants[0]).toMatchObject({
       role: 'leader',
-      assistant_id: 'bare-aionrs',
-      assistant_name: 'Aion 命令行',
+      assistant_id: 'remote-runner',
+      assistant_name: 'Remote Runner',
     });
     // Runtime backend / conversation type are derived server-side from the
     // assistant, so the create payload no longer carries legacy agent fields.

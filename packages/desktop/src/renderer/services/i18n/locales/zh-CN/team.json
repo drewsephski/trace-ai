@@ -58,5 +58,52 @@
       "interview": "策划一场深度访谈",
       "expert_review": "多位专家会诊同一个问题"
     }
+  },
+  "onboarding": {
+    "title": "团队设置导览",
+    "openTooltip": "团队设置导览",
+    "previous": "上一步",
+    "next": "下一步",
+    "steps": {
+      "runtimes": "运行时",
+      "defaultAgent": "默认 Agent",
+      "runTour": "运行导览"
+    },
+    "runtime": {
+      "title": "可用的 Agent 运行时",
+      "description": "在这台电脑上找到 {{count}} 个已安装运行时。Trace 会用它们驱动助手和团队任务。",
+      "empty": "暂未检测到 Agent 运行时",
+      "teamUnavailable": "不支持团队模式"
+    },
+    "runtimeStatus": {
+      "missing": "未安装",
+      "online": "可用",
+      "offline": "需要检查",
+      "unavailable": "不可用"
+    },
+    "runtimeSource": {
+      "builtin": "内置",
+      "custom": "自定义",
+      "extension": "扩展",
+      "internal": "内部",
+      "unknown": "运行时"
+    },
+    "default": {
+      "title": "选择默认团队 Agent",
+      "description": "该默认值会在你通过此设置流程创建新团队时预选团队 Leader。",
+      "saved": "默认 Agent 已保存",
+      "saveAndContinue": "保存并继续"
+    },
+    "run": {
+      "title": "运行团队导览",
+      "description": "向当前团队发送一条真实 prompt。Leader 可以协调团队成员或自定义 Agent，让你看到完整流程。",
+      "defaultPrompt": "为通用软件工作设置一个可复用的 Agent 团队。只使用用户已配置的运行时，不要使用 Aion CLI 或 aionrs。检查当前团队和可用运行时，然后在缺少时创建这些 Agent：前端工程师、后端工程师、QA 工程师和产品经理。逐一 ping 每个 Agent，确认它的角色和就绪状态。如果创建被阻塞，请说明缺少什么以及如何在 Trace 中完成设置。最后用简短清单列出已创建和已 ping 的 Agent。",
+      "currentTeamLabel": "当前团队将运行这条 prompt",
+      "defaultNote": "你的默认 Agent 选择会用于新团队；这次运行会使用当前团队已配置的 Leader。",
+      "promptRequired": "请先输入导览 prompt",
+      "started": "导览 prompt 已发送给团队",
+      "failed": "启动团队导览失败",
+      "action": "运行导览 prompt"
+    }
   }
 }

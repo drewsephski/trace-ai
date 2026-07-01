@@ -7,7 +7,7 @@ import {
 import type { Assistant } from '@/common/types/agent/assistantTypes';
 
 describe('team agent type policy', () => {
-  it('keeps retired runtime assistants visible but non-selectable in team creation options', () => {
+  it('hides internal Aion while preserving other backend-provided team options', () => {
     // Selectability is now decided by the backend via `team_selectable`; the
     // frontend trusts that flag instead of re-deriving it from the backend slug.
     const options = [
@@ -21,7 +21,6 @@ describe('team agent type policy', () => {
 
     expect(filterTeamSupportedAssistants(options)).toEqual([
       expect.objectContaining({ backend: 'claude', team_capable: true }),
-      expect.objectContaining({ backend: 'aionrs', team_capable: true }),
       expect.objectContaining({ backend: 'openclaw-gateway', team_capable: false }),
       expect.objectContaining({ backend: 'nanobot', team_capable: false }),
       expect.objectContaining({ backend: 'remote', team_capable: false }),
