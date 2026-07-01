@@ -25,14 +25,52 @@ const TEAM_PINNED_KEY = 'team-pinned-ids';
 
 type SiderTooltipProps = React.ComponentProps<typeof Tooltip>;
 
-interface TeamSiderSectionProps {
+type TeamSiderSectionProps = {
   collapsed: boolean;
   pathname: string;
   siderTooltipProps: Partial<SiderTooltipProps>;
   onSessionClick?: () => void;
+};
+
+type TeamSiderSectionBoundaryState = {
+  error: Error | null;
+};
+
+const readTeamSectionExpanded = (): boolean => {
+  try {
+    return localStorage.getItem('team-section-expanded') === 'true';
+  } catch {
+    return false;
+  }
+};
+
+const readPinnedTeamIds = (): string[] => {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(TEAM_PINNED_KEY) ?? '[]') as unknown;
+    return Array.isArray(parsed) ? parsed.filter((value): value is string => typeof value === 'string') : [];
+  } catch {
+    return [];
+  }
+};
+
+class TeamSiderSectionBoundary extends React.Component<React.PropsWithChildren, TeamSiderSectionBoundaryState> {
+  state: TeamSiderSectionBoundaryState = { error: null };
+
+  static getDerivedStateFromError(error: Error): TeamSiderSectionBoundaryState {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('[TeamSiderSection] Teams sidebar render failed:', error, errorInfo);
+  }
+
+  render(): React.ReactNode {
+    if (this.state.error) return null;
+    return this.props.children;
+  }
 }
 
-const TeamSiderSection: React.FC<TeamSiderSectionProps> = ({
+const TeamSiderSectionInner: React.FC<TeamSiderSectionProps> = ({
   collapsed,
   pathname,
   siderTooltipProps,
@@ -45,23 +83,25 @@ const TeamSiderSection: React.FC<TeamSiderSectionProps> = ({
   const { mutate: globalMutate } = useSWRConfig();
 
   const [createTeamVisible, setCreateTeamVisible] = useState(false);
-  const [expanded, setExpanded] = useState<boolean>(() => localStorage.getItem('team-section-expanded') === 'true');
+  const [expanded, setExpanded] = useState<boolean>(readTeamSectionExpanded);
   useEffect(() => {
-    localStorage.setItem('team-section-expanded', String(expanded));
+    try {
+      localStorage.setItem('team-section-expanded', String(expanded));
+    } catch {
+      // Ignore storage failures; the sidebar should keep rendering.
+    }
   }, [expanded]);
 
-  const [pinnedIds, setPinnedIds] = useState<string[]>(() => {
-    try {
-      return JSON.parse(localStorage.getItem(TEAM_PINNED_KEY) ?? '[]') as string[];
-    } catch {
-      return [];
-    }
-  });
+  const [pinnedIds, setPinnedIds] = useState<string[]>(readPinnedTeamIds);
 
   const togglePin = useCallback((id: string) => {
     setPinnedIds((prev) => {
       const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
-      localStorage.setItem(TEAM_PINNED_KEY, JSON.stringify(next));
+      try {
+        localStorage.setItem(TEAM_PINNED_KEY, JSON.stringify(next));
+      } catch {
+        // Ignore storage failures; pin state remains correct for this session.
+      }
       return next;
     });
   }, []);
@@ -233,7 +273,7 @@ const TeamSiderSection: React.FC<TeamSiderSectionProps> = ({
                             await removeTeam(teamIdToDelete);
                             Message.success(t('team.sider.deleteSuccess'));
                             if (window.location.hash.includes(`/team/${teamIdToDelete}`)) {
-                              window.location.hash = '#/';
+                              navigate('/guid', { replace: true });
                             }
                           },
                           style: { borderRadius: '12px' },
@@ -257,14 +297,16 @@ const TeamSiderSection: React.FC<TeamSiderSectionProps> = ({
             })}
         </div>
       )}
-      <TeamCreateModal
-        visible={createTeamVisible}
-        onClose={() => setCreateTeamVisible(false)}
-        onCreated={(team) => {
-          void refreshTeams();
-          Promise.resolve(navigate(`/team/${team.id}`)).catch(console.error);
-        }}
-      />
+      {createTeamVisible && (
+        <TeamCreateModal
+          visible={createTeamVisible}
+          onClose={() => setCreateTeamVisible(false)}
+          onCreated={(team) => {
+            void refreshTeams();
+            Promise.resolve(navigate(`/team/${team.id}`)).catch(console.error);
+          }}
+        />
+      )}
       <Modal
         title={t('team.sider.renameTitle')}
         visible={renameVisible}
@@ -294,5 +336,11 @@ const TeamSiderSection: React.FC<TeamSiderSectionProps> = ({
     </>
   );
 };
+
+const TeamSiderSection: React.FC<TeamSiderSectionProps> = (props) => (
+  <TeamSiderSectionBoundary>
+    <TeamSiderSectionInner {...props} />
+  </TeamSiderSectionBoundary>
+);
 
 export default TeamSiderSection;

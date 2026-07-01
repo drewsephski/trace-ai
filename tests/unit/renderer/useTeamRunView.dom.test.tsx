@@ -106,4 +106,26 @@ describe('useTeamRunView', () => {
     expect(work?.active_turn_slow).toBeUndefined();
     expect(work?.active_turn_slow_threshold_ms).toBeUndefined();
   });
+
+  it('ignores malformed slot work payloads without dropping the active run', () => {
+    const { result } = renderHook(() => useTeamRunView('team-1'));
+    const runUpdated = teamEventMocks.handlers.runUpdated as TeamRunHandler;
+
+    act(() => {
+      runUpdated({
+        team_id: 'team-1',
+        team_run_id: 'run-1',
+        target_slot_id: 'lead',
+        target_role: 'lead',
+        status: 'running',
+        active_child_count: 1,
+        pending_wake_count: 1,
+        starting_child_count: 0,
+        slot_work: { worker: { slot_id: 'worker-1' } },
+      } as unknown as ITeamRunEvent);
+    });
+
+    expect(result.current.state.activeRun?.team_run_id).toBe('run-1');
+    expect(result.current.state.slotWorkBySlot).toEqual({});
+  });
 });

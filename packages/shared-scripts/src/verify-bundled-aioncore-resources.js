@@ -73,7 +73,33 @@ function requireDirectory(baseDir, runtimeKey, parts, checked, missing) {
   }
 }
 
-function verifyBundleManifest(baseDir, runtimeKey, electronPlatformName, targetArch, checked, missing) {
+function requireFileContains(baseDir, runtimeKey, parts, requiredStrings, checked, missing) {
+  const relativePath = bundledPath(runtimeKey, ...parts);
+  const filePath = path.join(baseDir, ...parts);
+
+  for (const requiredString of requiredStrings) {
+    checked.push(`${relativePath}<contains:${requiredString}>`);
+  }
+
+  if (!isFile(filePath)) return;
+
+  const content = fs.readFileSync(filePath);
+  for (const requiredString of requiredStrings) {
+    if (!content.includes(Buffer.from(requiredString))) {
+      missing.push(`${relativePath}<contains:${requiredString}>`);
+    }
+  }
+}
+
+function verifyBundleManifest(
+  baseDir,
+  runtimeKey,
+  electronPlatformName,
+  targetArch,
+  expectedAioncoreVersion,
+  checked,
+  missing
+) {
   const parts = ['manifest.json'];
   const relativePath = bundledPath(runtimeKey, ...parts);
   const manifestPath = path.join(baseDir, ...parts);
@@ -96,6 +122,10 @@ function verifyBundleManifest(baseDir, runtimeKey, electronPlatformName, targetA
 
   if (manifest.arch !== targetArch) {
     missing.push(`${relativePath}<arch:${targetArch}>`);
+  }
+
+  if (expectedAioncoreVersion && manifest.version !== expectedAioncoreVersion) {
+    missing.push(`${relativePath}<version:${expectedAioncoreVersion}>`);
   }
 }
 
@@ -225,14 +255,30 @@ function requireManagedAcpTool(baseDir, runtimeKey, platform, toolId, checked, m
   }
 }
 
-function verifyBundledAioncoreResources({ resourcesDir, electronPlatformName, targetArch }) {
+function verifyBundledAioncoreResources({
+  resourcesDir,
+  electronPlatformName,
+  targetArch,
+  expectedAioncoreVersion,
+  requiredBackendStrings = [],
+}) {
   const runtimeKey = `${electronPlatformName}-${targetArch}`;
   const baseDir = path.join(resourcesDir, 'bundled-aioncore', runtimeKey);
   const checked = [];
   const missing = [];
+  const binaryParts = [backendBinaryName(electronPlatformName)];
 
-  requireRelativePath(baseDir, runtimeKey, [backendBinaryName(electronPlatformName)], checked, missing);
-  verifyBundleManifest(baseDir, runtimeKey, electronPlatformName, targetArch, checked, missing);
+  requireRelativePath(baseDir, runtimeKey, binaryParts, checked, missing);
+  requireFileContains(baseDir, runtimeKey, binaryParts, requiredBackendStrings, checked, missing);
+  verifyBundleManifest(
+    baseDir,
+    runtimeKey,
+    electronPlatformName,
+    targetArch,
+    expectedAioncoreVersion,
+    checked,
+    missing
+  );
   requireRelativeDirectory(baseDir, runtimeKey, ['managed-resources'], checked, missing);
   requireManagedNode(baseDir, runtimeKey, electronPlatformName, checked, missing);
   requireManagedAcpTool(baseDir, runtimeKey, electronPlatformName, 'codex-acp', checked, missing);

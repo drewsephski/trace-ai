@@ -77,7 +77,8 @@ const ackToRunEvent = (ack: ITeamRunAck): ITeamRunEvent => ({
 
 const indexSlotWork = (slotWork: ITeamSlotWork[] | undefined): Record<string, ITeamSlotWork | undefined> => {
   const indexed: Record<string, ITeamSlotWork | undefined> = {};
-  for (const work of slotWork ?? []) {
+  for (const work of Array.isArray(slotWork) ? slotWork : []) {
+    if (!work.slot_id) continue;
     indexed[work.slot_id] = work;
   }
   return indexed;

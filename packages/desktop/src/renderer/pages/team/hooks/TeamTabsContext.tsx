@@ -33,8 +33,9 @@ const sortTeamAssistants = (
   team_id: string,
   fallbackOrder?: string[]
 ): TeamAssistant[] => {
-  const leadAssistant = assistants.find((assistant) => assistant.role === 'leader');
-  const teammateAssistants = assistants.filter((assistant) => assistant.role !== 'leader');
+  const safeAssistants = Array.isArray(assistants) ? assistants : [];
+  const leadAssistant = safeAssistants.find((assistant) => assistant.role === 'leader');
+  const teammateAssistants = safeAssistants.filter((assistant) => assistant.role !== 'leader');
   const storedOrder = fallbackOrder ?? readStoredSiderOrder(getTeamAssistantOrderStorageKey(team_id));
   const orderedTeammates = sortSiderItemsByStoredOrder({
     items: teammateAssistants,
@@ -62,15 +63,21 @@ export const TeamTabsProvider: React.FC<{
   renameAssistant,
   removeAssistant,
 }) => {
+  const safeExternalAssistants = Array.isArray(externalAssistants) ? externalAssistants : [];
   const storageKey = `team-active-slot-${team_id}`;
-  const savedSlotId = localStorage.getItem(storageKey);
+  let savedSlotId: string | null = null;
+  try {
+    savedSlotId = localStorage.getItem(storageKey);
+  } catch {
+    savedSlotId = null;
+  }
   const initialSlotId =
-    savedSlotId && externalAssistants.some((assistant) => assistant.slot_id === savedSlotId)
+    savedSlotId && safeExternalAssistants.some((assistant) => assistant.slot_id === savedSlotId)
       ? savedSlotId
       : defaultActiveSlotId;
   const [activeSlotId, setActiveSlotId] = useState(initialSlotId);
   const [localAssistants, setLocalAssistants] = useState<TeamAssistant[]>(() =>
-    sortTeamAssistants(externalAssistants, team_id)
+    sortTeamAssistants(safeExternalAssistants, team_id)
   );
 
   // Sync external assistant list changes (e.g., new assistant added)
@@ -79,9 +86,9 @@ export const TeamTabsProvider: React.FC<{
       const previousTeammateOrder = previousAssistants
         .filter((assistant) => assistant.role !== 'leader')
         .map((assistant) => assistant.slot_id);
-      return sortTeamAssistants(externalAssistants, team_id, previousTeammateOrder);
+      return sortTeamAssistants(safeExternalAssistants, team_id, previousTeammateOrder);
     });
-  }, [externalAssistants, team_id]);
+  }, [safeExternalAssistants, team_id]);
 
   useEffect(() => {
     writeStoredSiderOrder(
@@ -99,14 +106,22 @@ export const TeamTabsProvider: React.FC<{
       const leadAssistant = assistants.find((assistant) => assistant.role === 'leader');
       const fallbackSlotId = leadAssistant?.slot_id ?? assistants[0]?.slot_id ?? '';
       setActiveSlotId(fallbackSlotId);
-      localStorage.setItem(storageKey, fallbackSlotId);
+      try {
+        localStorage.setItem(storageKey, fallbackSlotId);
+      } catch {
+        // Ignore storage failures; active tab state remains in memory.
+      }
     }
   }, [assistants, activeSlotId, storageKey]);
 
   const switchTab = useCallback(
     (slot_id: string) => {
       setActiveSlotId(slot_id);
-      localStorage.setItem(storageKey, slot_id);
+      try {
+        localStorage.setItem(storageKey, slot_id);
+      } catch {
+        // Ignore storage failures; active tab state remains in memory.
+      }
     },
     [storageKey]
   );

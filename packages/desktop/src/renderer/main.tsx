@@ -51,7 +51,7 @@ import { ThemeProvider } from './hooks/context/ThemeContext';
 import { PreviewProvider } from './pages/conversation/Preview/context/PreviewContext';
 
 // Arco Design
-import { ConfigProvider, Modal, Typography } from '@arco-design/web-react';
+import { Button, ConfigProvider, Modal, Typography } from '@arco-design/web-react';
 // Configure Arco Design to use React 18's createRoot, fixing Message component's CopyReactDOM.render error
 import '@arco-design/web-react/es/_util/react-19-adapter';
 import '@arco-design/web-react/dist/css/arco.css';
@@ -75,7 +75,7 @@ configService.initialize().catch((err) => {
 });
 
 // i18n
-import './services/i18n';
+import i18n from './services/i18n';
 import { registerPwa } from './services/registerPwa';
 
 import { ipcBridge } from '@/common';
@@ -83,6 +83,7 @@ import { repairAllCronJobTimeZonesOnce } from '@renderer/pages/cron/repairCronJo
 import { bootstrapRendererConfig } from '@renderer/services/bootstrapRenderer';
 
 // Components and utilities
+import AppLoader from './components/layout/AppLoader';
 import Layout from './components/layout/Layout';
 import DrewLaunchNote from './components/layout/DrewLaunchNote';
 import Router from './components/layout/Router';
@@ -263,6 +264,49 @@ const Config: React.FC<PropsWithChildren> = ({ children }) => {
   return React.createElement(ConfigProvider, { theme: { primaryColor: '#4E5969' }, locale: arcoLocale }, children);
 };
 
+type RootErrorBoundaryState = {
+  error: Error | null;
+};
+
+class RootErrorBoundary extends React.Component<PropsWithChildren, RootErrorBoundaryState> {
+  state: RootErrorBoundaryState = { error: null };
+
+  static getDerivedStateFromError(error: Error): RootErrorBoundaryState {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
+    console.error('[RootErrorBoundary] Renderer crashed:', error, errorInfo);
+  }
+
+  handleRetry = (): void => {
+    this.setState({ error: null });
+  };
+
+  handleReload = (): void => {
+    window.location.reload();
+  };
+
+  render(): React.ReactNode {
+    if (!this.state.error) return this.props.children;
+
+    return (
+      <div className='flex min-h-screen items-center justify-center bg-bg-1 px-24px' role='alert'>
+        <div className='flex max-w-520px flex-col items-center gap-12px text-center'>
+          <div className='text-18px font-600 text-t-primary'>{i18n.t('common.routeError.title')}</div>
+          <div className='text-13px leading-20px text-t-secondary'>{i18n.t('common.routeError.description')}</div>
+          <div className='mt-8px flex items-center gap-8px'>
+            <Button onClick={this.handleRetry}>{i18n.t('common.retry')}</Button>
+            <Button type='primary' onClick={this.handleReload}>
+              {i18n.t('common.reload')}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
 const Main = () => {
   const { ready } = useAuth();
   const [configReady, setConfigReady] = useState(false);
@@ -278,7 +322,7 @@ const Main = () => {
   }, [ready]);
 
   if (!ready || !configReady) {
-    return null;
+    return <AppLoader />;
   }
 
   return (
@@ -393,8 +437,10 @@ if (backendStartupFailure && shouldShowBackendStartupFailureDialog) {
   );
 } else {
   root.render(
-    <AppProviders>
-      <App />
-    </AppProviders>
+    <RootErrorBoundary>
+      <AppProviders>
+        <App />
+      </AppProviders>
+    </RootErrorBoundary>
   );
 }

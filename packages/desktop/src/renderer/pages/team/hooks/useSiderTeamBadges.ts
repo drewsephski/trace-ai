@@ -6,7 +6,8 @@ import { removeStack } from '@/renderer/utils/common';
 const buildTeamCounts = (teams: TTeam[]): Map<string, number> => {
   const map = new Map<string, number>();
   for (const team of teams) {
-    const total = team.assistants.reduce((sum, assistant) => sum + (assistant.pending_confirmations ?? 0), 0);
+    const assistants = Array.isArray(team.assistants) ? team.assistants : [];
+    const total = assistants.reduce((sum, assistant) => sum + (assistant.pending_confirmations ?? 0), 0);
     map.set(team.id, total);
   }
   return map;
@@ -21,8 +22,8 @@ const buildTeamCounts = (teams: TTeam[]): Map<string, number> => {
 export function useSiderTeamBadges(teams: TTeam[]): Map<string, number> {
   const teamSignature = teams
     .map(
-      (t) =>
-        `${t.id}:${t.assistants
+      (team) =>
+        `${team.id}:${(Array.isArray(team.assistants) ? team.assistants : [])
           .map((assistant) => `${assistant.conversation_id || ''}:${assistant.pending_confirmations ?? 0}`)
           .join(',')}`
     )
@@ -39,7 +40,7 @@ export function useSiderTeamBadges(teams: TTeam[]): Map<string, number> {
     // Build conversation_id → team_id lookup
     const cidToTeamId = new Map<string, string>();
     for (const team of teams) {
-      for (const assistant of team.assistants) {
+      for (const assistant of Array.isArray(team.assistants) ? team.assistants : []) {
         if (assistant.conversation_id) {
           cidToTeamId.set(assistant.conversation_id, team.id);
         }
