@@ -24,6 +24,14 @@ export const metadata: Metadata = {
   title: 'Trace - Local-first AI agent workspace',
   description:
     'Trace is a local-first desktop app for running AI agents, managing files, using skills and MCP tools, and reviewing approvals from one workspace.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)', sizes: '32x32', type: 'image/png' },
+      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
 };
 
 export const viewport: Viewport = {
