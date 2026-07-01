@@ -66,7 +66,7 @@ const AionrsTeamChat: React.FC<{
   return (
     <AionrsChat
       conversation_id={conversation.id}
-      workspace={conversation.extra.workspace}
+      workspace={conversation.extra?.workspace ?? ''}
       modelSelection={modelSelection}
       emptySlot={emptySlot}
       agent_name={assistant_name}

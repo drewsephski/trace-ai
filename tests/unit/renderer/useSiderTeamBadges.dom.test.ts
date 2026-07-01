@@ -68,4 +68,13 @@ describe('useSiderTeamBadges', () => {
     });
     expect(ipcBridge.conversation.confirmation.list.invoke).not.toHaveBeenCalled();
   });
+
+  it('treats malformed assistant summaries as empty instead of throwing in the sidebar', () => {
+    const malformedTeam = { ...team, assistants: undefined } as unknown as TTeam;
+    const { result } = renderHook(() => useSiderTeamBadges([malformedTeam]));
+
+    expect(result.current.get('team-1')).toBe(0);
+    expect(ipcBridge.conversation.confirmation.add.on).not.toHaveBeenCalled();
+    expect(ipcBridge.conversation.confirmation.remove.on).not.toHaveBeenCalled();
+  });
 });

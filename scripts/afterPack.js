@@ -9,6 +9,9 @@ const {
   getModulesToRebuild,
 } = require('./rebuildNativeModules');
 const { verifyBundledAioncoreResources } = require('../packages/shared-scripts/src/verify-bundled-aioncore-resources');
+const { aioncoreVersion } = require('../package.json');
+
+const REQUIRED_CODEX_TEAM_TOOL_STRINGS = ['team_task_list', 'team_members', 'team_send_message', 'team_task_update'];
 
 /**
  * afterPack hook for electron-builder
@@ -27,6 +30,8 @@ function verifyBundledResources(resourcesDir, electronPlatformName, targetArch) 
     resourcesDir,
     electronPlatformName,
     targetArch,
+    expectedAioncoreVersion: aioncoreVersion,
+    requiredBackendStrings: REQUIRED_CODEX_TEAM_TOOL_STRINGS,
   });
 
   if (result.missing.length > 0) {

@@ -7,9 +7,9 @@ const {
   verifyBundledAioncoreResources,
 } = require('../../../packages/shared-scripts/src/verify-bundled-aioncore-resources');
 
-function writeFile(filePath: string) {
+function writeFile(filePath: string, content = '') {
   mkdirSync(dirname(filePath), { recursive: true });
-  writeFileSync(filePath, '', { flush: true });
+  writeFileSync(filePath, content, { flush: true });
 }
 
 function writeJson(filePath: string, value: unknown) {
@@ -131,6 +131,40 @@ describe('verifyBundledAioncoreResources', () => {
 
     expect(result.missing).toContain('bundled-aioncore/win32-x64/manifest.json<platform:win32>');
     expect(result.missing).toContain('bundled-aioncore/win32-x64/manifest.json<arch:x64>');
+  });
+
+  it('reports stale bundled AionCore versions against the package pin', () => {
+    writeJson(join(resourcesDir, 'bundled-aioncore', 'win32-x64', 'manifest.json'), {
+      platform: 'win32',
+      arch: 'x64',
+      version: 'v0.1.38',
+    });
+
+    const result = verifyBundledAioncoreResources({
+      resourcesDir,
+      electronPlatformName: 'win32',
+      targetArch: 'x64',
+      expectedAioncoreVersion: 'v0.1.40',
+    });
+
+    expect(result.missing).toContain('bundled-aioncore/win32-x64/manifest.json<version:v0.1.40>');
+  });
+
+  it('reports missing Codex Team MCP tool symbols in the backend binary', () => {
+    writeFile(
+      join(resourcesDir, 'bundled-aioncore', 'win32-x64', 'aioncore.exe'),
+      'team_task_list team_members team_send_message tool_search'
+    );
+
+    const result = verifyBundledAioncoreResources({
+      resourcesDir,
+      electronPlatformName: 'win32',
+      targetArch: 'x64',
+      requiredBackendStrings: ['team_task_list', 'team_members', 'team_send_message', 'team_task_update'],
+    });
+
+    expect(result.missing).toContain('bundled-aioncore/win32-x64/aioncore.exe<contains:team_task_update>');
+    expect(result.missing).not.toContain('bundled-aioncore/win32-x64/aioncore.exe<contains:tool_search>');
   });
 
   it('passes for non-Windows node runtime layout', () => {

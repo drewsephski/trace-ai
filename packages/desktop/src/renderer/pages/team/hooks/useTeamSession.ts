@@ -23,12 +23,13 @@ type AgentStatusInfo = {
 };
 
 export function useTeamSession(team: TTeam) {
+  const assistants = Array.isArray(team.assistants) ? team.assistants : [];
   const { mutate: mutateTeam } = useSWR(team.id ? `team/${team.id}` : null, () =>
     ipcBridge.team.get.invoke({ id: team.id })
   );
 
   const [statusMap, setStatusMap] = useState<Map<string, AgentStatusInfo>>(() => {
-    return new Map(team.assistants.map((a) => [a.slot_id, { slot_id: a.slot_id, status: a.status }]));
+    return new Map(assistants.map((a) => [a.slot_id, { slot_id: a.slot_id, status: a.status }]));
   });
 
   useEffect(() => {
